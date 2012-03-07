@@ -9,7 +9,7 @@ class Portal{
 public:
 	Portal();
 	~Portal();
-
+who are you?
 private:
 	int neighbors[4];
 	vector<GameObject> objs;
