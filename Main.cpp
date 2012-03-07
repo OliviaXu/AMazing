@@ -1,5 +1,6 @@
 #include "Framework.h"
 #include "Shader.h"
+#include "GameEngine.h"
 
 // Note: See the SMFL documentation for info on setting up fullscreen mode
 // and using rendering settings
@@ -11,12 +12,21 @@ sf::Window window(sf::VideoMode(800, 600), "CS248 Rules!", sf::Style::Close, set
 // http://www.sfml-dev.org/tutorials/1.6/window-time.php
 sf::Clock clck;
 
+#define MAP_FILE "map_file"
+#define CONFIG_FILE "config_file"
+
+GameEngine gameEngine;
+
+void initWorld();
+
 
 int main(int argc, char** argv) {
     // Put your game loop here (i.e., render with OpenGL, update animation)
-    while (window.IsOpened()) {
-        window.Display();
-    }
+    initOpenGL();
+    
+    initWorld();
+    
+    gameEngine.run();
 
     return 0;
 }
@@ -43,4 +53,10 @@ void initOpenGL() {
     glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
     glEnable(GL_DEPTH_TEST);
     glViewport(0, 0, window.GetWidth(), window.GetHeight());
+}
+
+void initWorld()
+{
+    gameEngine = new GameEngine(MAP_FILE, CONFIG_FILE);
+    gameEngine.init(window);
 }
