@@ -11,11 +11,12 @@ public:
     
     
     const static float near, far;
-    const static float aspect_ratio;
+    const static float aspectRatio;
     const static float FOV;
     const static struct Vec3 relPos;    // relative position to the ball
 private:
     Vec3 pos;
+    Vec3 dir;
 };
 
 #endif

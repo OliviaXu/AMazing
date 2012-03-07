@@ -74,11 +74,13 @@ void GameEngine::drawScene()
 {
     Portal portal = mapLoader.getCurrentPortal();
     
-    glMatrixMode(GL_PROJECTION);
+    /*glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(fieldOfView, aspectRatio, nearClip, farClip);
+    gluPerspective(camera.FOV, camera.aspectRatio, camera.near, camera.far);
     
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(eyePos[0], eyePos[1], eyePos[2], eyePos[0] + lookAtX[face], eyePos[1] + lookAtY[face], eyePos[2] + lookAtZ[face], upX[face], upY[face], upZ[face]);
+    gluLookAt(camera.pos.x, camera.pos.y, camera.pos.z, camera.pos.x + camera.dir.x, camera.pos.y + camera.dir.y, camera.pos.z + camera.dir.z, 0.0, 1.0, 0.0);*/
+    
+    portal.draw(camera);
 }

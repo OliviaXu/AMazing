@@ -9,7 +9,8 @@ class Portal{
 public:
 	Portal();
 	~Portal();
-    void draw();    // draw all the objects in it
+    void draw(Camera &camera);    // draw all the objects in it
+    void getNeighbor(int *neighbor);
 
 private:
 	int neighbors[4];
