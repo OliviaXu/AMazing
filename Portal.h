@@ -18,6 +18,8 @@ private:
 	float height;
     
     float test;
+    
+    float test2;
 }
 
 #endif
