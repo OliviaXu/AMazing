@@ -16,6 +16,8 @@ private:
 	vector<PortalDoor> doors;
 	float width;
 	float height;
+    
+    float test;
 }
 
 #endif
