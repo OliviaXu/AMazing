@@ -25,6 +25,7 @@
 #include <iostream>
 
 #include <vector>
+#include <queue>
 
 #include "Util.h"
 #include "GameObject.h"

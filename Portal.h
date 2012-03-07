@@ -10,7 +10,8 @@ public:
 	Portal();
 	~Portal();
     void draw(Camera &camera);    // draw all the objects in it
-    void getNeighbor(int *neighbor);
+    int *getNeighbors();
+	void in(struct Vec3 pos);
 
 private:
 	int neighbors[4];

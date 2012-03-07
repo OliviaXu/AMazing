@@ -1,22 +1,26 @@
 #ifndef CS248_MAPLOADER_H
 #define CS248_MAPLOADER_H
 
-#include <string.h>
+#include <string>
 #include "Framework.h"
+#include "Portal.h"
 
 // contain all the information of the map
 
 class MapLoader{
 public:
+	typedef bool (*PortalIterateFun) (Portal *portal, void *auxData);
 	MapLoader();
 	~MapLoader();
-	void load(string map_file);
+	void load(std::string map_file);
     bool updateCurrentPortal(Vec3 pos);     // update current portal according to the position of the ball
-    void fillObjects(vector<GameObject> &objects);   // fill objects with current portal and its neighboring portals' objects
-    Portal getCurrentPortal();
-	
+    void fillObjects(std::vector<GameObject> &objects);   // fill objects with current portal and its neighboring portals' objects
+    Portal *getCurrentPortal();
+	void iteratePortals(int rootIdx, PortalIterateFun fun, void *auxData);
+
 private:
-    vector<Portal> portals;
+    std::vector<Portal *> portals;
+	bool *visitBuff;
     int currentPortal;
 };
 
