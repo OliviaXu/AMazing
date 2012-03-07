@@ -9,19 +9,13 @@ class Portal{
 public:
 	Portal();
 	~Portal();
-who are you?
-great.
-name
+
 private:
 	int neighbors[4];
 	vector<GameObject> objs;
 	vector<PortalDoor> doors;
 	float width;
 	float height;
-    
-    float test;
-    
-    float test2;
 }
 
 #endif

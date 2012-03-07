@@ -24,4 +24,9 @@
 #include <memory>
 #include <iostream>
 
+#include <vector>
+
+#include "Util.h"
+#include "GameObject.h"
+
 #endif
