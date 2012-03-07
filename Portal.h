@@ -11,6 +11,7 @@ public:
 	~Portal();
 who are you?
 great.
+name
 private:
 	int neighbors[4];
 	vector<GameObject> objs;
