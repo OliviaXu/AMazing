@@ -125,7 +125,7 @@ void MapLoader::readObject(bool portalObject){
 	obj->setMass(prop->mass);
     Vec3 pos = Vec3(prop->x, prop->y, prop->z);
 	obj->setPos(pos);
-	obj->setShader(prop->iShader);
+	obj->setShader(shaders[prop->iShader]);
 	obj->setClass(prop->className);
 	objs.push_back(obj);
 	if(portalObject)

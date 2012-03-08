@@ -21,20 +21,16 @@ void GameObject::setPortal(int iPortal){
 	this->iPortal = iPortal;
 }
 
-void GameObject::setShader(int iShader){
-	
+void GameObject::setShader(Shader *shader){
+	this->shader = shader;
 }
 
 void GameObject::setMass(int mass){
 	this->mass = mass;
 }
 
-void GameObject::setPos(Vec3 &pos){
-	//this->pos = pos;
-}
-
-void setClass(char *className){
-
+void GameObject::setPos(Vec3 &posIn){
+	pos = posIn;
 }
 
 struct Vec3 &GameObject::getPos(){
