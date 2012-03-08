@@ -1,6 +1,10 @@
 #include "UserControl.h"
 using namespace std;
 
+UserControl::UserControl() : angSpeed(0.01){
+
+}
+
 void UserControl::setWindow(sf::Window _window){
 	window=_window;
 }

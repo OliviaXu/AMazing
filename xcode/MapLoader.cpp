@@ -113,6 +113,8 @@ ObjProp *parseObjectLine(){
 
 	str = strtok(NULL, " \t");
 	prop->mass = atoi(str);
+
+	return prop;
 }
 
 void MapLoader::readPortalObject(){

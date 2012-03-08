@@ -13,13 +13,13 @@ sf::Window window(sf::VideoMode(800, 600), "CS248 Rules!", sf::Style::Close, set
 sf::Clock clck;
 
 #define MAP_FILE "map_file"
-#define CONFIG_FILE "config_file"
+#define CONFIG_FILE "config_file"	
 
-GameEngine gameEngine;
+GameEngine *gameEngine;
 
 
 #include "assimp.h"
-#include <vector.h>
+#include <vector>
 #include <math.h>
 using namespace std;
 Assimp::Importer importer;
@@ -60,7 +60,7 @@ int main(int argc, char** argv) {
     
     initWorld();
     
-    gameEngine.run();
+    gameEngine->run();
 
     return 0;
 }
@@ -92,5 +92,5 @@ void initOpenGL() {
 void initWorld()
 {
     gameEngine = new GameEngine(MAP_FILE, CONFIG_FILE);
-    gameEngine.init(window);
+    gameEngine->init(window);
 }

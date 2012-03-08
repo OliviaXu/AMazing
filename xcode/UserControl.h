@@ -22,7 +22,7 @@ public:
 private:
     sf::Window window;
     bool buttonPressed;
-	const float angSpeed = 0.1;//to be changed as the speed of change
+	const float angSpeed;//to be changed as the speed of change
 	
 	float angNS,angEW;
 };
