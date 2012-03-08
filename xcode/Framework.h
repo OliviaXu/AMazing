@@ -28,6 +28,8 @@
 #include <vector>
 #include <queue>
 
+#include <string>
+
 #include "Util.h"
 #include "GameObject.h"
 
