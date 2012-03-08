@@ -11,3 +11,7 @@
 Camera::Camera() {
     
 }
+
+void Camera::updatePos(struct Vec3 &newBallPos) {
+    
+}

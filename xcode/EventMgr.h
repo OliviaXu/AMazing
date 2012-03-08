@@ -10,6 +10,8 @@
 #define CS248_Final_Project_EventMgr_h
 
 #include "Framework.h"
+#include "GameObject.h"
+#include "MapLoader.h"
 #include "Event.h"
 
 class EventMgr {

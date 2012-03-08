@@ -9,12 +9,15 @@
 #ifndef CS248_Final_Project_PhysicsEngine_h
 #define CS248_Final_Project_PhysicsEngine_h
 
+#include <vector>
+#include "GameObject.h"
+
 class PhysicsEngine {
 public:
     PhysicsEngine();
     ~PhysicsEngine();
     void init();
-    void updateObjects(std::vector<GameObject *> &objects);
+    void updateObjects(std::vector<GameObject*> &objects);
 private:
 };
 
