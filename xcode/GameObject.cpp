@@ -38,7 +38,8 @@ void setClass(char *className){
 }
 
 struct Vec3 &GameObject::getPos(){
-	return Vec3(0, 0, 0);
+    Vec3 res = Vec3(0, 0, 0);
+	return res;
 }
 
 void GameObject::setClass(char *className){
