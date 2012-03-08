@@ -11,7 +11,7 @@ public:
     void draw();
     void updatePhysicalProperty(Vec3 &newPos, float newMass, float newVel, float newAcc);
     void setPortal(int iPortal);
-    void setShader(int iShader);
+    void setShader(Shader *shader);
     void setMass(int mass);
     void setPos(Vec3 &pos);
     void setClass(char *className);
