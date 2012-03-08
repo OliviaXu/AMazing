@@ -12,7 +12,7 @@ sf::Window window(sf::VideoMode(800, 600), "CS248 Rules!", sf::Style::Close, set
 // http://www.sfml-dev.org/tutorials/1.6/window-time.php
 sf::Clock clck;
 
-#define MAP_FILE "map_file"
+#define MAP_FILE "maps/map.txt"
 #define CONFIG_FILE "config_file"	
 
 GameEngine *gameEngine;
@@ -34,8 +34,7 @@ int main(int argc, char** argv) {
     // Put your game loop here (i.e., render with OpenGL, update animation)
     initOpenGL();
     
-    
-    regShader = new Shader("../shaders/phong");
+    /*regShader = new Shader("shaders/phong");
     if(!regShader->loaded())
     {
         std::cerr << "Shader failed to load" << std::endl;
@@ -44,7 +43,7 @@ int main(int argc, char** argv) {
     }
     const aiScene* scene;
     aiSetImportPropertyInteger(AI_CONFIG_PP_SBP_REMOVE, aiPrimitiveType_LINE | aiPrimitiveType_POINT);
-    scene = importer.ReadFile("../models/testBox.3DS",  
+    scene = importer.ReadFile("models/testBox.3DS",  
                                 aiProcess_CalcTangentSpace |
                                 aiProcess_Triangulate |
                                 aiProcess_JoinIdenticalVertices |
@@ -55,7 +54,7 @@ int main(int argc, char** argv) {
     if (!scene || scene->mNumMeshes <= 0) {
         std::cerr << importer.GetErrorString() << std::endl;
         exit(-1);
-    }
+    }*/
     
     
     initWorld();
