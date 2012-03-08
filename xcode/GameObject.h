@@ -7,7 +7,6 @@
 class GameObject {
 public:
     GameObject();
-    struct Vec3 getPos();
     ~GameObject();//TODO: Class name is generated via strdup. Free it!
     void draw();
     void updatePhysicalProperty(Vec3 &newPos, float newMass, float newVel, float newAcc);
@@ -17,7 +16,6 @@ public:
     void setPos(Vec3 &pos);
     void setClass(char *className);
     struct Vec3 &getPos();
-    void updatePhysicalProperty(Vec3 &newPos, float newMass, float newVel, float newAcc;);
 private:
     struct Vec3 pos;
     Shader *shader;
@@ -28,8 +26,7 @@ private:
     float mass;
     float velocity;
     float acceleration;
-   float acceleration;
     // TODO: add status field
 };
 
-#endif#endif
+#endif
