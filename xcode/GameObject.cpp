@@ -41,3 +41,7 @@ struct Vec3 &GameObject::getPos(){
 void GameObject::setClass(char *className){
 
 }
+
+void GameObject::setModel(const aiScene *model){
+	this->model = model;
+}

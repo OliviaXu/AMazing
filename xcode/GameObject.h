@@ -15,6 +15,7 @@ public:
     void setMass(int mass);
     void setPos(Vec3 &pos);
     void setClass(char *className);
+	void setModel(const aiScene *model);
     struct Vec3 &getPos();
 private:
     struct Vec3 pos;

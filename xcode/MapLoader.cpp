@@ -67,6 +67,7 @@ void MapLoader::loadShader(){
 		while(1);
 		exit(-1);
 	}
+	shaders.push_back(shader);
 }
 
 void MapLoader::readPortal(){
@@ -127,18 +128,26 @@ void MapLoader::readObject(bool portalObject){
 	obj->setPos(pos);
 	obj->setShader(shaders[prop->iShader]);
 	obj->setClass(prop->className);
+	obj->setModel(models[prop->iMesh]);
 	objs.push_back(obj);
 	if(portalObject)
 		portals[prop->iPortal]->setPortalObject(obj);
 	else
 		portals[prop->iPortal]->addObject(obj);
+
+	delete prop;
 }
 
 void MapLoader::load(string map_file){
 	ifstream in(map_file.c_str(), ifstream::in);
+	if(!in){
+		cout << "Failed to load map file" << endl;
+		while(1);
+		exit(1);
+	}
 	while(!in.eof()){
 		string line;
-		getline(in, line);
+		getline(in, line);	
 		
 		if(line.empty() || line[0] == '#')
 			continue;
@@ -146,15 +155,15 @@ void MapLoader::load(string map_file){
 		char *l = strdup(line.c_str());
 		char *str;
 		str = strtok(l, " \t");//Not sure how strtok operates. Need further testing.
-		if(str == "m")
+		if(strcmp(str, "m") == 0)
 			readModel();
-		else if(str == "s")
+		else if(strcmp(str, "s") == 0)
 			loadShader();
-		else if(str == "p")
+		else if(strcmp(str, "p") == 0)
 			readPortal();
-		else if(str == "pobj")
+		else if(strcmp(str, "pobj") == 0)
 			readObject(true);
-		else if(str == "obj")
+		else if(strcmp(str, "obj") == 0)
 			readObject(false);
 
 		free(l);
