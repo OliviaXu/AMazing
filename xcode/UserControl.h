@@ -22,9 +22,9 @@ public:
 private:
     sf::Window* window;
     bool buttonPressed;//? no need?
-	const float angSpeed=0.1;//to be changed as the speed of change
-	float angNS=0.,angEW=0.;
-	int camdir=0;//0 is forward 1 backward 2 left 3 right
+	const float angSpeed;//to be changed as the speed of change
+	float angNS,angEW;
+	int camdir;//0 is forward 1 backward 2 left 3 right
 };
 
 #endif
