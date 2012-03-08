@@ -35,8 +35,8 @@ private:
     UserControl *userControl;
     Camera *camera;
     Plane *plane;
-    vector<GameObject *> objects;     // objects in the current portal and its neighboring portals
-    vector<Event> events;   // list of events to be handled
+    std::vector<GameObject*> objects;     // objects in the current portal and its neighboring portals
+    std::vector<Event> events;   // list of events to be handled
     Ball *ball;
     
     sf::Window window;

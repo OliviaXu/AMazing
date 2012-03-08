@@ -13,7 +13,6 @@ GameEngine::GameEngine(string map_file, string config_file)
 {
     mapLoader = new MapLoader();
     physicsEngine = new PhysicsEngine();
-    objects = new vector<GameEngine>();
     eventMgr = new EventMgr();
     userControl = new UserControl();
     camera = new Camera();
@@ -31,30 +30,30 @@ GameEngine::~GameEngine()
 void GameEngine::init(sf::Window window)
 {
     this->window = window;
-    userControl.setWindow(window);
+    userControl->setWindow(window);
 }
 
 void GameEngine::run()
 {
     while(1){
-        userControl.handleInput();    // constant * window.GetFrameTime() 
+        userControl->handleInput();    // constant * window.GetFrameTime() 
 
 		//what's the reason for this??? 
         
         float dAngleNS, dAngleEW;
-        userControl.getAngleUpdate(dAngleNS, dAngleEW);
+        userControl->getAngleUpdate(dAngleNS, dAngleEW);
         
-        plane.update(dAngleNS, dAngleEW);
+        plane->update(dAngleNS, dAngleEW);
         
-        if(mapLoader.updateCurrentPortal(ball.getPos()))
+        if(mapLoader->updateCurrentPortal(ball->getPos()))
             updateObjects();
         
-        physicsEngine.updateObjects(objects);
+        physicsEngine->updateObjects(objects);
         
-        eventMgr.updateEvents(objects, mapLoader, events);
+        eventMgr->updateEvents(objects, mapLoader, events);
         handleEvents();
         
-        camera.updatePos(ball.getPos());
+        camera->updatePos(ball.getPos());
         
         drawScene();
         

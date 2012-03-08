@@ -9,6 +9,10 @@
 #ifndef CS248_Final_Project_Event_h
 #define CS248_Final_Project_Event_h
 
+class Event {
+public:
+    Event();
+};
 
 
 #endif

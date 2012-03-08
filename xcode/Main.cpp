@@ -28,6 +28,7 @@ Assimp::Importer importer;
 Shader* regShader;
 
 
+void initOpenGL();
 void initWorld();
 
 
@@ -36,7 +37,7 @@ int main(int argc, char** argv) {
     initOpenGL();
     
     
-    regShader = new Shader(REG_SHADER_PATH);
+    regShader = new Shader("../shaders/phong");
     if(!regShader->loaded())
     {
         std::cerr << "Shader failed to load" << std::endl;
@@ -45,7 +46,7 @@ int main(int argc, char** argv) {
     }
     const aiScene* scene;
     aiSetImportPropertyInteger(AI_CONFIG_PP_SBP_REMOVE, aiPrimitiveType_LINE | aiPrimitiveType_POINT);
-    scene = importer.ReadFile("models/testBox.3DS",  
+    scene = importer.ReadFile("../models/testBox.3DS",  
                                 aiProcess_CalcTangentSpace |
                                 aiProcess_Triangulate |
                                 aiProcess_JoinIdenticalVertices |

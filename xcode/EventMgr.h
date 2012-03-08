@@ -10,11 +10,12 @@
 #define CS248_Final_Project_EventMgr_h
 
 #include "Framework.h"
+#include "Event.h"
 
 class EventMgr {
 public:
     EventMgr();
-    bool updateEvents(vector<GameObject> &objects, MapLoader &mapLoader, vector<Event> events);
+    bool updateEvents(std::vector<GameObject*> &objects, MapLoader* mapLoader, std::vector<Event> events);
 };
 
 #endif
