@@ -25,6 +25,7 @@ private:
 	struct Vec3 pos; // SW corner
 	float width;
 	float height;
+    //tmp
 };
 
 #endif
