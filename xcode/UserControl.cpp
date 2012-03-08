@@ -2,7 +2,9 @@
 using namespace std;
 
 UserControl::UserControl() : angSpeed(0.01){
-
+	angNS=0.;
+	angEW=0.;
+	camdir=0;
 }
 
 void UserControl::setWindow(sf::Window* _window) {
