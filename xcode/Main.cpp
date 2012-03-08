@@ -92,5 +92,5 @@ void initOpenGL() {
 void initWorld()
 {
     gameEngine = new GameEngine(MAP_FILE, CONFIG_FILE);
-    gameEngine->init(window);
+    gameEngine->init(&window);
 }

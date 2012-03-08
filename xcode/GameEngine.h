@@ -22,7 +22,7 @@ class GameEngine {
 public:
     GameEngine(std::string map_file, std::string config_file);    // load map file, load config 
     ~GameEngine();
-    void init(sf::Window window);
+    void init(sf::Window* window);
     void run();
 private:
     void updateObjects();   // update objects if the current portal has changed
@@ -39,7 +39,7 @@ private:
     std::vector<Event> events;   // list of events to be handled
     Ball *ball;
     
-    sf::Window window;
+    sf::Window *window;
 };
 
 #endif

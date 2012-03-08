@@ -27,9 +27,9 @@ GameEngine::~GameEngine()
     
 }
 
-void GameEngine::init(sf::Window window)
+void GameEngine::init(sf::Window* _window)
 {
-    this->window = window;
+    this->window = _window;
     userControl->setWindow(window);
 }
 
@@ -57,7 +57,7 @@ void GameEngine::run()
         
         drawScene();
         
-        window.Display();
+        window->Display();
     }
 }
 

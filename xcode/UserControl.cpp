@@ -5,19 +5,19 @@ UserControl::UserControl() : angSpeed(0.01){
 
 }
 
-void UserControl::setWindow(sf::Window _window){
-	window=_window;
+void UserControl::setWindow(sf::Window* _window) {
+    this->window = _window;
 }
 
 void UserControl::getAngleUpdate(float &dAngleNS, float &dAngleEW){
 	//it shouldn't be done here
 	    sf::Event evt;
-    while (window.GetEvent(evt)) {
+    while (window->GetEvent(evt)) {
         switch (evt.Type) {
         case sf::Event::Closed: 
             // Close the window.  This will cause the game loop to exit,
             // because the IsOpened() function will no longer return true.
-            window.Close(); 
+            window->Close(); 
             break;
         case sf::Event::Resized: 
             // If the window is resized, then we need to change the perspective

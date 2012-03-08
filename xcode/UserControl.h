@@ -15,12 +15,12 @@
 class UserControl {
 public:
     UserControl();
-    void setWindow(sf::Window window);
+    void setWindow(sf::Window* window);
     void getAngleUpdate(float &dAngleNS, float &dAngleEW);
     int getCamDirUpdate();
 	void handleInput();//this handle general input???
 private:
-    sf::Window window;
+    sf::Window* window;
     bool buttonPressed;
 	const float angSpeed;//to be changed as the speed of change
 	
