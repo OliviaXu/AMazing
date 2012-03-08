@@ -53,7 +53,7 @@ void GameEngine::run()
         eventMgr->updateEvents(objects, mapLoader, events);
         handleEvents();
         
-        camera->updatePos(ball.getPos());
+        camera->updatePos(ball->getPos());
         
         drawScene();
         
@@ -64,7 +64,7 @@ void GameEngine::run()
 void GameEngine::updateObjects()
 {
     objects.clear();
-    mapLoader.fillObjects(objects);
+    mapLoader->fillObjects(objects);
 }
 
 void GameEngine::handleEvents()
@@ -74,7 +74,7 @@ void GameEngine::handleEvents()
 
 void GameEngine::drawScene()
 {
-    Portal *portal = mapLoader.getCurrentPortal();
+    Portal *portal = mapLoader->getCurrentPortal();
     
     /*glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

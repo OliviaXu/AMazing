@@ -31,6 +31,5 @@
 #include <string>
 
 #include "Util.h"
-#include "GameObject.h"
 
 #endif

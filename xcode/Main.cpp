@@ -22,8 +22,6 @@ GameEngine gameEngine;
 #include <vector.h>
 #include <math.h>
 using namespace std;
-sf::WindowSettings settings(24, 8, 2);
-sf::Window window(sf::VideoMode(800, 600), "CS248 Rules!", sf::Style::Close, settings);
 Assimp::Importer importer;
 Shader* regShader;
 

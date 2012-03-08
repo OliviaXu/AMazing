@@ -15,7 +15,7 @@ public:
 	~MapLoader();
 	void load(std::string map_file);
     bool updateCurrentPortal(Vec3 &pos);     // update current portal according to the position of the ball
-    void fillObjects(std::vector<GameObject> &objects);   // fill objects with current portal and its neighboring portals' objects
+    void fillObjects(std::vector<GameObject*> &objects);   // fill objects with current portal and its neighboring portals' objects
     Portal *getCurrentPortal();
 	void iteratePortals(int rootIdx, PortalIterateFun fun, void *auxData);
 
@@ -26,7 +26,7 @@ private:
 	void readPortalObject();
 	void readObject(bool portalObj);
 
-	vector<Assimp::Importer> importers;
+    std::vector<Assimp::Importer*> importers;
     std::vector<Portal *> portals;
 	std::vector<GameObject *> objs;
 	std::vector<Shader *> shaders;

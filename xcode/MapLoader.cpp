@@ -1,5 +1,6 @@
 #include "MapLoader.h"
 using namespace std;
+
 typedef struct{
 	Vec3 *pos;
 	int currentPortal;
@@ -24,7 +25,7 @@ MapLoader::~MapLoader(){
 		delete visitBuff;
 
 	for(int i=0; i<importers.size(); i++){
-		importers[i].FreeScene();
+		importers[i]->FreeScene();
 		delete importers[i];
 	}
 
@@ -124,7 +125,8 @@ void MapLoader::readObject(bool portalObject){
 	ObjProp *prop = parseObjectLine();
 	obj->setPortal(prop->iPortal);
 	obj->setMass(prop->mass);
-	obj->setPos(Vec3(prop->x, prop->y, prop->z));
+    Vec3 pos = Vec3(prop->x, prop->y, prop->z);
+	obj->setPos(pos);
 	obj->setShader(prop->iShader);
 	obj->setClass(prop->className);
 	objs.push_back(obj);
@@ -135,7 +137,7 @@ void MapLoader::readObject(bool portalObject){
 }
 
 void MapLoader::load(string map_file){
-	ifstream in(map_file, ifstream::in);
+	ifstream in(map_file.c_str(), ifstream::in);
 	while(!in.eof()){
 		string line;
 		getline(in, line);
@@ -203,7 +205,7 @@ bool MapLoader::updateCurrentPortal(Vec3 &pos){
 	return true;
 }
 
-void MapLoader::fillObjects(vector<GameObject> &objects){
+void MapLoader::fillObjects(vector<GameObject*> &objects){
 	
 }
 
