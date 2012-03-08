@@ -17,12 +17,47 @@ sf::Clock clck;
 
 GameEngine gameEngine;
 
+
+#include "assimp.h"
+#include <vector.h>
+#include <math.h>
+using namespace std;
+sf::WindowSettings settings(24, 8, 2);
+sf::Window window(sf::VideoMode(800, 600), "CS248 Rules!", sf::Style::Close, settings);
+Assimp::Importer importer;
+Shader* regShader;
+
+
 void initWorld();
 
 
 int main(int argc, char** argv) {
     // Put your game loop here (i.e., render with OpenGL, update animation)
     initOpenGL();
+    
+    
+    regShader = new Shader(REG_SHADER_PATH);
+    if(!regShader->loaded())
+    {
+        std::cerr << "Shader failed to load" << std::endl;
+		std::cerr << regShader->errors() << std::endl;
+		exit(-1);
+    }
+    const aiScene* scene;
+    aiSetImportPropertyInteger(AI_CONFIG_PP_SBP_REMOVE, aiPrimitiveType_LINE | aiPrimitiveType_POINT);
+    scene = importer.ReadFile("models/testBox.3DS",  
+                                aiProcess_CalcTangentSpace |
+                                aiProcess_Triangulate |
+                                aiProcess_JoinIdenticalVertices |
+                                aiProcessPreset_TargetRealtime_Quality |
+                                aiProcess_FindDegenerates |
+                                aiProcess_SortByPType);
+    
+    if (!scene || scene->mNumMeshes <= 0) {
+        std::cerr << importer.GetErrorString() << std::endl;
+        exit(-1);
+    }
+    
     
     initWorld();
     
