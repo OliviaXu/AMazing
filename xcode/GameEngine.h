@@ -20,7 +20,7 @@
 
 class GameEngine {
 public:
-    GameEngine(string map_file, string config_file);    // load map file, load config file
+    GameEngine(std::string map_file, std::string config_file);    // load map file, load config 
     ~GameEngine();
     void init(sf::Window window);
     void run();
@@ -29,15 +29,15 @@ private:
     void handleEvents();
     void drawScene();
     
-    MapLoader mapLoader;
-    PhysicsEngine physicsEngine;
-    EventMgr eventMgr;
-    UserControl userControl;
-    Camera camera;
-    Plane plane;
-    vector<GameObject> objects;     // objects in the current portal and its neighboring portals
+    MapLoader *mapLoader;
+    PhysicsEngine *physicsEngine;
+    EventMgr *eventMgr;
+    UserControl *userControl;
+    Camera *camera;
+    Plane *plane;
+    vector<GameObject *> objects;     // objects in the current portal and its neighboring portals
     vector<Event> events;   // list of events to be handled
-    Ball ball;
+    Ball *ball;
     
     sf::Window window;
 };

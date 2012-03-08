@@ -6,8 +6,11 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+
 #ifndef CS248_Final_Project_UserControl_h
 #define CS248_Final_Project_UserControl_h
+
+#include "Framework.h"
 
 class UserControl {
 public:
@@ -15,9 +18,13 @@ public:
     void setWindow(sf::Window window);
     void getAngleUpdate(float &dAngleNS, float &dAngleEW);
     int getCamDirUpdate();
+	void handleInput();//this handle general input???
 private:
     sf::Window window;
     bool buttonPressed;
+	const float angSpeed=0.1;//to be changed as the speed of change
+	
+	float angNS,angEW;
 }
 
 #endif

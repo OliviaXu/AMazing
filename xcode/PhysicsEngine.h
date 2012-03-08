@@ -14,7 +14,7 @@ public:
     PhysicsEngine();
     ~PhysicsEngine();
     void init();
-    void updateObject(vector<GameObject> &objects);
+    void updateObjects(vector<GameObject *> &objects);
 private:
 };
 

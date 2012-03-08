@@ -7,6 +7,7 @@
 //
 
 #include "GameEngine.h"
+using namespace std;
 
 GameEngine::GameEngine(string map_file, string config_file)
 {
@@ -17,8 +18,8 @@ GameEngine::GameEngine(string map_file, string config_file)
     userControl = new UserControl();
     camera = new Camera();
     plane = new Plane();
-    mapLoader.load(map_file);
-    physicsEngine.init();
+    mapLoader->load(map_file);
+    physicsEngine->init();
     ball = new Ball();
 }
 
@@ -27,7 +28,7 @@ GameEngine::~GameEngine()
     
 }
 
-void init(sf::Window window)
+void GameEngine::init(sf::Window window)
 {
     this->window = window;
     userControl.setWindow(window);
@@ -36,7 +37,9 @@ void init(sf::Window window)
 void GameEngine::run()
 {
     while(1){
-        userControl.handleInput(window);    // constant * window.GetFrameTime() 
+        userControl.handleInput();    // constant * window.GetFrameTime() 
+
+		//what's the reason for this??? 
         
         float dAngleNS, dAngleEW;
         userControl.getAngleUpdate(dAngleNS, dAngleEW);
@@ -55,7 +58,7 @@ void GameEngine::run()
         
         drawScene();
         
-        window.display();
+        window.Display();
     }
 }
 
@@ -72,7 +75,7 @@ void GameEngine::handleEvents()
 
 void GameEngine::drawScene()
 {
-    Portal portal = mapLoader.getCurrentPortal();
+    Portal *portal = mapLoader.getCurrentPortal();
     
     /*glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -82,5 +85,5 @@ void GameEngine::drawScene()
     glLoadIdentity();
     gluLookAt(camera.pos.x, camera.pos.y, camera.pos.z, camera.pos.x + camera.dir.x, camera.pos.y + camera.dir.y, camera.pos.z + camera.dir.z, 0.0, 1.0, 0.0);*/
     
-    portal.draw(camera);
+    portal->draw(camera);
 }

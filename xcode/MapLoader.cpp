@@ -69,7 +69,7 @@ void MapLoader::readPortal(){
 
 	portals.push_back(p);
 }
-	
+
 void MapLoader::readPortalObject(){
 	int numProp = 8;
 	GameObject *obj = new GameObject();

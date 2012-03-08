@@ -2,14 +2,13 @@
 #define CS248_GAMEOBJECT_H
 
 #include "Framework.h"
-#include "Shader.h"
 
 class GameObject {
 public:
     GameObject();
     Vec3 getPos();
     void draw();
-    void updatePhysicalProperty(Vec3 newPos, float newMass, float newVel, float newAcc);
+    void updatePhysicalProperty(Vec3 newPos, float newMass, float newVel, float newAcc;);
 private:
     struct Vec3 pos;
     Shader *shader;
