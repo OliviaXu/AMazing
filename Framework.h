@@ -23,6 +23,7 @@
 
 #include <memory>
 #include <iostream>
+#include <fstream>
 
 #include <vector>
 #include <queue>
