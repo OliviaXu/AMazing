@@ -17,6 +17,7 @@
 #include "Camera.h"
 #include "Plane.h"
 #include "Ball.h"
+#include "ParticleEmitter.h"
 
 class GameEngine {
 public:
@@ -41,6 +42,8 @@ private:
     
     sf::Window *window;
 	MAZErectangle viewport;
+
+	ParticleEmitter *emt;
 };
 
 #endif

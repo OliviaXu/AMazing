@@ -60,6 +60,9 @@ void GameEngine::init(sf::Window* _window)
 	glLightfv(GL_LIGHT1, GL_AMBIENT, light1_ambient);
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_diffuse);
 	glLightfv(GL_LIGHT1, GL_SPECULAR, light1_specular);
+
+	emt = new ParticleEmitter(ParticleEmitter::PARTICLE_FIRE, "models/FireGold.png", 800);
+	emt->mPosition.Set(-50/25.4, 50/25.4, 50.0/25.4);
 }
 
 void GameEngine::run()
@@ -110,6 +113,23 @@ void GameEngine::handleEvents()
     
 }
 
+
+#define MAX_DELAY	4.0f
+#define TIMESTEP 1.f/60.f
+float accumulator = 0.;
+void drawParticles(sf::Window *window, ParticleEmitter *emitter) {
+	float elapsedTime = window->GetFrameTime();
+
+	// Only update/spawn every 1/60th second
+	for(accumulator += min(MAX_DELAY, elapsedTime); accumulator > TIMESTEP; accumulator -= TIMESTEP) {
+			emitter->updateParticles(TIMESTEP);
+
+			// Spawn new particles
+			emitter->spawnParticles(TIMESTEP);
+	}
+	emitter->renderParticles();
+}
+
 void GameEngine::drawScene()
 {
     //const Portal *portal = mapLoader->getCurrentPortal();
@@ -135,4 +155,6 @@ void GameEngine::drawScene()
 	set<int *> visitedEdgeSet;
 	rootPortal->cullDraw(&projviewMat, &viewportMat, viewport, 
 							mapLoader->getPortals(), visitedEdgeSet);
+
+	drawParticles(window, emt);
 }

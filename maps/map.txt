@@ -11,6 +11,7 @@ m models/joint_hole.3DS #7
 m models/box_box.3DS #8
 m models/sphere.3ds #9
 m models/portal_plane_z_dense.3ds #10
+m models/sphereforCY.3DS
 
 # List of Textures
 t textures/tiles_d.jpg  #0
@@ -60,4 +61,4 @@ pobj gameobject 2 6 0 0 0 0 2 3 0
 obj gameobject 5 0 50 0 250 0 4 -1 0
 obj gameobject 6 0 100 100 250 0 2 3 0
 obj funportal 10 0 2 30 30 1 -1 -1 0
-#obj ball 9 0 100 0 100 0 0 1 1
+#obj gameobject 9 0 50 0 30 1 0 1 0

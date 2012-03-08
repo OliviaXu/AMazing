@@ -2,7 +2,7 @@
 #define CS248_GAMEOBJECTFACTORY_H
 
 #include "Framework.h"
-#include "GameObjectMaker.h"
+#include "Makers.h"
 
 class MapLoader;
 

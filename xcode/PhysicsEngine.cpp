@@ -14,7 +14,6 @@
 using namespace std;
 
 PhysicsEngine::PhysicsEngine() {
-    
 }
 
 PhysicsEngine::~PhysicsEngine() {
@@ -43,6 +42,7 @@ void PhysicsEngine::init() {
     btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
     
     dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
+
     dynamicsWorld->setGravity(btVector3(0,-GRAVITY,0));
 }
 
@@ -123,14 +123,4 @@ void PhysicsEngine::updateObjects(std::vector<GameObject *> *objects) {
         btVector3 p = trans.getOrigin();
         (*objects)[i]->setPos(p.getX(), p.getY(), p.getZ());
     }
-}
-
-void PhysicsEngine::setGravity(float x, float y, float z)
-{
-    dynamicsWorld->setGravity(btVector3(x,y,z));
-}
-
-btVector3 PhysicsEngine::getGravity()
-{
-    return dynamicsWorld->getGravity();
 }
