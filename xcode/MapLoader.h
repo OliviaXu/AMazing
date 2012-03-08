@@ -23,7 +23,6 @@ private:
 	void readModel();
 	void loadShader();
 	void readPortal();
-	void readPortalObject();
 	void readObject(bool portalObj);
 
     std::vector<Assimp::Importer*> importers;

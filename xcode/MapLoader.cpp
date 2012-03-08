@@ -117,10 +117,6 @@ ObjProp *parseObjectLine(){
 	return prop;
 }
 
-void MapLoader::readPortalObject(){
-	GameObject *obj = new GameObject();
-}
-
 void MapLoader::readObject(bool portalObject){
 	GameObject *obj = new GameObject();
 	
