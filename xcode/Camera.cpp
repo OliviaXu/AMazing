@@ -26,5 +26,5 @@ void Camera::updatePos(struct Vec3 &newBallPos) {
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(100, 0, 0, 0, 0, 0, 0, 1, 0);
+	gluLookAt(100, 0, 100, 0, 0, 0, 0, 1, 0);
 }

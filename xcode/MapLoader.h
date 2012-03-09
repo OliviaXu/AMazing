@@ -25,6 +25,7 @@ private:
 	void readPortal();
 	void readObject(bool portalObj);
 	void assertMapValidity();
+	void computePortalPos(Portal *p);
 
     std::vector<Assimp::Importer*> importers;
 	std::vector<const aiScene *> models;
