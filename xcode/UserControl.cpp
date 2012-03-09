@@ -70,10 +70,10 @@ void UserControl::getAngleUpdate(float &dAngleNS, float &dAngleEW){
 	//it shouldn't be done here
 	dAngleNS=angNS;
 	dAngleEW=angEW;
-	printf("test angle %f %f ",dAngleNS,dAngleEW);
+	//printf("test angle %f %f ",dAngleNS,dAngleEW);
 }
 
 int UserControl::getCamDirUpdate(){
-	printf("test camera direction %d ",camdir);
+	//printf("test camera direction %d ",camdir);
 	return camdir;
 }

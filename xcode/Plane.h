@@ -9,6 +9,8 @@
 #ifndef CS248_Final_Project_Plane_h
 #define CS248_Final_Project_Plane_h
 
+#include "Framework.h"
+
 class Plane {
 public:
     Plane();

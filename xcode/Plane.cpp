@@ -9,13 +9,19 @@
 #include "Plane.h"
 
 Plane::Plane() {
-    
+    this->angleNS=0.;
+	this->angleEW=0.;
 }
 
 void Plane::update(float dAngleNS, float dAngleEW) {
-    
+	this->angleNS=dAngleNS;
+	this->angleEW=dAngleEW;
+    //this->angleNS+=dAngleNS;
+	//this->angleEW+=dAngleEW;
 }
 
 void Plane::getAngle(float &angleNS, float &angleEW) {
-    
+	angleNS=this->angleNS;
+	angleEW=this->angleEW;
+	printf("test plan angle: %f %f",angleNS,angleEW);
 }

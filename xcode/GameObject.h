@@ -27,7 +27,7 @@ protected:
     int iTex;
     int iPortal;     // the portal this object is in
     float mass;
-    float velocity;
+    struct Vec3 velocity;
     float acceleration;
     // TODO: add status field
 };
