@@ -11,8 +11,10 @@ class Camera{
 public:
     Camera();
     //void updatePos(MAZEorientation pOri,Ball *ball);
-	void updatePos(Keyorientation keyd,Ball *ball);//fist try... implement the ball purely according to the movement direction of the ball
-    static const float nearClip;
+	//void updatePos(Keyorientation keyd,Ball *ball);//fist try... implement the ball purely according to the movement direction of the ball
+    //debug version can change the camera's position
+	void updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball);
+	static const float nearClip;
 	static const float farClip;
 	static const float aspectRatio;
     static const float FOV;

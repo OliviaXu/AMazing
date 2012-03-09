@@ -19,12 +19,14 @@ public:
     void getAngleUpdate(float &dAngleNS, float &dAngleEW);
     Keyorientation getCamDirUpdate();
 	void handleInput();//this handle general input???
+	CamMorientation getCamM();//get camera movement
 private:
     sf::Window* window;
     bool buttonPressed;//? no need?
 	const float angSpeed;//to be changed as the speed of change
 	float angNS,angEW;
 	Keyorientation camdir;//enum Keyorientation{UP,RIGHT,DOWN,LEFT};
+	CamMorientation camM;//this is to move camera for debug purpos....
 };
 
 #endif

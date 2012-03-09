@@ -5,6 +5,7 @@ UserControl::UserControl() : angSpeed(0.01){
 	angNS=0.;
 	angEW=0.;
 	camdir=(Keyorientation)0;//or UP
+	camM=NO;//no camera movement at first start
 }
 
 void UserControl::setWindow(sf::Window* _window) {
@@ -12,6 +13,7 @@ void UserControl::setWindow(sf::Window* _window) {
 }
 
 void UserControl::handleInput(){
+	camM=NO;//debug... making the camera movement available only once a frame
 	sf::Event evt;
     while (window->GetEvent(evt)) {
         switch (evt.Type) {
@@ -56,6 +58,18 @@ void UserControl::handleInput(){
 				camdir=RIGHT;
 			}else if(evt.Key.Code=='s' || evt.Key.Code=='S' ){
 				camdir=DOWN;
+			}else if(evt.Key.Code=='1'){
+				camM=U;
+			}else if(evt.Key.Code=='2'){
+				camM=D;
+			}else if(evt.Key.Code=='3'){
+				camM=L;
+			}else if(evt.Key.Code=='4'){
+				camM=R;
+			}else if(evt.Key.Code=='5'){
+				camM=F;
+			}else if(evt.Key.Code=='6'){
+				camM=B;
 			}
 			break;
         default: 
@@ -76,4 +90,9 @@ void UserControl::getAngleUpdate(float &dAngleNS, float &dAngleEW){
 Keyorientation UserControl::getCamDirUpdate(){
 	//printf("test camera direction %d ",camdir);
 	return camdir;
+}
+
+
+CamMorientation UserControl::getCamM(){
+	return camM;
 }

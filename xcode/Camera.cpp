@@ -17,7 +17,7 @@ Camera::Camera() {
     
 }
 
-void Camera::updatePos(Keyorientation keyd,Ball *ball) {
+void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball) {
     //Just some shameful hack to render the scene. MUST replace this with matu code!
 
     GLfloat aspectRatio = (GLfloat)800.f/600;
@@ -69,7 +69,10 @@ void Camera::updatePos(Keyorientation keyd,Ball *ball) {
 	VMulti(&dircpy,-1*HOFFSET);
 	//offset the camera
 	Vec3 bpos=ball->getPos();
-	pos=vec2vecAdd(&bpos,dircpy.x,VOFFSET,dircpy.z);
+
+	//need to be enable when the ball rolls
+	//pos=vec2vecAdd(&bpos,dircpy.x,VOFFSET,dircpy.z);
+	
 	//vecAdd(&pos,dircpy.x,VOFFSET,dircpy.z);
 	//printf("ball p %f %f %f\n",ball->getPos().x,ball->getPos().y,ball->getPos().z);
 	//printf("position %f %f %f\n",pos.x,pos.y,pos.z);
@@ -130,6 +133,25 @@ void Camera::updatePos(Keyorientation keyd,Ball *ball) {
 	//therefore for camera need current direction... then compute the ball v.. see whether we need to change the direction according to the current ball location
 	
 	*/
+	switch(mov){
+	case U:
+		pos.y++;
+		break;
+	case D:
+		pos.y--;
+		break;
+	case L:
+		pos.x++;
+		break;
+	case R:
+		pos.x--;
+		break;
+	case F:
+		pos.z++;
+		break;
+	case B:
+		pos.z--;
+	}
 	gluLookAt(pos.x,pos.y,pos.z,pos.x+dir.x,pos.y+dir.y,pos.z+dir.z,0.,1.,0.);
 	//gluLookAt(100, 0, 0, 0, 0, 0, 0, 1, 0);
 
