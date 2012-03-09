@@ -4,7 +4,7 @@ using namespace std;
 UserControl::UserControl() : angSpeed(0.01){
 	angNS=0.;
 	angEW=0.;
-	camdir=0;
+	camdir=(Keyorientation)0;//or UP
 }
 
 void UserControl::setWindow(sf::Window* _window) {

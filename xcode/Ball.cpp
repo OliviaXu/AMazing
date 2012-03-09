@@ -9,7 +9,7 @@
 #include "Ball.h"
 
 Ball::Ball() {
-    
+    pos=Vec3(0.,0.,0.);
 }
 
 float Ball::getV(){

@@ -10,7 +10,7 @@
 # define VTH 15.0//assuming the threshold of changing the orientation of camera is 15.0 by now
 
 Camera::Camera() {
-	pos=Vec3(0.,0.-VOFFSET,0.-HOFFSET);//the original position need to be changed
+	pos=Vec3(0.,0.+VOFFSET,0.-HOFFSET);//the original position need to be changed
 	dir=Vec3(0.,0.,1.);
 	camO=NORTH;
 	ballO=NORTH;
@@ -23,7 +23,7 @@ void Camera::updatePos(Keyorientation keyd,Ball *ball) {
     GLfloat aspectRatio = (GLfloat)800.f/600;
     GLfloat nearClip = 0.1f;
 	GLfloat farClip = 400.0f;
-    GLfloat fieldOfView = 45.0f; // Degrees
+    GLfloat fieldOfView = 120.0f; // TODO Degrees
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -35,16 +35,17 @@ void Camera::updatePos(Keyorientation keyd,Ball *ball) {
 	Vec3 ballv=ball->getVelocity();
 	//TODO:what if all 0?
 	//still?
+	
 	if(abs(ballv.x)>abs(ballv.z)){
 		if(ballv.x>0){
 			ballO=EAST;
-		}else{
+		}else if(ballv.x<0){
 			ballO=WEST;
 		}
 	}else{
 		if(ballv.z>0){
 			ballO=NORTH;
-		}else{
+		}else if(ballv.z<0){
 			ballO=SOUTH;
 		}
 	}
@@ -63,12 +64,19 @@ void Camera::updatePos(Keyorientation keyd,Ball *ball) {
 		  dir=Vec3(0.,0.,1.);
 		  break;
 	}
+	//to get the direction of offset
 	Vec3 dircpy(dir.x,dir.y,dir.z);
 	VMulti(&dircpy,-1*HOFFSET);
-	vecAdd(&pos,dircpy.x,VOFFSET,dircpy.z);
+	//offset the camera
+	Vec3 bpos=ball->getPos();
+	pos=vec2vecAdd(&bpos,dircpy.x,VOFFSET,dircpy.z);
+	//vecAdd(&pos,dircpy.x,VOFFSET,dircpy.z);
+	//printf("ball p %f %f %f\n",ball->getPos().x,ball->getPos().y,ball->getPos().z);
+	//printf("position %f %f %f\n",pos.x,pos.y,pos.z);
 	//get exact camera direction according to the camera
 	camO=(Morientation)((ballO+keyd)%4);
-	printf("camear direction %d .",camO);
+	//printf("camear direction %d .",camO);
+	//printf("ball   direction %d .",ballO);
 	if(keyd==0){//directly looking forward no change to the camera direction//camera direction purely depends on the ball direction
 	}else{
 		switch (camO){
