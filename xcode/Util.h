@@ -47,4 +47,6 @@ struct Vec2 {
 };
 
 void vecAdd(struct Vec3 *vecIn, float dx, float dy, float dz);
+bool Vequal(struct Vec3 *vecIna, struct Vec3 *vecInb);
+void VMulti(struct Vec3 *vecIna, float num);
 #endif

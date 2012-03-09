@@ -30,6 +30,7 @@
 
 #include <string>
 #include <assert.h>
+#include <cmath>
 
 #include "Util.h"
 

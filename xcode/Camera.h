@@ -2,11 +2,12 @@
 #define CS248_CAMERA_H
 
 #include "Framework.h"
+#include "Ball.h"
 
 class Camera{
 public:
     Camera();
-    void updatePos(struct Vec3 &newBallPos);
+    void updatePos(MAZEorientation pOri,Ball *ball);
     static const float nearClip;
 	static const float farClip;
 	static const float aspectRatio;
@@ -15,6 +16,7 @@ public:
 private:
     struct Vec3 pos;
     struct Vec3 dir;
+	emun
 };
 
 #endif

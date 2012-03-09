@@ -18,6 +18,7 @@ public:
     void setClass(char *className);
 	void setModel(const aiScene *model, std::vector<unsigned int> *indexBuff);
     struct Vec3 &getPos();
+	struct Vec3 &getVelocity();
 protected:
     struct Vec3 pos;
     Shader *shader;

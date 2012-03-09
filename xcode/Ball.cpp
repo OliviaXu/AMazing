@@ -11,3 +11,8 @@
 Ball::Ball() {
     
 }
+
+float Ball::getV(){
+	struct Vec3 v=this->getVelocity();
+	return sqrt(pow(v.x,2)+pow(v.y,2)+pow(v.z,2));//return the absolute velocity of the ball
+}
