@@ -4,6 +4,7 @@ using namespace std;
 GameObject::GameObject(){
 	dtex = NULL;
 	stex = NULL;
+	velocity=Vec3(0.,0.,0.);
 }
 
 GameObject::~GameObject(){
@@ -35,8 +36,12 @@ void GameObject::setPos(struct Vec3 posIn){
 }
 
 struct Vec3 GameObject::getPos(){
-    Vec3 res = Vec3(0, 0, 0);
+    	Vec3 res = Vec3(0, 0, 0);
 	return res;
+}
+
+struct Vec3 &GameObject::getVelocity(){
+	return velocity;
 }
 
 void GameObject::setClass(char *className){
@@ -46,7 +51,6 @@ void GameObject::setClass(char *className){
 void GameObject::setModel(const aiScene *model, vector<unsigned int> *indexBuff){
 	this->model = model;
 	this->indexBuff = indexBuff;
-	this->tex = tex;
 }
 
 void GameObject::setTexture(sf::Image *dtex, sf::Image *stex){

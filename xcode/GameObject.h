@@ -26,7 +26,6 @@ protected:
     Shader *shader;
     const aiScene *model;
 	std::vector<unsigned int> *indexBuff;
-	sf::Image *tex;
 
     char *className;
     sf::Image *dtex;
