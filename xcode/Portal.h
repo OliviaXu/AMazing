@@ -6,7 +6,7 @@
 #include "GameObject.h"
 
 typedef struct Rectangle PortalDoor;
-enum MAZEorientation{HORIZONTAL, VERTICAL};
+enum MAZEorientation{HORIZONTAL, VERTICAL, JOINT};
 
 class Portal{
 public:
@@ -32,7 +32,7 @@ private:
 	GameObject *portalObj; //In our case, the corridor
     std::vector<GameObject *> objs;
     std::vector<PortalDoor *> doors;
-	struct Vec3 pos; // SW corner
+	struct Vec3 pos; // SW corner, y is always 0
 	MAZEmat transformation;
 	float width;
 	float height;

@@ -17,6 +17,7 @@ public:
     bool updateCurrentPortal(Vec3 &pos);     // update current portal according to the position of the ball
     void fillObjects(std::vector<GameObject*> &objects);   // fill objects with current portal and its neighboring portals' objects
     Portal *getCurrentPortal();
+	int getCurrentPortalIdx();
 	void iteratePortals(int rootIdx, PortalIterateFun fun, void *auxData);
 	MAZEorientation getCurrentOrientation();
 
