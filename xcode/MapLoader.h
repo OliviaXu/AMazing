@@ -7,10 +7,11 @@
 #include "Shader.h"
 
 // contain all the information of the map
+enum MAZEportal_cull{CULL_NEIGHBORS, CULL_REST, CULL_NONE};
+typedef MAZEportal_cull (*PortalIterateFun) (Portal *portal, int iPortal, void *auxData);
 
 class MapLoader{
 public:
-	typedef bool (*PortalIterateFun) (Portal *portal, int iPortal, void *auxData);
 	MapLoader();
 	~MapLoader();
 	void load(std::string map_file);

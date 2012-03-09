@@ -309,8 +309,11 @@ void MapLoader::iteratePortals(int rootIdx, PortalIterateFun fun, void *auxData)
 			continue;
 		
 		Portal *p = portals[iPortal];
-		if(!fun(p, iPortal, auxData))
+		MAZEportal_cull cull = fun(p, iPortal, auxData);
+		if(cull == CULL_REST)
 			return;
+		else if(cull == CULL_NEIGHBORS)
+			continue;
 
 		int *neighbors = p->getNeighbors();
 		for(int i=0; i<4; i++){
@@ -320,14 +323,14 @@ void MapLoader::iteratePortals(int rootIdx, PortalIterateFun fun, void *auxData)
 	}
 }
 
-bool detectCurrentPortal(Portal *portal, int iPortal, void *auxData){
+MAZEportal_cull detectCurrentPortal(Portal *portal, int iPortal, void *auxData){
 	DetectPortalBundle *bundle = (DetectPortalBundle *)auxData;
 	if(portal->in(bundle->pos)){
 		bundle->currentPortal = iPortal;
-		return false;
+		return CULL_NONE;
 	}
 
-	return true;
+	return CULL_REST;
 }
 
 bool MapLoader::updateCurrentPortal(Vec3 &pos){
