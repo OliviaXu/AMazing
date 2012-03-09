@@ -48,14 +48,14 @@ void UserControl::handleInput(){
 			else if(evt.Key.Code==sf::Key::Down){
 				angNS-=angSpeed*window->GetFrameTime(); 
 			}else if(evt.Key.Code=='a' || evt.Key.Code=='A' ){
-				camdir=2;
+				camdir=LEFT;
 			}
 			else if(evt.Key.Code=='w' || evt.Key.Code=='W' ){
-				camdir=0;
+				camdir=UP;
 			}else if(evt.Key.Code=='D' || evt.Key.Code=='d' ){
-				camdir=3;
+				camdir=RIGHT;
 			}else if(evt.Key.Code=='s' || evt.Key.Code=='S' ){
-				camdir=1;
+				camdir=DOWN;
 			}
 			break;
         default: 
@@ -73,7 +73,7 @@ void UserControl::getAngleUpdate(float &dAngleNS, float &dAngleEW){
 	//printf("test angle %f %f ",dAngleNS,dAngleEW);
 }
 
-int UserControl::getCamDirUpdate(){
+Keyorientation UserControl::getCamDirUpdate(){
 	//printf("test camera direction %d ",camdir);
 	return camdir;
 }

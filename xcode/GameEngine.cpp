@@ -59,7 +59,7 @@ void GameEngine::run()
         eventMgr->updateEvents(objects, mapLoader, events);
         handleEvents();
         
-        camera->updatePos(ball);
+		camera->updatePos(userControl->getCamDirUpdate(),ball);
         
         drawScene();
         

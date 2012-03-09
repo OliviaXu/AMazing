@@ -10,12 +10,14 @@
 # define VTH 15.0//assuming the threshold of changing the orientation of camera is 15.0 by now
 
 Camera::Camera() {
-	pos=Vec3(0.,0.,0.);//the original position need to be changed
+	pos=Vec3(0.,0.-VOFFSET,0.-HOFFSET);//the original position need to be changed
 	dir=Vec3(0.,0.,1.);
+	camO=NORTH;
+	ballO=NORTH;
     
 }
 
-void Camera::updatePos(MAZEorientation pOri,Ball *ball) {
+void Camera::updatePos(Keyorientation keyd,Ball *ball) {
     //Just some shameful hack to render the scene. MUST replace this with matu code!
 
     GLfloat aspectRatio = (GLfloat)800.f/600;
@@ -31,6 +33,61 @@ void Camera::updatePos(MAZEorientation pOri,Ball *ball) {
 	glLoadIdentity();
 
 	Vec3 ballv=ball->getVelocity();
+	//TODO:what if all 0?
+	//still?
+	if(abs(ballv.x)>abs(ballv.z)){
+		if(ballv.x>0){
+			ballO=EAST;
+		}else{
+			ballO=WEST;
+		}
+	}else{
+		if(ballv.z>0){
+			ballO=NORTH;
+		}else{
+			ballO=SOUTH;
+		}
+	}
+
+	switch (ballO){
+      case EAST:
+		  dir=Vec3(1.,0.,0.);
+		break;
+	  case WEST:
+		  dir=Vec3(-1.,0.,0.);
+		  break;
+	  case SOUTH:
+		  dir=Vec3(0.,0.,-1.);
+		  break;
+	  case NORTH:
+		  dir=Vec3(0.,0.,1.);
+		  break;
+	}
+	Vec3 dircpy(dir.x,dir.y,dir.z);
+	VMulti(&dircpy,-1*HOFFSET);
+	vecAdd(&pos,dircpy.x,VOFFSET,dircpy.z);
+	//get exact camera direction according to the camera
+	camO=(Morientation)((ballO+keyd)%4);
+	printf("camear direction %d .",camO);
+	if(keyd==0){//directly looking forward no change to the camera direction//camera direction purely depends on the ball direction
+	}else{
+		switch (camO){
+		  case EAST:
+			  dir=Vec3(1.,0.,0.);
+			break;
+		  case WEST:
+			  dir=Vec3(-1.,0.,0.);
+			  break;
+		  case SOUTH:
+			  dir=Vec3(0.,0.,-1.);
+			  break;
+		  case NORTH:
+			  dir=Vec3(0.,0.,1.);
+			  break;
+		}
+	}
+	//now the camera is purely follows the ball
+	/*
 	//is the any delay about transition?
 	//first need to see which is the direction if x>y...
 	if(ball->getV()>VTH){
@@ -63,7 +120,9 @@ void Camera::updatePos(MAZEorientation pOri,Ball *ball) {
 	//how did we solve the camera direction? how did we computer...
 	//according to the speed of the ball if it is larget than a cetain speed in one direction then ..
 	//therefore for camera need current direction... then compute the ball v.. see whether we need to change the direction according to the current ball location
-	//gluLookAt(pos.x,pos.y,pos.z,pos.x+dir.x,pos.y+dir.y,pos.z+dir.z,0.,1.,0.);
-	gluLookAt(100, 0, 0, 0, 0, 0, 0, 1, 0);
+	
+	*/
+	gluLookAt(pos.x,pos.y,pos.z,pos.x+dir.x,pos.y+dir.y,pos.z+dir.z,0.,1.,0.);
+	//gluLookAt(100, 0, 0, 0, 0, 0, 0, 1, 0);
 
 }

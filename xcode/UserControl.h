@@ -17,14 +17,14 @@ public:
     UserControl();
     void setWindow(sf::Window* window);
     void getAngleUpdate(float &dAngleNS, float &dAngleEW);
-    int getCamDirUpdate();
+    Keyorientation getCamDirUpdate();
 	void handleInput();//this handle general input???
 private:
     sf::Window* window;
     bool buttonPressed;//? no need?
 	const float angSpeed;//to be changed as the speed of change
 	float angNS,angEW;
-	int camdir;//0 is forward 1 backward 2 left 3 right
+	Keyorientation camdir;//enum Keyorientation{UP,RIGHT,DOWN,LEFT};
 };
 
 #endif

@@ -119,7 +119,7 @@ void MapLoader::computePortalPos(Portal *p){
 	switch(i){
 	case 0:
 		pos = prevPortal->getSW();
-		vecAdd(&pos, 0, -size.y, 0);
+		vecAdd(&pos, 0, 0, -size.y);
 		break;
 	case 1:
 		pos = prevPortal->getNW();

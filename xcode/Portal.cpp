@@ -49,13 +49,13 @@ struct Vec3 Portal::getSE(){
 
 struct Vec3 Portal::getNW(){
 	struct Vec3 ret = pos;
-	vecAdd(&ret, 0, height, 0);
+	vecAdd(&ret, 0, 0, height);
 	return ret;
 }
 
 struct Vec3 Portal::getNE(){
 	struct Vec3 ret = pos;
-	vecAdd(&ret, width, height, 0);
+	vecAdd(&ret, width, 0, height);
 	return ret;
 }
 
@@ -83,12 +83,13 @@ void Portal::setPortalObject(GameObject *obj){
 
 bool Portal::in(struct Vec3* posIn){
 	return posIn->x >= pos.x && posIn->x <= pos.x+width && 
-			posIn->y >= pos.y && posIn->y <= pos.y+height;
+			posIn->z >= pos.z && posIn->z <= pos.z+height;
 }
 
 MAZEorientation Portal::getOrientation(){
 	int verticalVote = (neighbors[0] >= 0) + (neighbors[1] >= 0);
 	int horizontalVote = (neighbors[2] >= 0) + (neighbors[3] >= 0);
-
+	if(verticalVote == horizontalVote || (verticalVote == 1 && horizontalVote == 1))
+		return JOINT;
 	return horizontalVote > verticalVote ? HORIZONTAL : VERTICAL;
 }

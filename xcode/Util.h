@@ -1,6 +1,10 @@
 #ifndef CS248_UTIL_H
 #define CS248_UTIL_H
 
+enum Morientation{NORTH,EAST,SOUTH,WEST};
+enum Keyorientation{UP,RIGHT,DOWN,LEFT};
+
+
 struct Rectangle{
 	Rectangle(float l, float t, float w, float h){
 		left = l;
