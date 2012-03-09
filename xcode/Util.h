@@ -46,5 +46,33 @@ struct Vec2 {
     float x, y;
 };
 
+/*
+ * Colum major matrix for our game
+ */
+struct MAZEmat{
+	MAZEmat(){
+		mat[0] = 1;
+		mat[1] = 0;
+		mat[2] = 0;
+		mat[3] = 0;
+
+		mat[4] = 0;
+		mat[5] = 1;
+		mat[6] = 0;
+		mat[7] = 0;
+
+		mat[8] = 0;
+		mat[9] = 0;
+		mat[10] = 1;
+		mat[11] = 0;
+
+		mat[12] = 0;
+		mat[13] = 0;
+		mat[14] = 0;
+		mat[15] = 1;
+	}
+	float mat[16];
+};
+
 void vecAdd(struct Vec3 *vecIn, float dx, float dy, float dz);
 #endif
