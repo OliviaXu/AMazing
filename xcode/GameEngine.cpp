@@ -59,8 +59,8 @@ void GameEngine::run()
         eventMgr->updateEvents(objects, mapLoader, events);
         handleEvents();
         
-		camera->updatePos(userControl->getCamDirUpdate(),ball);
-        
+		camera->updatePos(userControl->getCamM(),userControl->getCamDirUpdate(),ball);//input camera movement ball direction and ball to determin camera position and direction
+        printf("cam mov: % d\n",userControl->getCamM());
         drawScene();
         
         window->Display();

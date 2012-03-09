@@ -3,6 +3,7 @@
 
 enum Morientation{NORTH,EAST,SOUTH,WEST};
 enum Keyorientation{UP,RIGHT,DOWN,LEFT};
+enum CamMorientation{NO,U,D,L,R,F,B};
 
 
 struct Rectangle{
