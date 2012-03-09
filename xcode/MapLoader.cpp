@@ -310,6 +310,7 @@ bool MapLoader::updateCurrentPortal(Vec3 &pos){
 		return false;
 
 	currentPortal = bundle.currentPortal;
+	currentOrient = portals[currentPortal]->getOrientation();
 	return true;
 }
 
@@ -319,4 +320,8 @@ void MapLoader::fillObjects(vector<GameObject*> &objects){
 
 Portal *MapLoader::getCurrentPortal(){
 	return portals[currentPortal];
+}
+
+MAZEorientation MapLoader::getCurrentOrientation(){
+	return currentOrient;
 }

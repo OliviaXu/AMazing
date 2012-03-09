@@ -6,6 +6,7 @@
 #include "GameObject.h"
 
 typedef struct Rectangle PortalDoor;
+enum MAZEorientation{HORIZONTAL, VERTICAL};
 
 class Portal{
 public:
@@ -24,6 +25,7 @@ public:
 	struct Vec3 getNW();
 	struct Vec3 getNE();
 	struct Vec2 getSize();
+	MAZEorientation getOrientation();
 
 private:
 	int neighbors[4];
@@ -31,6 +33,7 @@ private:
     std::vector<GameObject *> objs;
     std::vector<PortalDoor *> doors;
 	struct Vec3 pos; // SW corner
+	MAZEmat transformation;
 	float width;
 	float height;
     //tmp

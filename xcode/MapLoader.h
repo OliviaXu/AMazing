@@ -18,6 +18,7 @@ public:
     void fillObjects(std::vector<GameObject*> &objects);   // fill objects with current portal and its neighboring portals' objects
     Portal *getCurrentPortal();
 	void iteratePortals(int rootIdx, PortalIterateFun fun, void *auxData);
+	MAZEorientation getCurrentOrientation();
 
 private:
 	void readModel();
@@ -36,6 +37,7 @@ private:
 	bool *visitBuff;//For portal iteration. visitBuff[i] = true means the ith portal has been
 					//visited
     int currentPortal;
+	MAZEorientation currentOrient;
 };
 
 #endif
