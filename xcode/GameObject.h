@@ -14,18 +14,22 @@ public:
     void setPortal(int iPortal);
     void setShader(Shader *shader);
     void setMass(int mass);
-    void setPos(Vec3 &pos);
+    void setPos(struct Vec3 pos);
     void setClass(char *className);
 	void setModel(const aiScene *model, std::vector<unsigned int> *indexBuff);
-    struct Vec3 &getPos();
-	struct Vec3 &getVelocity();
+	void setTexture(sf::Image *dtex, sf::Image *stex);
+    struct Vec3 getPos();
+    struct Vec3 &getVelocity();
 protected:
+	MAZEmat transformation;
     struct Vec3 pos;
     Shader *shader;
     const aiScene *model;
 	std::vector<unsigned int> *indexBuff;
+
     char *className;
-    int iTex;
+    sf::Image *dtex;
+	sf::Image *stex;
     int iPortal;     // the portal this object is in
     float mass;
     struct Vec3 velocity;

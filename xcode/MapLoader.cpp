@@ -12,6 +12,8 @@ typedef struct{
 	int iMesh;
 	int x, y, z;
 	int mass;
+	int iDTex;
+	int iSTex;
 	char *className;
 } ObjProp;
 
@@ -44,6 +46,10 @@ MapLoader::~MapLoader(){
 
 	for(int i=0; i<objs.size(); i++){
 		delete objs[i];
+	}
+
+	for(int i=0; i<textures.size(); i++){
+		delete textures[i];
 	}
 }
 
@@ -164,7 +170,6 @@ void MapLoader::readPortal(){
 
 ObjProp *parseObjectLine(){
 	ObjProp *prop = new ObjProp();
-	int numProp = 8;
 	char *str;
 
 	assert(str = strtok(NULL, " \t"));
@@ -191,6 +196,12 @@ ObjProp *parseObjectLine(){
 	assert(str = strtok(NULL, " \t"));
 	prop->mass = atoi(str);
 
+	assert(str = strtok(NULL, " \t"));
+	prop->iDTex = atoi(str);
+
+	assert(str = strtok(NULL, " \t"));
+	prop->iSTex = atoi(str);
+
 	return prop;
 }
 
@@ -215,6 +226,15 @@ void MapLoader::readObject(bool portalObject){
 	obj->setModel(models[prop->iMesh], indexBuff[prop->iMesh]);//Here we make the
 											//assumption that each model contains only
 											//one mesh
+	//std::vector<sf::Image *> hey = textures;
+	assert((int)(textures.size()) > prop->iDTex && (int)(textures.size()) > prop->iSTex);
+	sf::Image *dtex = NULL;
+	sf::Image *stex = NULL;
+	if(prop->iDTex >= 0)
+		dtex = textures[prop->iDTex];
+	if(prop->iSTex >= 0)
+		stex = textures[prop->iSTex];
+	obj->setTexture(dtex, stex);
 
 	objs.push_back(obj);
 	if(portalObject)
@@ -223,6 +243,14 @@ void MapLoader::readObject(bool portalObject){
 		portals[prop->iPortal]->addObject(obj);
 
 	delete prop;
+}
+
+void MapLoader::readTexture(){
+	char *texPath;
+	assert(texPath = strtok(NULL, " \t"));
+	sf::Image *tex = new sf::Image();
+	tex->LoadFromFile(texPath);
+	textures.push_back(tex);
 }
 
 void MapLoader::load(string map_file){
@@ -248,6 +276,8 @@ void MapLoader::load(string map_file){
 			loadShader();
 		else if(strcmp(str, "p") == 0)
 			readPortal();
+		else if(strcmp(str, "t") == 0)
+			readTexture();
 		else if(strcmp(str, "pobj") == 0)
 			readObject(true);
 		else if(strcmp(str, "obj") == 0)

@@ -154,5 +154,4 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball) {
 	}
 	gluLookAt(pos.x,pos.y,pos.z,pos.x+dir.x,pos.y+dir.y,pos.z+dir.z,0.,1.,0.);
 	//gluLookAt(100, 0, 0, 0, 0, 0, 0, 1, 0);
-
 }

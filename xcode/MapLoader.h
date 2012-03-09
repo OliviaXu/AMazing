@@ -23,6 +23,7 @@ public:
 
 private:
 	void readModel();
+	void readTexture();
 	void loadShader();
 	void readPortal();
 	void readObject(bool portalObj);
@@ -32,6 +33,7 @@ private:
     std::vector<Assimp::Importer*> importers;
 	std::vector<const aiScene *> models;
 	std::vector<std::vector<unsigned int> *> indexBuff;
+	std::vector<sf::Image *> textures;
     std::vector<Portal *> portals;
 	std::vector<GameObject *> objs;
 	std::vector<Shader *> shaders;
