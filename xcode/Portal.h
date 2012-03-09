@@ -16,6 +16,14 @@ public:
     void addObject(GameObject *obj);
     void setPortalObject(GameObject *obj);
 	bool in(struct Vec3* pos);
+	void setSize(float w, float h);
+	void setPos(float x, float y, float z);
+
+	struct Vec3 getSW();
+	struct Vec3 getSE();
+	struct Vec3 getNW();
+	struct Vec3 getNE();
+	struct Vec2 getSize();
 
 private:
 	int neighbors[4];

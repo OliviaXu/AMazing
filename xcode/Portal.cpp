@@ -20,6 +20,44 @@ void Portal::draw(Camera* camera){
 		objs[i]->draw();
 }
 
+void Portal::setSize(float w, float h){
+	width = w;
+	height = h;
+}
+
+struct Vec2 Portal::getSize(){
+	Vec2 size(width, height);
+	return size;
+}
+
+struct Vec3 Portal::getSW(){
+	return pos;
+}
+
+struct Vec3 Portal::getSE(){
+	struct Vec3 ret = pos;
+	vecAdd(&ret, width, 0, 0);
+	return ret;
+}
+
+struct Vec3 Portal::getNW(){
+	struct Vec3 ret = pos;
+	vecAdd(&ret, 0, height, 0);
+	return ret;
+}
+
+struct Vec3 Portal::getNE(){
+	struct Vec3 ret = pos;
+	vecAdd(&ret, width, height, 0);
+	return ret;
+}
+
+void Portal::setPos(float x, float y, float z){
+	pos.x = x;
+	pos.y = y;
+	pos.z = z;
+}
+
 int *Portal::getNeighbors(){
 	return neighbors;
 }

@@ -33,4 +33,18 @@ struct Vec3 {
     float x, y, z;
 };
 
+struct Vec2 {
+    Vec2() {
+        Vec2(0.0, 0.0);
+    }
+    
+    Vec2(float x, float y) {
+        this->x = x;
+        this->y = y;
+    }
+    
+    float x, y;
+};
+
+void vecAdd(struct Vec3 *vecIn, float dx, float dy, float dz);
 #endif

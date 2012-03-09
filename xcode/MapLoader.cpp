@@ -95,6 +95,48 @@ void MapLoader::loadShader(){
 	shaders.push_back(shader);
 }
 
+void MapLoader::computePortalPos(Portal *p){
+	if(portals.empty()){
+		p->setPos(0, 0, 0);
+		return;
+	}
+
+	int idx = portals.size();
+
+	//Search for precedent portal
+	int *neighbors = p->getNeighbors();
+	int i;
+	for(i=0; i<4; i++){
+		if(neighbors[i] < idx){
+			break;
+		}
+	}
+	assert(i < 4);
+
+	Portal *prevPortal = portals[neighbors[i]];
+	struct Vec2 size = p->getSize();
+	struct Vec3 pos;
+	switch(i){
+	case 0:
+		pos = prevPortal->getSW();
+		vecAdd(&pos, 0, -size.y, 0);
+		break;
+	case 1:
+		pos = prevPortal->getNW();
+		break;
+	case 2:
+		pos = prevPortal->getSE();
+		break;
+	case 3:
+		pos = prevPortal->getSW();
+		vecAdd(&pos, -size.x, 0, 0);
+	default:
+		assert(0);
+	}
+
+	p->setPos(pos.x, pos.y, pos.z);
+}
+
 void MapLoader::readPortal(){
 	Portal *p = new Portal();
 
@@ -109,6 +151,14 @@ void MapLoader::readPortal(){
 			pNeighbors[i] = atoi(neighbor);
 	}
 
+	int w, h;
+	char *str = strtok(NULL, " \t");
+	w = atoi(str);
+	str = strtok(NULL, " \t");
+	h = atoi(str);
+	p->setSize(w, h);
+
+	computePortalPos(p);
 	portals.push_back(p);
 }
 

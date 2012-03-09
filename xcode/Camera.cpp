@@ -36,4 +36,5 @@ void Camera::updatePos(struct Vec3 &newBallPos) {
 	//how did we solve the camera direction? how did we computer...
 	//gluLookAt(camloc.x,camloc.y,camloc.z,dir.x,dir.y,dir.z,0.,1.,0.);
 	gluLookAt(100, 0, 0, 0, 0, 0, 0, 1, 0);
+
 }
