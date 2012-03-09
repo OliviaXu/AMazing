@@ -2,7 +2,8 @@
 using namespace std;
 
 GameObject::GameObject(){
-
+	dtex = NULL;
+	stex = NULL;
 }
 
 GameObject::~GameObject(){
@@ -26,11 +27,14 @@ void GameObject::setMass(int mass){
 	this->mass = mass;
 }
 
-void GameObject::setPos(Vec3 &posIn){
+void GameObject::setPos(struct Vec3 posIn){
 	pos = posIn;
+	transformation.mat[12] = pos.x;
+	transformation.mat[13] = pos.y;
+	transformation.mat[14] = pos.z;
 }
 
-struct Vec3 &GameObject::getPos(){
+struct Vec3 GameObject::getPos(){
     Vec3 res = Vec3(0, 0, 0);
 	return res;
 }
@@ -42,11 +46,18 @@ void GameObject::setClass(char *className){
 void GameObject::setModel(const aiScene *model, vector<unsigned int> *indexBuff){
 	this->model = model;
 	this->indexBuff = indexBuff;
+	this->tex = tex;
 }
 
-sf::Image *img = new sf::Image(1,1,sf::Color(255, 255, 255));
+void GameObject::setTexture(sf::Image *dtex, sf::Image *stex){
+	this->dtex = dtex;
+	this->stex = stex;
+}
 
-void setMaterial(const aiScene *scene, const aiMesh *mesh, GLuint shaderID) {
+sf::Image default_tex(1,1,sf::Color(255, 255, 255));
+
+void setMaterial(const aiScene *scene, const aiMesh *mesh, GLuint shaderID, 
+	sf::Image *dtex, sf::Image *stex) {
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
     aiColor3D color;
     // Get a handle to the diffuse, specular, and ambient variables
@@ -71,13 +82,23 @@ void setMaterial(const aiScene *scene, const aiMesh *mesh, GLuint shaderID) {
     float value = 40;
     GL_CHECK(glUniform1f(shininess, value));
 
-	GL_CHECK(glActiveTexture(GL_TEXTURE0));
-	img->Bind();
 	GLint diffuseMap = GL_CHECK(glGetUniformLocation(shaderID, "diffuseMap"));
+	GL_CHECK(glActiveTexture(GL_TEXTURE0));
+	if(dtex){
+		dtex->Bind();
+	}
+	else{
+		default_tex.Bind();
+	}
 	GL_CHECK(glUniform1i(diffuseMap, 0)); // The diffuse map will be GL_TEXTURE0
 
 	GLint specularMap = GL_CHECK(glGetUniformLocation(shaderID, "specularMap"));
-	GL_CHECK(glUniform1i(specularMap, 0)); // The diffuse map will be GL_TEXTURE0	
+	GL_CHECK(glActiveTexture(GL_TEXTURE1));
+	if(stex)
+		stex->Bind();
+	else
+		default_tex.Bind();
+	GL_CHECK(glUniform1i(specularMap, 1));	
 }
 
 void setMeshData(const aiMesh *mesh, GLuint shaderID) {
@@ -99,7 +120,7 @@ void setMeshData(const aiMesh *mesh, GLuint shaderID) {
 
 //This shall be a abstract method later on
 void GameObject::passShaderParam(const aiMesh *mesh, GLuint shaderID){
-	setMaterial(model, mesh, shaderID);
+	setMaterial(model, mesh, shaderID, dtex, stex);
 	setMeshData(mesh, shaderID);
 }
 
@@ -110,9 +131,12 @@ void GameObject::draw(){
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 
+	//Translate to the position as specified in map file
+	glMultMatrixf(transformation.mat);
+
 	aiNode *root = model->mRootNode;
 	aiNode *child = root->mChildren[0];
-	aiMatrix4x4 &transformMat = 
+	/*aiMatrix4x4 &transformMat = 
 		root->mTransformation;// * child->mTransformation);
 	GLfloat mat1[] = {
 		transformMat.a1, transformMat.b1, transformMat.c1, transformMat.d1,
@@ -129,7 +153,17 @@ void GameObject::draw(){
 		transformMat2.a4, transformMat2.b4, transformMat2.c4, transformMat2.d4
 	};
 	glMultMatrixf(mat1);
-	glMultMatrixf(mat2);
+	glMultMatrixf(mat2);*/
+	aiMatrix4x4 &transformMat = 
+		root->mTransformation * child->mTransformation;
+	GLfloat mat[] = {
+		transformMat.a1, transformMat.b1, transformMat.c1, transformMat.d1,
+		transformMat.a2, transformMat.b2, transformMat.c2, transformMat.d2,
+		transformMat.a3, transformMat.b3, transformMat.c3, transformMat.d3,
+		transformMat.a4, transformMat.b4, transformMat.c4, transformMat.d4
+	};
+	glMultMatrixf(mat);
+
 	aiMesh *mesh = model->mMeshes[child->mMeshes[0]];
 	passShaderParam(mesh, shaderID);
 	GL_CHECK(glDrawElements(GL_TRIANGLES, 3*mesh->mNumFaces, 

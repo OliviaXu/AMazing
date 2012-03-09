@@ -18,8 +18,8 @@ s shaders/phong		# 0
 p NULL NULL NULL NULL 20 20	# 0
 
 # List of Portal Object
-# pobj mesh_num portal_num pos class_name shader_num mass texture_num
-pobj 0 0 -1 -1 -1 corridor 0 0 0
+# pobj mesh_num portal_num pos class_name shader_num mass d_tex_num s_tex_num
+pobj 0 0 0 3 0 corridor 0 0 0 -1
 
 # List of Object
-# obj mesh_num portal_num pos class_name shader_num mass
+# obj mesh_num portal_num pos class_name shader_num mass d_tex_num s_tex_num
