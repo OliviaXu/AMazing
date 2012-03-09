@@ -24,7 +24,13 @@ GameEngine::GameEngine(string map_file, string config_file)
 
 GameEngine::~GameEngine()
 {
-    
+    delete mapLoader;
+	delete physicsEngine;//Do we need further clean up?
+	delete eventMgr;
+	delete userControl;
+	delete camera;
+	delete plane;
+	delete ball;
 }
 
 void GameEngine::init(sf::Window* _window)
@@ -84,5 +90,6 @@ void GameEngine::drawScene()
     glLoadIdentity();
     gluLookAt(camera.pos.x, camera.pos.y, camera.pos.z, camera.pos.x + camera.dir.x, camera.pos.y + camera.dir.y, camera.pos.z + camera.dir.z, 0.0, 1.0, 0.0);*/
     
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     portal->draw(camera);
 }

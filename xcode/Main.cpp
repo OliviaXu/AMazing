@@ -83,8 +83,12 @@ void initOpenGL() {
     // This initializes OpenGL with some common defaults.  More info here:
     // http://www.sfml-dev.org/tutorials/1.6/window-opengl.php
     glClearDepth(1.0f);
-    glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
+    //glClearColor(0.529f, 0.808f, 0.980f, 1.0f);//sky blue
+	//glClearColor(0.529f, 0.808f, 0.980f, 1.0f);//sky blue
+	glClearColor(0.15f, 0.15f, 0.15f, 1.0f);//sky blue
     glEnable(GL_DEPTH_TEST);
+
+	GL_CHECK(glEnable(GL_TEXTURE_2D));
     glViewport(0, 0, window.GetWidth(), window.GetHeight());
 }
 

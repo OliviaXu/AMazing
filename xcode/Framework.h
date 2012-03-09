@@ -29,7 +29,14 @@
 #include <queue>
 
 #include <string>
+#include <assert.h>
 
 #include "Util.h"
+
+#define GL_CHECK(x)		(x);\
+						{GLenum __MY_GL_ERROR = glGetError();\
+						if (GL_NO_ERROR != __MY_GL_ERROR) {\
+							printf("%s", gluErrorString(__MY_GL_ERROR));\
+						}}
 
 #endif

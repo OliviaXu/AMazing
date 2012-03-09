@@ -18,6 +18,7 @@ typedef struct{
 
 MapLoader::MapLoader(){
 	visitBuff = NULL;
+    currentPortal = 0;//The map file must supply at least one portal.
 }
 
 MapLoader::~MapLoader(){
@@ -27,6 +28,10 @@ MapLoader::~MapLoader(){
 	for(int i=0; i<importers.size(); i++){
 		importers[i]->FreeScene();
 		delete importers[i];
+	}
+
+	for(int i=0; i<indexBuff.size(); i++){
+		delete indexBuff[i];
 	}
 
 	for(int i=0; i<shaders.size(); i++){
@@ -44,6 +49,7 @@ MapLoader::~MapLoader(){
 
 void MapLoader::readModel(){
 	char *modelPath = strtok(NULL, " \t");
+	assert(modelPath);
 	Assimp::Importer *importer = new Assimp::Importer();
 	const aiScene *model = importer->ReadFile(modelPath, aiProcess_CalcTangentSpace |
 							aiProcess_Triangulate |
@@ -55,10 +61,29 @@ void MapLoader::readModel(){
 	}
 	models.push_back(model);
 	importers.push_back(importer);
+
+	//Construct index buffer. We assume that each aiScene contains only one mesh
+	int numMeshes = 1;
+	for(int k=0; k<numMeshes; k++){
+		if(model->mMeshes[k]->mPrimitiveTypes != aiPrimitiveType_TRIANGLE)
+			continue;
+
+		int numFaces = model->mMeshes[k]->mNumFaces;
+		vector<unsigned int> *buff = new vector<unsigned int>();
+		aiFace *faces = model->mMeshes[k]->mFaces;
+		for(int j=0; j<numFaces; j++){
+			for(int v=0; v<3; v++){
+				buff->push_back(faces[j].mIndices[v]);
+				//buff->push_back(0);
+			}
+		}
+		indexBuff.push_back(buff);
+	}
 }
 
 void MapLoader::loadShader(){
 	char *shaderPath = strtok(NULL, " \t");
+	assert(shaderPath);
 	Shader *shader = new Shader(shaderPath);
 	if(!shader->loaded()){
 		std::cerr << "Shader failed to load" << std::endl;
@@ -76,7 +101,8 @@ void MapLoader::readPortal(){
 	int *pNeighbors = p->getNeighbors();
 	for(int i=0; i<4; i++){
 		char *neighbor = strtok(NULL, " \t");
-		
+		assert(neighbor);
+
 		if(strcmp(neighbor, "NULL") == 0)
 			pNeighbors[i] = 0;
 		else
@@ -91,28 +117,28 @@ ObjProp *parseObjectLine(){
 	int numProp = 8;
 	char *str;
 
-	str = strtok(NULL, " \t");
+	assert(str = strtok(NULL, " \t"));
 	prop->iMesh = atoi(str);
 
-	str = strtok(NULL, " \t");
+	assert(str = strtok(NULL, " \t"));
 	prop->iPortal = atoi(str);
 	
-	str = strtok(NULL, " \t");
+	assert(str = strtok(NULL, " \t"));
 	prop->x = atoi(str);
 
-	str = strtok(NULL, " \t");
+	assert(str = strtok(NULL, " \t"));
 	prop->y = atoi(str);
 
-	str = strtok(NULL, " \t");
+	assert(str = strtok(NULL, " \t"));
 	prop->z = atoi(str);
 
-	str = strtok(NULL, " \t");
+	assert(str = strtok(NULL, " \t"));
 	prop->className = strdup(str);
 
-	str = strtok(NULL, " \t");
+	assert(str = strtok(NULL, " \t"));
 	prop->iShader = atoi(str);
 
-	str = strtok(NULL, " \t");
+	assert(str = strtok(NULL, " \t"));
 	prop->mass = atoi(str);
 
 	return prop;
@@ -122,13 +148,24 @@ void MapLoader::readObject(bool portalObject){
 	GameObject *obj = new GameObject();
 	
 	ObjProp *prop = parseObjectLine();
+	assert(portals.size() > prop->iPortal);
 	obj->setPortal(prop->iPortal);
+
 	obj->setMass(prop->mass);
+
     Vec3 pos = Vec3(prop->x, prop->y, prop->z);
 	obj->setPos(pos);
+
+	assert(shaders.size() > prop->iShader);
 	obj->setShader(shaders[prop->iShader]);
+
 	obj->setClass(prop->className);
-	obj->setModel(models[prop->iMesh]);
+
+	assert(models.size() > prop->iMesh);
+	obj->setModel(models[prop->iMesh], indexBuff[prop->iMesh]);//Here we make the
+											//assumption that each model contains only
+											//one mesh
+
 	objs.push_back(obj);
 	if(portalObject)
 		portals[prop->iPortal]->setPortalObject(obj);
@@ -154,7 +191,7 @@ void MapLoader::load(string map_file){
 
 		char *l = strdup(line.c_str());
 		char *str;
-		str = strtok(l, " \t");//Not sure how strtok operates. Need further testing.
+		assert(str = strtok(l, " \t"));
 		if(strcmp(str, "m") == 0)
 			readModel();
 		else if(strcmp(str, "s") == 0)
@@ -168,6 +205,15 @@ void MapLoader::load(string map_file){
 
 		free(l);
 	}
+
+	assertMapValidity();
+}
+
+void MapLoader::assertMapValidity(){
+	assert(!portals.empty());
+	assert(!models.empty());
+	assert(!objs.empty());
+	assert(!shaders.empty());
 }
 
 void MapLoader::iteratePortals(int rootIdx, PortalIterateFun fun, void *auxData){
@@ -205,10 +251,15 @@ bool detectCurrentPortal(Portal *portal, int iPortal, void *auxData){
 }
 
 bool MapLoader::updateCurrentPortal(Vec3 &pos){
+	//Just to make the rendering work for now
+	return false;
+
 	DetectPortalBundle bundle = {&pos, -1};
 	iteratePortals(currentPortal, detectCurrentPortal, &bundle);
 	if(bundle.currentPortal == currentPortal)
 		return false;
+
+	currentPortal = bundle.currentPortal;
 	return true;
 }
 
