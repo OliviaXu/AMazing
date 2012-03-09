@@ -1,6 +1,10 @@
 #ifndef CS248_UTIL_H
 #define CS248_UTIL_H
 
+enum Morientation{NORTH,EAST,SOUTH,WEST};
+enum Keyorientation{UP,RIGHT,DOWN,LEFT};
+
+
 struct Rectangle{
 	Rectangle(float l, float t, float w, float h){
 		left = l;
@@ -75,4 +79,7 @@ struct MAZEmat{
 };
 
 void vecAdd(struct Vec3 *vecIn, float dx, float dy, float dz);
+bool Vequal(struct Vec3 *vecIna, struct Vec3 *vecInb);
+void VMulti(struct Vec3 *vecIna, float num);
+struct Vec3 vec2vecAdd(struct Vec3 *vecIn, float dx, float dy, float dz);
 #endif

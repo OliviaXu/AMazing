@@ -15,6 +15,8 @@ class Ball: public GameObject {
 	//test
 public:
     Ball();
+	float getV();
+
     
 };
 

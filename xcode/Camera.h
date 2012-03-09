@@ -2,11 +2,16 @@
 #define CS248_CAMERA_H
 
 #include "Framework.h"
+#include "Ball.h"
+#define VOFFSET 15.//vetrtical offset of camera to ball
+#define HOFFSET 10.//horizontal offset of camera to ball
+
 
 class Camera{
 public:
     Camera();
-    void updatePos(struct Vec3 &newBallPos);
+    //void updatePos(MAZEorientation pOri,Ball *ball);
+	void updatePos(Keyorientation keyd,Ball *ball);//fist try... implement the ball purely according to the movement direction of the ball
     static const float nearClip;
 	static const float farClip;
 	static const float aspectRatio;
@@ -15,6 +20,9 @@ public:
 private:
     struct Vec3 pos;
     struct Vec3 dir;
+	Morientation camO;
+	Morientation ballO;
+	
 };
 
 #endif

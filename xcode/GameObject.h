@@ -19,6 +19,7 @@ public:
 	void setModel(const aiScene *model, std::vector<unsigned int> *indexBuff);
 	void setTexture(sf::Image *dtex, sf::Image *stex);
     struct Vec3 getPos();
+    struct Vec3 &getVelocity();
 protected:
 	MAZEmat transformation;
     struct Vec3 pos;
