@@ -20,6 +20,7 @@ public:
     Keyorientation getCamDirUpdate();
 	void handleInput();//this handle general input???
 	CamMorientation getCamM();//get camera movement
+	struct Vec3 UserControl::lightPos();
 private:
     sf::Window* window;
     bool buttonPressed;//? no need?
@@ -27,6 +28,7 @@ private:
 	float angNS,angEW;
 	Keyorientation camdir;//enum Keyorientation{UP,RIGHT,DOWN,LEFT};
 	CamMorientation camM;//this is to move camera for debug purpos....
+	struct Vec3 lightP;
 };
 
 #endif

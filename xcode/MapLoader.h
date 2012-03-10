@@ -21,6 +21,7 @@ public:
 	int getCurrentPortalIdx();
 	void iteratePortals(int rootIdx, PortalIterateFun fun, void *auxData);
 	MAZEorientation getCurrentOrientation();
+	std::vector<Portal *> portals;//Shall modified to be private later
 
 private:
 	void readModel();
@@ -35,7 +36,6 @@ private:
 	std::vector<const aiScene *> models;
 	std::vector<std::vector<unsigned int> *> indexBuff;
 	std::vector<sf::Image *> textures;
-    std::vector<Portal *> portals;
 	std::vector<GameObject *> objs;
 	std::vector<Shader *> shaders;
 	bool *visitBuff;//For portal iteration. visitBuff[i] = true means the ith portal has been

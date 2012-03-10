@@ -158,8 +158,11 @@ void GameObject::draw(){
 	};
 	glMultMatrixf(mat1);
 	glMultMatrixf(mat2);*/
-	aiMatrix4x4 &transformMat = 
-		root->mTransformation * child->mTransformation;
+
+	//aiMatrix4x4 &atransformMat = root->mTransformation;
+	//aiMatrix4x4 &btransformMat = child->mTransformation;
+
+	aiMatrix4x4 &transformMat =	root->mTransformation * child->mTransformation;
 	GLfloat mat[] = {
 		transformMat.a1, transformMat.b1, transformMat.c1, transformMat.d1,
 		transformMat.a2, transformMat.b2, transformMat.c2, transformMat.d2,

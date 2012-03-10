@@ -85,6 +85,19 @@ void MapLoader::readModel(){
 		}
 		indexBuff.push_back(buff);
 	}
+
+/*	aiVector3D *mesh = model->mMeshes[0]->mVertices;
+	int n = model->mMeshes[0]->mNumVertices;
+	int maxx = 0x80000000;
+	int minx = 0x7fffffff;
+	for(int i=0; i<n; i++){
+		//if(mesh[i].x > maxx)
+		cout << mesh[i].x << " " ;
+		if(mesh[i].x< minx)
+			minx = mesh[i].x;
+	}
+
+	cout << minx << endl;*/
 }
 
 void MapLoader::loadShader(){
@@ -113,7 +126,7 @@ void MapLoader::computePortalPos(Portal *p){
 	int *neighbors = p->getNeighbors();
 	int i;
 	for(i=0; i<4; i++){
-		if(neighbors[i] < idx){
+		if(neighbors[i] >= 0 && neighbors[i] < idx){
 			break;
 		}
 	}
@@ -141,6 +154,7 @@ void MapLoader::computePortalPos(Portal *p){
 	}
 
 	p->setPos(pos.x, pos.y, pos.z);
+
 }
 
 void MapLoader::readPortal(){
@@ -152,7 +166,7 @@ void MapLoader::readPortal(){
 		assert(neighbor);
 
 		if(strcmp(neighbor, "NULL") == 0)
-			pNeighbors[i] = 0;
+			pNeighbors[i] = -1;
 		else
 			pNeighbors[i] = atoi(neighbor);
 	}
@@ -249,7 +263,7 @@ void MapLoader::readTexture(){
 	char *texPath;
 	assert(texPath = strtok(NULL, " \t"));
 	sf::Image *tex = new sf::Image();
-	tex->LoadFromFile(texPath);
+	assert(tex->LoadFromFile(texPath));
 	textures.push_back(tex);
 }
 

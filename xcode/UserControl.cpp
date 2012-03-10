@@ -6,6 +6,7 @@ UserControl::UserControl() : angSpeed(0.01){
 	angEW=0.;
 	camdir=(Keyorientation)0;//or UP
 	camM=NO;//no camera movement at first start
+	lightP=Vec3(0.,2.,-1.);
 }
 
 void UserControl::setWindow(sf::Window* _window) {
@@ -70,6 +71,14 @@ void UserControl::handleInput(){
 				camM=F;
 			}else if(evt.Key.Code=='6'){
 				camM=B;
+			}else if(evt.Key.Code=='7'){
+				lightP.x++;
+			}else if(evt.Key.Code=='8'){
+				lightP.x--;
+			}else if(evt.Key.Code=='9'){
+				lightP.z++;
+			}else if(evt.Key.Code=='0'){
+				lightP.z--;
 			}
 			break;
         default: 
@@ -79,6 +88,12 @@ void UserControl::handleInput(){
     }
 
 }
+
+struct Vec3 UserControl::lightPos(){
+	return lightP;
+}
+
+
 
 void UserControl::getAngleUpdate(float &dAngleNS, float &dAngleEW){
 	//it shouldn't be done here

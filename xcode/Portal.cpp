@@ -64,9 +64,9 @@ void Portal::setPos(float x, float y, float z){
 	pos.y = y;
 	pos.z = z;
 
-	transformation.mat[12] = x;
-	transformation.mat[13] = y;
-	transformation.mat[14] = z;
+	transformation.mat[12] = x/25.4;
+	transformation.mat[13] = y/25.4;
+	transformation.mat[14] = z/25.4;
 }
 
 int *Portal::getNeighbors(){

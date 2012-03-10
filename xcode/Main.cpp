@@ -1,7 +1,7 @@
 #include "Framework.h"
 #include "Shader.h"
 #include "GameEngine.h"
-#include "btBulletDynamicsCommon.h"
+//#include "btBulletDynamicsCommon.h"
 
 // Note: See the SMFL documentation for info on setting up fullscreen mode
 // and using rendering settings
@@ -18,13 +18,13 @@ sf::Clock clck;
 
 GameEngine *gameEngine;
 
-
+/*
 btBroadphaseInterface* broadphase;
 btDefaultCollisionConfiguration* collisionConfiguration;
 btCollisionDispatcher* dispatcher;
 btSequentialImpulseConstraintSolver* solver;
 btDiscreteDynamicsWorld* dynamicsWorld;
-
+*/
 
 #include "assimp.h"
 #include <vector>
@@ -101,7 +101,7 @@ void initOpenGL() {
 	GL_CHECK(glEnable(GL_TEXTURE_2D));
     glViewport(0, 0, window.GetWidth(), window.GetHeight());
 }
-
+/*
 void initBullet()
 {
     broadphase = new btDbvtBroadphase();
@@ -114,13 +114,14 @@ void initBullet()
     dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
     dynamicsWorld->setGravity(btVector3(0,0,-10));
 }
-
+*/
 void initWorld()
 {
     gameEngine = new GameEngine(MAP_FILE, CONFIG_FILE);
     gameEngine->init(&window);
 }
 
+/*
 void cleanupBullet()
 {
     delete dynamicsWorld;
@@ -129,3 +130,4 @@ void cleanupBullet()
     delete collisionConfiguration;
     delete broadphase;
 }
+*/
