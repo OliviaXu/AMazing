@@ -1,9 +1,17 @@
 # List of Meshes
 #m models/textBox.3ds	# 0
-m models/armadillo.3ds	# 0
+m models/box500_125_250.3DS	# 0
+m models/joint125_125_250.3DS	# 1
+m models/boxB500_125_250_2.3DS	# 2
+m models/jointB125_125_250.3DS	# 3
+m models/jointC125_125_250.3DS  # 4
 
 # List of Textures
-t textures/BARK5.jpg # 0
+#t textures/BARK5.jpg # 0
+t textures/tiles_d.jpg  #0
+t textures/tiles_s.jpg  #1
+t textures/stone_d.jpg  #2
+t textures/stone_s.jpg  #3
 
 # List of Shaders
 s shaders/phong		# 0
@@ -15,11 +23,23 @@ s shaders/phong		# 0
 # |__________|_________|________ |
 
 # p up down left right width height
-p NULL NULL NULL NULL 20 20	# 0
+p 1 NULL NULL NULL 125 500 # 0
+p NULL 0 NULL 2 125 125	# 1
+p NULL NULL 1 3 500 125 	# 2
+p 4 NULL 2 NULL 125 125 # 3
+p 5 3 NULL NULL 125 500	# 4
+p NULL 4 6 NULL 125 125 #5
+p NULL NULL NULL 5 500 125 #6
 
 # List of Portal Object
 # pobj mesh_num portal_num pos class_name shader_num mass d_tex_num s_tex_num
-pobj 0 0 0 3 0 corridor 0 0 0 -1
+pobj 0 0 0 0 0 corridor 0 0 0 1
+pobj 1 1 0 0 0 corridor 0 0 0 1
+pobj 2 2 0 0 0 corridor 0 0 0 1
+pobj 3 3 0 0 0 corridor 0 0 0 1
+pobj 0 4 0 0 0 corridor 0 0 2 3
+pobj 4 5 0 0 0 corridor 0 0 2 3
+pobj 2 6 0 0 0 corridor 0 0 2 3
 
 # List of Object
 # obj mesh_num portal_num pos class_name shader_num mass d_tex_num s_tex_num
