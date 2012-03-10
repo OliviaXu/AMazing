@@ -31,6 +31,8 @@
 #include <string>
 #include <assert.h>
 #include <cmath>
+#include <map>
+#include <climits>
 
 #include "Util.h"
 

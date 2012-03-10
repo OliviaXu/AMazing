@@ -6,20 +6,20 @@ enum Keyorientation{UP,RIGHT,DOWN,LEFT};
 enum CamMorientation{NO,U,D,L,R,F,B};
 
 
-struct Rectangle{
-	Rectangle(float l, float t, float w, float h){
+struct MAZErectangle{
+	MAZErectangle(float l, float b, float w, float h){
 		left = l;
-		top = t;
+		bottom = b;
 		width = w;
 		height = h;
 	}
 
-	Rectangle(){
-		Rectangle(-1, -1, -1, -1);
+	MAZErectangle(){
+		MAZErectangle(-1, -1, -1, -1);
 	}
 
 	float left;
-	float top;
+	float bottom;
 	float width;
 	float height;
 };
@@ -80,7 +80,11 @@ struct MAZEmat{
 };
 
 void vecAdd(struct Vec3 *vecIn, float dx, float dy, float dz);
+void matMultVec(struct MAZEmat *matIn, struct Vec3 *vecIn, struct Vec3 *vecOut);
+
+void setVec3(struct Vec3 *vecIn, struct Vec3 *vecOut);
 bool Vequal(struct Vec3 *vecIna, struct Vec3 *vecInb);
 void VMulti(struct Vec3 *vecIna, float num);
+void multMat(struct MAZEmat *mat1, struct MAZEmat *mat2, struct MAZEmat *matout);
 struct Vec3 vec2vecAdd(struct Vec3 *vecIn, float dx, float dy, float dz);
 #endif

@@ -7,6 +7,7 @@
 #include "Shader.h"
 
 // contain all the information of the map
+
 enum MAZEportal_cull{CULL_NEIGHBORS, CULL_REST, CULL_NONE};
 typedef MAZEportal_cull (*PortalIterateFun) (Portal *portal, int iPortal, void *auxData);
 
@@ -21,7 +22,7 @@ public:
 	int getCurrentPortalIdx();
 	void iteratePortals(int rootIdx, PortalIterateFun fun, void *auxData);
 	MAZEorientation getCurrentOrientation();
-
+	std::vector<Portal *> *getPortals();
 private:
 	void readModel();
 	void readTexture();

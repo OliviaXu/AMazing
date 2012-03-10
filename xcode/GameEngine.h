@@ -40,6 +40,7 @@ private:
     Ball *ball;
     
     sf::Window *window;
+	MAZErectangle viewport;
 };
 
 #endif

@@ -8,6 +8,30 @@ void vecAdd(struct Vec3 *vecIn, float dx, float dy, float dz){
 	vecIn->z = vecIn->z + dz;
 }
 
+void setVec3(struct Vec3 *vecIn, struct Vec3 *vecOut){
+	vecOut->x = vecIn->x;
+	vecOut->y = vecIn->y;
+	vecOut->z = vecIn->z;
+}
+
+void matMultVec(struct MAZEmat *matIn, struct Vec3 *vecIn, struct Vec3 *vecOut){
+	float *mat = matIn->mat;
+	vecOut->x = mat[0]*vecIn->x + mat[4]*vecIn->y + mat[8]*vecIn->z + mat[12];
+	vecOut->y = mat[1]*vecIn->x + mat[5]*vecIn->y + mat[9]*vecIn->z + mat[13];
+	vecOut->z = mat[2]*vecIn->x + mat[6]*vecIn->y + mat[10]*vecIn->z + mat[14];
+}
+
+void multMat(struct MAZEmat *mat1, struct MAZEmat *mat2, struct MAZEmat *matout){
+	for(int i=0; i<4; i++){
+		for(int j=0; j<4; j++){
+			matout->mat[j+i*4] = mat1->mat[j]*mat2->mat[i*4] + 
+								mat1->mat[j+4]*mat2->mat[1+i*4] +
+								mat1->mat[j+8]*mat2->mat[2+i*4] + 
+								mat1->mat[j+12]*mat2->mat[3+i*4];
+		}
+	}
+}
+
 //this is to do two element addition 
 struct Vec3 vec2vecAdd(struct Vec3 *vecIn, float dx, float dy, float dz){
 	 struct Vec3 summ(vecIn->x + dx,vecIn->y + dy,vecIn->z + dz);

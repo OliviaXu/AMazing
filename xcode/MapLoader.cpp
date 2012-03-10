@@ -317,7 +317,7 @@ void MapLoader::iteratePortals(int rootIdx, PortalIterateFun fun, void *auxData)
 
 		int *neighbors = p->getNeighbors();
 		for(int i=0; i<4; i++){
-			if(neighbors[i])
+			if(neighbors[i] >= 0)
 				q.push(neighbors[i]);
 		}
 	}
@@ -355,6 +355,14 @@ Portal *MapLoader::getCurrentPortal(){
 	return portals[currentPortal];
 }
 
+int MapLoader::getCurrentPortalIdx(){
+	return currentPortal;
+}
+
 MAZEorientation MapLoader::getCurrentOrientation(){
 	return currentOrient;
+}
+
+vector<Portal *> *MapLoader::getPortals(){
+	return &portals;
 }

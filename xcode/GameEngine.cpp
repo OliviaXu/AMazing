@@ -36,6 +36,11 @@ GameEngine::~GameEngine()
 void GameEngine::init(sf::Window* _window)
 {
     this->window = _window;
+	viewport.bottom = 0;
+	viewport.left = 0;
+	viewport.width = window->GetWidth();
+	viewport.height = window->GetHeight();
+
     userControl->setWindow(window);
 }
 
@@ -78,18 +83,44 @@ void GameEngine::handleEvents()
     
 }
 
+void getWindowProjMat(struct MAZErectangle &viewport, struct MAZEmat *winProjMat){
+	MAZEmat modelviewMat;
+	MAZEmat projMat;
+	MAZEmat viewportMat;
+	
+	glGetFloatv(GL_MODELVIEW_MATRIX, modelviewMat.mat);
+	glGetFloatv(GL_PROJECTION_MATRIX, projMat.mat);
+	
+	float farv = 1., nearv = 0.;
+	viewportMat.mat[0] = viewport.width/2;
+	viewportMat.mat[5] = viewport.height/2;
+	viewportMat.mat[10] = (farv-nearv)/2;
+	viewportMat.mat[12] = viewport.width/2;
+	viewportMat.mat[13] = viewport.height/2;
+	viewportMat.mat[14] = (farv + nearv)/2;
+
+	MAZEmat tmp;
+	multMat(&viewportMat, &projMat, &tmp);
+	multMat(&tmp, &modelviewMat, winProjMat);
+}
+
 void GameEngine::drawScene()
 {
     Portal *portal = mapLoader->getCurrentPortal();
     
-    /*glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(camera.FOV, camera.aspectRatio, camera.near, camera.far);
-    
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(camera.pos.x, camera.pos.y, camera.pos.z, camera.pos.x + camera.dir.x, camera.pos.y + camera.dir.y, camera.pos.z + camera.dir.z, 0.0, 1.0, 0.0);*/
-    
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    portal->draw(camera);
+
+	int iRootPortal = mapLoader->getCurrentPortalIdx();
+
+	struct MAZEmat projMat;
+	
+	getWindowProjMat(viewport, &projMat);
+
+	Portal *rootPortal = mapLoader->getCurrentPortal();
+	rootPortal->doorStatus[0] = 0;
+	rootPortal->doorStatus[1] = 0;
+	rootPortal->doorStatus[2] = 0;
+	rootPortal->doorStatus[3] = 0;
+
+	rootPortal->cullDraw(&projMat, viewport, mapLoader->getPortals());
 }
