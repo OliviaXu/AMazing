@@ -25,7 +25,6 @@ btCollisionDispatcher* dispatcher;
 btSequentialImpulseConstraintSolver* solver;
 btDiscreteDynamicsWorld* dynamicsWorld;*/
 
-
 #include "assimp.h"
 #include <vector>
 #include <math.h>

@@ -36,12 +36,12 @@ private:
 	std::vector<const aiScene *> models;
 	std::vector<std::vector<unsigned int> *> indexBuff;
 	std::vector<sf::Image *> textures;
-    std::vector<Portal *> portals;
+	std::vector<Portal *> portals;
 	std::vector<GameObject *> objs;
 	std::vector<Shader *> shaders;
 	bool *visitBuff;//For portal iteration. visitBuff[i] = true means the ith portal has been
 					//visited
-    int currentPortal;
+        int currentPortal;
 	MAZEorientation currentOrient;
 };
 

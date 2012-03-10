@@ -42,6 +42,15 @@ void GameEngine::init(sf::Window* _window)
 	viewport.height = window->GetHeight();
 
     userControl->setWindow(window);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0); 
+	GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
+	GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+
 }
 
 void GameEngine::run()
@@ -65,7 +74,12 @@ void GameEngine::run()
         handleEvents();
         
 		camera->updatePos(userControl->getCamM(),userControl->getCamDirUpdate(),ball);//input camera movement ball direction and ball to determin camera position and direction
-        printf("cam mov: % d\n",userControl->getCamM());
+
+		struct Vec3 lP=userControl->lightPos();
+		GLfloat light_position[]={lP.x,lP.y,lP.z,0.};//directinal light;
+		glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+		printf("cam mov: % d light: %f %f %f\n",userControl->getCamM(),light_position[0],light_position[1],light_position[2]);
         drawScene();
         
         window->Display();
@@ -109,7 +123,6 @@ void GameEngine::drawScene()
     Portal *portal = mapLoader->getCurrentPortal();
     
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	int iRootPortal = mapLoader->getCurrentPortalIdx();
 
 	struct MAZEmat projMat;

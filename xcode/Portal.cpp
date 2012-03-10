@@ -83,8 +83,8 @@ bool Portal::cullDraw(struct MAZEmat *projMat, struct MAZErectangle &rec, vector
 }
 
 void Portal::setSize(float w, float h){
-	width = w;
-	height = h;
+	width = w/25.4;
+	height = h/25.4;
 
 	struct Vec3 nw, ne, sw, se;
 	nw = getNW();
@@ -149,7 +149,7 @@ void Portal::setPos(float x, float y, float z){
 	pos.y = y;
 	pos.z = z;
 
-	transformation.mat[12] = x;
+	transformation.mat[12] = -x;
 	transformation.mat[13] = y;
 	transformation.mat[14] = z;
 }

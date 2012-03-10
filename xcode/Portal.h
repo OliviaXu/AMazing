@@ -32,7 +32,7 @@ public:
 
 private:
 	int neighbors[4];
-
+	
 	GameObject *portalObj; //In our case, the corridor
     std::vector<GameObject *> objs;
     //std::vector<PortalDoor *> doors;

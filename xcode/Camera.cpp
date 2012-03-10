@@ -22,8 +22,8 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball) {
 
     GLfloat aspectRatio = (GLfloat)800.f/600;
     GLfloat nearClip = 0.1f;
-	GLfloat farClip = 400.0f;
-    GLfloat fieldOfView = 120.0f; // TODO Degrees
+	GLfloat farClip = 4000.0f;
+    GLfloat fieldOfView = 90.0f; // TODO Degrees
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -153,5 +153,6 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball) {
 		pos.z--;
 	}
 	gluLookAt(pos.x,pos.y,pos.z,pos.x+dir.x,pos.y+dir.y,pos.z+dir.z,0.,1.,0.);
+	printf("cam pos %f %f %f\n",pos.x,pos.y,pos.z);
 	//gluLookAt(100, 0, 0, 0, 0, 0, 0, 1, 0);
 }
