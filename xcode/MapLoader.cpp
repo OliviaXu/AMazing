@@ -1,8 +1,10 @@
 #include "MapLoader.h"
+#include "GameObjectFactory.h"
+
 using namespace std;
 
 typedef struct{
-	Vec3 *pos;
+	const struct Vec3 *pos;
 	int currentPortal;
 } DetectPortalBundle;
 
@@ -148,7 +150,7 @@ void MapLoader::computePortalPos(Portal *p){
 		break;
 	case 3:
 		pos = prevPortal->getSW();
-		vecAdd(&pos, -size.x, 0, 0);
+		vecAdd(&pos, size.x, 0, 0);
 		break;
 	default:
 		assert(0);
@@ -177,87 +179,27 @@ void MapLoader::readPortal(){
 	w = atoi(str);
 	str = strtok(NULL, " \t");
 	h = atoi(str);
-	p->setSize(w, h);
+	p->setSize(w/25.4, h/25.4);
 
 	computePortalPos(p);
 	portals.push_back(p);
 }
 
-ObjProp *parseObjectLine(){
-	ObjProp *prop = new ObjProp();
-	char *str;
-
-	assert(str = strtok(NULL, " \t"));
-	prop->iMesh = atoi(str);
-
-	assert(str = strtok(NULL, " \t"));
-	prop->iPortal = atoi(str);
-	
-	assert(str = strtok(NULL, " \t"));
-	prop->x = atoi(str);
-
-	assert(str = strtok(NULL, " \t"));
-	prop->y = atoi(str);
-
-	assert(str = strtok(NULL, " \t"));
-	prop->z = atoi(str);
-
-	assert(str = strtok(NULL, " \t"));
-	prop->className = strdup(str);
-
-	assert(str = strtok(NULL, " \t"));
-	prop->iShader = atoi(str);
-
-	assert(str = strtok(NULL, " \t"));
-	prop->mass = atoi(str);
-
-	assert(str = strtok(NULL, " \t"));
-	prop->iDTex = atoi(str);
-
-	assert(str = strtok(NULL, " \t"));
-	prop->iSTex = atoi(str);
-
-	return prop;
-}
-
 void MapLoader::readObject(bool portalObject){
-	GameObject *obj = new GameObject();
+	char *str;
+	assert(str = strtok(NULL, " \t"));
 	
-	ObjProp *prop = parseObjectLine();
-	assert(portals.size() > prop->iPortal);
-	obj->setPortal(prop->iPortal);
-
-	obj->setMass(prop->mass);
-
-    Vec3 pos = Vec3(prop->x, prop->y, prop->z);
-	obj->setPos(pos);
-
-	assert(shaders.size() > prop->iShader);
-	obj->setShader(shaders[prop->iShader]);
-
-	obj->setClass(prop->className);
-
-	assert(models.size() > prop->iMesh);
-	obj->setModel(models[prop->iMesh], indexBuff[prop->iMesh]);//Here we make the
-											//assumption that each model contains only
-											//one mesh
-	//std::vector<sf::Image *> hey = textures;
-	assert((int)(textures.size()) > prop->iDTex && (int)(textures.size()) > prop->iSTex);
-	sf::Image *dtex = NULL;
-	sf::Image *stex = NULL;
-	if(prop->iDTex >= 0)
-		dtex = textures[prop->iDTex];
-	if(prop->iSTex >= 0)
-		stex = textures[prop->iSTex];
-	obj->setTexture(dtex, stex);
+	//Extract the remaining arguments and pass it to factory. There,
+	//game object makers will parse the arguments and produce 
+	//object according to its name.
+	char *args = str+strlen(str)+1;
+	GameObject *obj = factory.produce(str, args, this);
 
 	objs.push_back(obj);
 	if(portalObject)
-		portals[prop->iPortal]->setPortalObject(obj);
+		portals[obj->getPortal()]->setPortalObject(obj);
 	else
-		portals[prop->iPortal]->addObject(obj);
-
-	delete prop;
+		portals[obj->getPortal()]->addObject(obj);
 }
 
 void MapLoader::readTexture(){
@@ -320,9 +262,8 @@ void MapLoader::iteratePortals(int rootIdx, PortalIterateFun fun, void *auxData)
 	while(!q.empty()){
 		int iPortal = q.front();
 		q.pop();
-		if(visitBuff[iPortal])
-			continue;
-		
+		visitBuff[iPortal] = true;
+
 		Portal *p = portals[iPortal];
 		MAZEportal_cull cull = fun(p, iPortal, auxData);
 		if(cull == CULL_REST)
@@ -332,7 +273,7 @@ void MapLoader::iteratePortals(int rootIdx, PortalIterateFun fun, void *auxData)
 
 		int *neighbors = p->getNeighbors();
 		for(int i=0; i<4; i++){
-			if(neighbors[i] >= 0)
+			if(neighbors[i] >= 0 && !visitBuff[neighbors[i]])
 				q.push(neighbors[i]);
 		}
 	}
@@ -342,22 +283,24 @@ MAZEportal_cull detectCurrentPortal(Portal *portal, int iPortal, void *auxData){
 	DetectPortalBundle *bundle = (DetectPortalBundle *)auxData;
 	if(portal->in(bundle->pos)){
 		bundle->currentPortal = iPortal;
-		return CULL_NONE;
+		return CULL_REST;
 	}
 
-	return CULL_REST;
+	return CULL_NONE;
 }
 
-bool MapLoader::updateCurrentPortal(Vec3 &pos){
+bool MapLoader::updateCurrentPortal(const struct Vec3 *pos){
 	//Just to make the rendering work for now
-	return false;
+	//return false;
 
-	DetectPortalBundle bundle = {&pos, -1};
+	DetectPortalBundle bundle = {pos, -1};
 	iteratePortals(currentPortal, detectCurrentPortal, &bundle);
+	cout << bundle.currentPortal << endl;
 	if(bundle.currentPortal == currentPortal)
 		return false;
 
 	currentPortal = bundle.currentPortal;
+	currentPortal = currentPortal < 0 ? 0 : currentPortal;
 	currentOrient = portals[currentPortal]->getOrientation();
 	return true;
 }
@@ -366,7 +309,7 @@ void MapLoader::fillObjects(vector<GameObject*> &objects){
 	
 }
 
-Portal *MapLoader::getCurrentPortal(){
+const Portal *MapLoader::getCurrentPortal(){
 	return portals[currentPortal];
 }
 
@@ -378,6 +321,26 @@ MAZEorientation MapLoader::getCurrentOrientation(){
 	return currentOrient;
 }
 
-vector<Portal *> *MapLoader::getPortals(){
+const vector<Portal *> *MapLoader::getPortals(){
 	return &portals;
+}
+
+const aiScene *MapLoader::getModel(int iModel){
+	return models[iModel];
+}
+
+const std::vector<unsigned int> *MapLoader::getIndexBuff(int iBuff){
+	return indexBuff[iBuff];
+}
+
+const sf::Image *MapLoader::getTexture(int iTex){
+	return textures[iTex];
+}
+
+const Portal *MapLoader::getPortal(int iPortal){
+	return portals[iPortal];
+}
+
+const Shader *MapLoader::getShader(int iShader){
+	return shaders[iShader];
 }

@@ -33,6 +33,7 @@
 #include <cmath>
 #include <map>
 #include <climits>
+#include <hash_set>
 
 #include "Util.h"
 

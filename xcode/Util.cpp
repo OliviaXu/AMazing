@@ -14,11 +14,17 @@ void setVec3(struct Vec3 *vecIn, struct Vec3 *vecOut){
 	vecOut->z = vecIn->z;
 }
 
-void matMultVec(struct MAZEmat *matIn, struct Vec3 *vecIn, struct Vec3 *vecOut){
+void matMultVec3_normalize(struct MAZEmat *matIn, struct Vec3 *vecIn, struct Vec3 *vecOut){
 	float *mat = matIn->mat;
-	vecOut->x = mat[0]*vecIn->x + mat[4]*vecIn->y + mat[8]*vecIn->z + mat[12];
-	vecOut->y = mat[1]*vecIn->x + mat[5]*vecIn->y + mat[9]*vecIn->z + mat[13];
-	vecOut->z = mat[2]*vecIn->x + mat[6]*vecIn->y + mat[10]*vecIn->z + mat[14];
+	float x = mat[0]*vecIn->x + mat[4]*vecIn->y + mat[8]*vecIn->z + mat[12];
+	float y = mat[1]*vecIn->x + mat[5]*vecIn->y + mat[9]*vecIn->z + mat[13];
+	float z = mat[2]*vecIn->x + mat[6]*vecIn->y + mat[10]*vecIn->z + mat[14];
+
+	float w = mat[3]*vecIn->x + mat[7]*vecIn->y + mat[11]*vecIn->z + mat[15];
+	
+	vecOut->x = x/w;
+	vecOut->y = y/w;
+	vecOut->z = z/w;
 }
 
 void multMat(struct MAZEmat *mat1, struct MAZEmat *mat2, struct MAZEmat *matout){

@@ -80,7 +80,7 @@ struct MAZEmat{
 };
 
 void vecAdd(struct Vec3 *vecIn, float dx, float dy, float dz);
-void matMultVec(struct MAZEmat *matIn, struct Vec3 *vecIn, struct Vec3 *vecOut);
+void matMultVec3_normalize(struct MAZEmat *matIn, struct Vec3 *vecIn, struct Vec3 *vecOut);
 
 void setVec3(struct Vec3 *vecIn, struct Vec3 *vecOut);
 bool Vequal(struct Vec3 *vecIna, struct Vec3 *vecInb);

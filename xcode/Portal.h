@@ -15,11 +15,13 @@ public:
 	//cull or draw this portal. If the portal is drawn, return true;
 	//otherwise, false. Basically this function projects portal bounding
 	//volumes to windows coordinate and decide whether it shall be culled
-    bool cullDraw(struct MAZEmat *projMat, struct MAZErectangle &rec, std::vector<Portal *> *portals);
+    bool cullDraw(struct MAZEmat *projviewMat, struct MAZEmat *viewportMat, 
+					struct MAZErectangle &rec, const std::vector<Portal *> *portals, 
+						std::hash_set<int *> &visitedEdgeSet);
     int *getNeighbors();
     void addObject(GameObject *obj);
     void setPortalObject(GameObject *obj);
-	bool in(struct Vec3* pos);
+	bool in(const struct Vec3* pos);
 	void setSize(float w, float h);
 	void setPos(float x, float y, float z);
 	struct Vec3 getSW();
@@ -28,7 +30,7 @@ public:
 	struct Vec3 getNE();
 	struct Vec2 getSize();
 	MAZEorientation getOrientation();
-	int doorStatus[4];
+	//int doorStatus[4];
 
 private:
 	int neighbors[4];

@@ -5,6 +5,7 @@ GameObject::GameObject(){
 	dtex = NULL;
 	stex = NULL;
 	velocity=Vec3(0.,0.,0.);
+	//transformation.mat[0] = -1;
 }
 
 GameObject::~GameObject(){
@@ -20,7 +21,7 @@ void GameObject::setPortal(int iPortal){
 	this->iPortal = iPortal;
 }
 
-void GameObject::setShader(Shader *shader){
+void GameObject::setShader(const Shader *shader){
 	this->shader = shader;
 }
 
@@ -44,16 +45,12 @@ struct Vec3 &GameObject::getVelocity(){
 	return velocity;
 }
 
-void GameObject::setClass(char *className){
-
-}
-
-void GameObject::setModel(const aiScene *model, vector<unsigned int> *indexBuff){
+void GameObject::setModel(const aiScene *model, const vector<unsigned int> *indexBuff){
 	this->model = model;
 	this->indexBuff = indexBuff;
 }
 
-void GameObject::setTexture(sf::Image *dtex, sf::Image *stex){
+void GameObject::setTexture(const sf::Image *dtex, const sf::Image *stex){
 	this->dtex = dtex;
 	this->stex = stex;
 }
@@ -61,7 +58,7 @@ void GameObject::setTexture(sf::Image *dtex, sf::Image *stex){
 sf::Image default_tex(1,1,sf::Color(255, 255, 255));
 
 void setMaterial(const aiScene *scene, const aiMesh *mesh, GLuint shaderID, 
-	sf::Image *dtex, sf::Image *stex) {
+	const sf::Image *dtex, const sf::Image *stex) {
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
     aiColor3D color;
     // Get a handle to the diffuse, specular, and ambient variables
@@ -177,4 +174,8 @@ void GameObject::draw(){
 					GL_UNSIGNED_INT, &(*indexBuff)[0]));
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
+}
+
+int GameObject::getPortal(){
+	return iPortal;
 }

@@ -59,27 +59,29 @@ void GameEngine::run()
         userControl->handleInput();    // constant * window.GetFrameTime() 
 
 		//what's the reason for this??? 
-        
+       
         float dAngleNS, dAngleEW;
         userControl->getAngleUpdate(dAngleNS, dAngleEW);
         
         plane->update(dAngleNS, dAngleEW);
         
-        if(mapLoader->updateCurrentPortal(ball->getPos()))
-            updateObjects();
-        
+        /*if(mapLoader->updateCurrentPortal(ball->getPos()))
+            updateObjects();*/
+        //I think updating current portal according to camera is more appropriate.
+		camera->updatePos(userControl->getCamM(),userControl->getCamDirUpdate(),ball);//input camera movement ball direction and ball to determin camera position and direction
+		if(mapLoader->updateCurrentPortal(camera->getPos()))
+			updateObjects();
+
         physicsEngine->updateObjects(objects);
         
         eventMgr->updateEvents(objects, mapLoader, events);
         handleEvents();
         
-		camera->updatePos(userControl->getCamM(),userControl->getCamDirUpdate(),ball);//input camera movement ball direction and ball to determin camera position and direction
-
 		struct Vec3 lP=userControl->lightPos();
 		GLfloat light_position[]={lP.x,lP.y,lP.z,0.};//directinal light;
 		glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
-		printf("cam mov: % d light: %f %f %f\n",userControl->getCamM(),light_position[0],light_position[1],light_position[2]);
+		//printf("cam mov: % d light: %f %f %f\n",userControl->getCamM(),light_position[0],light_position[1],light_position[2]);
         drawScene();
         
         window->Display();
@@ -97,10 +99,9 @@ void GameEngine::handleEvents()
     
 }
 
-void getWindowProjMat(struct MAZErectangle &viewport, struct MAZEmat *winProjMat){
+void getWindowProjMat(struct MAZErectangle &viewport, struct MAZEmat &projviewMat, struct MAZEmat &viewportMat){
 	MAZEmat modelviewMat;
 	MAZEmat projMat;
-	MAZEmat viewportMat;
 	
 	glGetFloatv(GL_MODELVIEW_MATRIX, modelviewMat.mat);
 	glGetFloatv(GL_PROJECTION_MATRIX, projMat.mat);
@@ -113,27 +114,29 @@ void getWindowProjMat(struct MAZErectangle &viewport, struct MAZEmat *winProjMat
 	viewportMat.mat[13] = viewport.height/2;
 	viewportMat.mat[14] = (farv + nearv)/2;
 
-	MAZEmat tmp;
-	multMat(&viewportMat, &projMat, &tmp);
-	multMat(&tmp, &modelviewMat, winProjMat);
+	multMat(&projMat, &modelviewMat, &projviewMat);
 }
 
 void GameEngine::drawScene()
 {
-    Portal *portal = mapLoader->getCurrentPortal();
+    const Portal *portal = mapLoader->getCurrentPortal();
     
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	int iRootPortal = mapLoader->getCurrentPortalIdx();
+	//cout << iRootPortal << endl;
+	struct MAZEmat projviewMat;
+	struct MAZEmat viewportMat;
 
-	struct MAZEmat projMat;
-	
-	getWindowProjMat(viewport, &projMat);
+	getWindowProjMat(viewport, projviewMat, viewportMat);
 
-	Portal *rootPortal = mapLoader->getCurrentPortal();
-	rootPortal->doorStatus[0] = 0;
+	//This cast from const to non-const is pretty dirty.
+	//Not sure how to call rootPortal->cullDraw without doing this...
+	Portal *rootPortal = (Portal *)mapLoader->getCurrentPortal();
+	/*rootPortal->doorStatus[0] = 0;
 	rootPortal->doorStatus[1] = 0;
 	rootPortal->doorStatus[2] = 0;
-	rootPortal->doorStatus[3] = 0;
-
-	rootPortal->cullDraw(&projMat, viewport, mapLoader->getPortals());
+	rootPortal->doorStatus[3] = 0;*/
+	hash_set<int *> visitedEdgeSet;
+	rootPortal->cullDraw(&projviewMat, &viewportMat, viewport, 
+							mapLoader->getPortals(), visitedEdgeSet);
 }

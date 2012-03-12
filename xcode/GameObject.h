@@ -12,24 +12,25 @@ public:
 	virtual void passShaderParam(const aiMesh *mesh, GLuint shaderID);
     void updatePhysicalProperty(Vec3 &newPos, float newMass, float newVel, float newAcc);
     void setPortal(int iPortal);
-    void setShader(Shader *shader);
+    void setShader(const Shader *shader);
     void setMass(int mass);
     void setPos(struct Vec3 pos);
     void setClass(char *className);
-	void setModel(const aiScene *model, std::vector<unsigned int> *indexBuff);
-	void setTexture(sf::Image *dtex, sf::Image *stex);
+	void setModel(const aiScene *model, const std::vector<unsigned int> *indexBuff);
+	void setTexture(const sf::Image *dtex, const sf::Image *stex);
     struct Vec3 getPos();
     struct Vec3 &getVelocity();
+	int getPortal();
 protected:
 	MAZEmat transformation;
     struct Vec3 pos;
-    Shader *shader;
+    const Shader *shader;
     const aiScene *model;
-	std::vector<unsigned int> *indexBuff;
+	const std::vector<unsigned int> *indexBuff;
 
     char *className;
-    sf::Image *dtex;
-	sf::Image *stex;
+    const sf::Image *dtex;
+	const sf::Image *stex;
     int iPortal;     // the portal this object is in
     float mass;
     struct Vec3 velocity;

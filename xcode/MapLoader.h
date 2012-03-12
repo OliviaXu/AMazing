@@ -5,6 +5,7 @@
 #include "Framework.h"
 #include "Portal.h"
 #include "Shader.h"
+#include "GameObjectFactory.h"
 
 // contain all the information of the map
 
@@ -16,13 +17,19 @@ public:
 	MapLoader();
 	~MapLoader();
 	void load(std::string map_file);
-    bool updateCurrentPortal(Vec3 &pos);     // update current portal according to the position of the ball
+    bool updateCurrentPortal(const struct Vec3 *pos);     // update current portal according to the position of the ball
     void fillObjects(std::vector<GameObject*> &objects);   // fill objects with current portal and its neighboring portals' objects
-    Portal *getCurrentPortal();
 	int getCurrentPortalIdx();
 	void iteratePortals(int rootIdx, PortalIterateFun fun, void *auxData);
 	MAZEorientation getCurrentOrientation();
-	std::vector<Portal *> *getPortals();
+	
+	const Portal *getCurrentPortal();
+	const std::vector<Portal *> *getPortals();
+	const aiScene *getModel(int iModel);
+	const std::vector<unsigned int> *getIndexBuff(int iBuff);
+	const sf::Image *getTexture(int iTex);
+	const Portal *getPortal(int iPortal);
+	const Shader *getShader(int iShader);
 private:
 	void readModel();
 	void readTexture();
@@ -41,8 +48,9 @@ private:
 	std::vector<Shader *> shaders;
 	bool *visitBuff;//For portal iteration. visitBuff[i] = true means the ith portal has been
 					//visited
-        int currentPortal;
+	int currentPortal;
 	MAZEorientation currentOrient;
+	GameObjectFactory factory;
 };
 
 #endif

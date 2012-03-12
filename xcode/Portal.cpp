@@ -7,10 +7,7 @@ Portal::Portal(){
 	neighbors[2] = -1;
 	neighbors[3] = -1;
 
-	doorStatus[0] = 0;
-	doorStatus[1] = 0;
-	doorStatus[2] = 0;
-	doorStatus[3] = 0;
+	//transformation.mat[0] = -1;//negate x axis
 
 	width = 0;
 	height = 0;
@@ -20,9 +17,10 @@ Portal::~Portal(){
 
 }
 
-bool Portal::cullDraw(struct MAZEmat *projMat, struct MAZErectangle &rec, vector<Portal *> *portals){
-	MAZEmat finalProjMat;
-	multMat(projMat, &transformation, &finalProjMat);
+bool Portal::cullDraw(struct MAZEmat *projviewMat, struct MAZEmat *viewportMat, 
+					struct MAZErectangle &rec, const std::vector<Portal *> *portals, hash_set<int *> &visitedEdgeSet){
+	MAZEmat finalProjViewMat;
+	multMat(projviewMat, &transformation, &finalProjViewMat);
 
 	//TODO: implement BV for objects
 	glMatrixMode(GL_MODELVIEW);
@@ -36,61 +34,76 @@ bool Portal::cullDraw(struct MAZEmat *projMat, struct MAZErectangle &rec, vector
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
 	
+	//What this portal looks like in its neighbors eye...
 	int posMap[4] = {1, 0, 3, 2};
+
 	for(int i=0; i<4; i++){
 		if(neighbors[i] < 0)
 			continue;
+
+		//Have we visited this undirected edge? 
+		//I know the following code seems a little hack
+		//but I can't find any better way...
+		Portal *port = (*portals)[neighbors[i]];
+		if(visitedEdgeSet.count(port->getNeighbors()+posMap[i]) > 0)
+			continue;
+		visitedEdgeSet.insert(neighbors+i);
+
 		struct Vec3 p[4];
-		float left = rec.left, right = rec.left+rec.width, 
-			top = rec.bottom+rec.height, bottom = rec.bottom;
+		float left = FLT_MAX, right = FLT_MIN, top = FLT_MIN, bottom = FLT_MAX;
 		for(int j=0; j<4; j++){
-			matMultVec(&finalProjMat, &doorPoints[i][j], p+j);
-			if(p[j].x > left)
+			struct Vec3 tmp;
+			matMultVec3_normalize(&finalProjViewMat, &doorPoints[i][j], &tmp);
+			matMultVec3_normalize(viewportMat, &tmp, p+j);
+			if(p[j].x < left)
 				left = p[j].x;
-			if(p[j].x < right)
+			if(p[j].x > right)
 				right = p[j].x;
 
-			if(p[j].z < top)
-				top = p[j].z;
-			if(p[j].z > bottom)
-				bottom = p[j].z;
+			if(p[j].y > top)
+				top = p[j].y;
+			if(p[j].y < bottom)
+				bottom = p[j].y;
 		}
+		left = left > rec.left ? left : rec.left;
+		right = right < (rec.left+rec.width) ? right : rec.left+rec.width;
+		bottom = bottom > rec.bottom ? bottom : rec.bottom;
+		top = top < (rec.bottom + rec.height) ? top : rec.bottom+rec.height;
 		MAZErectangle neighborRect;
 		neighborRect.left = left;
 		neighborRect.bottom = bottom;
 		neighborRect.height = top-bottom;
 		neighborRect.width = right-left;
-
-		if(neighborRect.height <= 0 || neighborRect.width <= 0)
+		//This is necessary for edge condition
+		if(neighborRect.height <= -1e-5 || neighborRect.width <= -1e-5)
 			continue;
 		
 		//Door status switched. If it is open from this cell to its
 		//neighbor, we might visit that neighbor. When we are visiting
 		//the neighbor, we will close the door and would not visit this
 		//cell. Is it still possible that we might loop back to visited portal?
-		int *nDoorStatus = (*portals)[neighbors[i]]->doorStatus;
-		nDoorStatus[posMap[i]] = nDoorStatus[posMap[i]] ? 0 : 1;
-		doorStatus[i] = nDoorStatus[posMap[i]];
 		//If the door is open, visit it.
 		//NOTE: Theorectically it's possible that a single object in a cell
 		//can be rendered several times from different doors. TODO: I might add some
 		//mask to handle this problem in the future. But, for this maze game,
 		//this scenario seems unlikely. So ignore it for now.
-		if(nDoorStatus[posMap[i]])
-			(*portals)[neighbors[i]]->cullDraw(projMat, neighborRect, portals);
+		port->cullDraw(projviewMat, viewportMat, neighborRect, portals, visitedEdgeSet);
 	}
 	return true;
 }
 
 void Portal::setSize(float w, float h){
-	width = w/25.4;
-	height = h/25.4;
+	width = w;
+	height = h;
 
-	struct Vec3 nw, ne, sw, se;
-	nw = getNW();
+	struct Vec3 nw(0, 0, h);
+	struct Vec3 ne(-w, 0, h);
+	struct Vec3 sw(0, 0, 0);
+	struct Vec3 se(-w, 0, 0);
+	/*nw = getNW();
 	ne = getNE();
 	sw = getSW();
-	se = getSE();
+	se = getSE();*/
 
 	float maxY = (w+h)*10;
 
@@ -107,14 +120,14 @@ void Portal::setSize(float w, float h){
 	ne.y = maxY;
 	sw.y = maxY;
 	se.y = maxY;
-	setVec3(&nw, &doorPoints[0][0]);
-	setVec3(&ne, &doorPoints[0][1]);
-	setVec3(&sw, &doorPoints[1][0]);
-	setVec3(&se, &doorPoints[1][1]);
-	setVec3(&nw, &doorPoints[2][0]);
-	setVec3(&sw, &doorPoints[2][1]);
-	setVec3(&ne, &doorPoints[3][0]);
-	setVec3(&se, &doorPoints[3][1]);
+	setVec3(&nw, &doorPoints[0][2]);
+	setVec3(&ne, &doorPoints[0][3]);
+	setVec3(&sw, &doorPoints[1][2]);
+	setVec3(&se, &doorPoints[1][3]);
+	setVec3(&nw, &doorPoints[2][2]);
+	setVec3(&sw, &doorPoints[2][3]);
+	setVec3(&ne, &doorPoints[3][2]);
+	setVec3(&se, &doorPoints[3][3]);
 }
 
 struct Vec2 Portal::getSize(){
@@ -128,7 +141,7 @@ struct Vec3 Portal::getSW(){
 
 struct Vec3 Portal::getSE(){
 	struct Vec3 ret = pos;
-	vecAdd(&ret, width, 0, 0);
+	vecAdd(&ret, -width, 0, 0);
 	return ret;
 }
 
@@ -140,7 +153,7 @@ struct Vec3 Portal::getNW(){
 
 struct Vec3 Portal::getNE(){
 	struct Vec3 ret = pos;
-	vecAdd(&ret, width, 0, height);
+	vecAdd(&ret, -width, 0, height);
 	return ret;
 }
 
@@ -149,7 +162,7 @@ void Portal::setPos(float x, float y, float z){
 	pos.y = y;
 	pos.z = z;
 
-	transformation.mat[12] = -x;
+	transformation.mat[12] = x;
 	transformation.mat[13] = y;
 	transformation.mat[14] = z;
 }
@@ -166,8 +179,8 @@ void Portal::setPortalObject(GameObject *obj){
 	portalObj = obj;
 }
 
-bool Portal::in(struct Vec3* posIn){
-	return posIn->x >= pos.x && posIn->x <= pos.x+width && 
+bool Portal::in(const struct Vec3* posIn){
+	return posIn->x <= pos.x && posIn->x >= pos.x-width && 
 			posIn->z >= pos.z && posIn->z <= pos.z+height;
 }
 

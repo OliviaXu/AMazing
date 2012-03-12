@@ -3,8 +3,8 @@
 
 #include "Framework.h"
 #include "Ball.h"
-#define VOFFSET 15.//vetrtical offset of camera to ball
-#define HOFFSET 10.//horizontal offset of camera to ball
+#define VOFFSET 0.6//vetrtical offset of camera to ball
+#define HOFFSET -0.4//horizontal offset of camera to ball
 
 
 class Camera{
@@ -19,6 +19,7 @@ public:
 	static const float aspectRatio;
     static const float FOV;
     static const struct Vec3 relPos;    // relative position to the ball
+	const struct Vec3 *getPos();
 private:
     struct Vec3 pos;
     struct Vec3 dir;

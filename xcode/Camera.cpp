@@ -17,6 +17,10 @@ Camera::Camera() {
     
 }
 
+const struct Vec3 *Camera::getPos(){
+	return &pos;
+}
+
 void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball) {
     //Just some shameful hack to render the scene. MUST replace this with matu code!
 
