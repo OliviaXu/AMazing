@@ -14,8 +14,6 @@
 #include "PhysicsInfo.h"
 #include "btBulletDynamicsCommon.h"
 
-enum ObjectType {SPHERE, PLANE};
-
 class PhysicsEngine {
 public:
     PhysicsEngine();

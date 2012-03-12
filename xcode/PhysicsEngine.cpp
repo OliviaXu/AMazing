@@ -32,6 +32,18 @@ void PhysicsEngine::init() {
     dynamicsWorld->setGravity(btVector3(0,0,-10));
 }
 
+void addObject(ObjectType type, PhysicsInfo info)
+{
+    switch (type) {
+        case ObjectType.SPHERE:
+            ;
+            break;
+        case ObjectType.PLANE:
+            btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,1,0),1);
+            break;
+    }
+}
+
 void PhysicsEngine::updateObjects(std::vector<GameObject *> &objects) {
     
 }
