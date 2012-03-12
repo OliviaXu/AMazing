@@ -5,7 +5,6 @@
 #include "GameObject.h"
 
 class MapLoader;
-
 struct GameObjectParam{
 	int iPortal;
 	int iShader;
@@ -14,13 +13,14 @@ struct GameObjectParam{
 	int mass;
 	int iDTex;
 	int iSTex;
+	int iPhyInfo;
 };
 
 class GameObjectMaker{
 public:
 	virtual GameObject *make(char *args, MapLoader *mld);
-	virtual void parseParam(char *args, GameObjectParam *param);
-	void setParam(GameObject *obj, GameObjectParam &param, MapLoader *mld);
+	virtual void parseParam(char *args, struct GameObjectParam *param);
+	void setParam(GameObject *obj, struct GameObjectParam &param, MapLoader *mld);
 };
 
 #endif

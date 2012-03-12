@@ -3,6 +3,7 @@
 
 #include "Framework.h"
 #include "Shader.h"
+#include "PhysicsInfo.h"
 
 class GameObject {
 public:
@@ -18,9 +19,12 @@ public:
     void setClass(char *className);
 	void setModel(const aiScene *model, const std::vector<unsigned int> *indexBuff);
 	void setTexture(const sf::Image *dtex, const sf::Image *stex);
-    struct Vec3 getPos();
+	struct Vec3 getPos();
     struct Vec3 &getVelocity();
 	int getPortal();
+
+	PhysicsInfo *phyinfo;
+
 protected:
 	MAZEmat transformation;
     struct Vec3 pos;

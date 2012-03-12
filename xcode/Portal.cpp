@@ -191,3 +191,7 @@ MAZEorientation Portal::getOrientation(){
 		return JOINT;
 	return horizontalVote > verticalVote ? HORIZONTAL : VERTICAL;
 }
+
+struct Vec3 Portal::getPos(){
+	return pos;
+}

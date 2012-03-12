@@ -14,7 +14,6 @@ Camera::Camera() {
 	dir=Vec3(0.,0.,1.);
 	camO=NORTH;
 	ballO=NORTH;
-    
 }
 
 const struct Vec3 *Camera::getPos(){
