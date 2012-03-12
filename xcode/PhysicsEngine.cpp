@@ -13,11 +13,23 @@ PhysicsEngine::PhysicsEngine() {
 }
 
 PhysicsEngine::~PhysicsEngine() {
-    
+    delete dynamicsWorld;
+    delete solver;
+    delete dispatcher;
+    delete collisionConfiguration;
+    delete broadphase;
 }
 
 void PhysicsEngine::init() {
+    broadphase = new btDbvtBroadphase();
     
+    btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
+    btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
+    
+    btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
+    
+    dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
+    dynamicsWorld->setGravity(btVector3(0,0,-10));
 }
 
 void PhysicsEngine::updateObjects(std::vector<GameObject *> &objects) {
