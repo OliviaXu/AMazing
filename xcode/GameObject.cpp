@@ -9,7 +9,7 @@ GameObject::GameObject(){
 }
 
 GameObject::~GameObject(){
-	
+	delete phyinfo;
 }
 
 void GameObject::updatePhysicalProperty(Vec3 &newPos, 

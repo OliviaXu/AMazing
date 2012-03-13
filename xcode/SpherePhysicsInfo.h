@@ -14,6 +14,7 @@
 class SpherePhysicsInfo: public PhysicsInfo {
 public:
     virtual void parse(char *args);
+	virtual PhysicsInfo *clone();
     float radius;
 };
 

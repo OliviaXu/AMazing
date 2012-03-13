@@ -25,7 +25,7 @@ bool Portal::cullDraw(struct MAZEmat *projviewMat, struct MAZEmat *viewportMat,
 	//TODO: implement BV for objects
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
-	glMultMatrixf(transformation.mat);
+	//glMultMatrixf(transformation.mat);
 
 	portalObj->draw();
 	for(int i=0; i<objs.size(); i++)

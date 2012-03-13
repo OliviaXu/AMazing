@@ -15,13 +15,15 @@ enum PhysicsShapeTy{PHYSP_PLANE, PHYSP_SPHERE, PHYSP_OTHERS};
 
 class PhysicsInfo {
 public:
-	virtual void parse(char *args);
+    virtual void parse(char *args);
+	virtual PhysicsInfo *clone() = 0;
+	virtual void set(PhysicsInfo *info);
 
     float trans_x, trans_y, trans_z, trans_w;
     float pos_x, pos_y, pos_z, pos_w;
     int is_static;
     float mass;
-	PhysicsShapeTy shapeTy;
+    PhysicsShapeTy shapeTy;
 };
 
 #endif

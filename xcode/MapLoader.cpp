@@ -54,6 +54,10 @@ MapLoader::~MapLoader(){
 	for(int i=0; i<textures.size(); i++){
 		delete textures[i];
 	}
+
+	for(int i=0; i<phyinfos.size(); i++){
+		delete phyinfos[i];
+	}
 }
 
 void MapLoader::readModel(){

@@ -14,6 +14,8 @@
 class PlanePhysicsInfo: public PhysicsInfo {
 public:
 	virtual void parse(char *args);
+	virtual PhysicsInfo *clone();
+
     float normal_x, normal_y, normal_z;
 };
 

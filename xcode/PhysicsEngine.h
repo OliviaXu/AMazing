@@ -12,23 +12,21 @@
 #include <vector>
 #include "GameObject.h"
 #include "PhysicsInfo.h"
-#include "btBulletDynamicsCommon.h"
-
-enum ObjectType {SPHERE, PLANE};
+//#include "btBulletDynamicsCommon.h"
 
 class PhysicsEngine {
 public:
     PhysicsEngine();
     ~PhysicsEngine();
-    void init();
-    void addObject(ObjectType type, PhysicsInfo info);
+    //void init();
+   // void addObject(ObjectType type, PhysicsInfo info);
     void updateObjects(std::vector<GameObject*> &objects);  // ???
 private:
-    btBroadphaseInterface* broadphase;
-    btDefaultCollisionConfiguration* collisionConfiguration;
-    btCollisionDispatcher* dispatcher;
-    btSequentialImpulseConstraintSolver* solver;
-    btDiscreteDynamicsWorld* dynamicsWorld;
+    //btBroadphaseInterface* broadphase;
+    //btDefaultCollisionConfiguration* collisionConfiguration;
+    //btCollisionDispatcher* dispatcher;
+    //btSequentialImpulseConstraintSolver* solver;
+    //btDiscreteDynamicsWorld* dynamicsWorld;
 };
 
 #endif
