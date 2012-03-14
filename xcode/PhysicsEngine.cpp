@@ -7,6 +7,8 @@
 //
 
 #include "PhysicsEngine.h"
+#include "SpherePhysicsInfo.h"
+#include "PlanePhysicsInfo.h"
 
 PhysicsEngine::PhysicsEngine() {
     
@@ -18,6 +20,15 @@ PhysicsEngine::~PhysicsEngine() {
     delete dispatcher;
     delete collisionConfiguration;
     delete broadphase;
+    
+    for(int i = 0;i < rigidBodies.size();++i)
+    {
+        dynamicsWorld->removeRigidBody(rigidBodies[i]);
+        delete rigidBodies[i]->getMotionState();
+        delete rigidBodies[i];
+    }
+    for(int i = 0;i < collisionShapes.size();++i)
+        delete collisonShapes[i];
 }
 
 void PhysicsEngine::init() {
@@ -36,14 +47,47 @@ void addObject(ObjectType type, PhysicsInfo info)
 {
     switch (type) {
         case ObjectType.SPHERE:
-            ;
+            SpherePhysicsInfo cur_info = (SpherePhysicsInfo)info;;
+            btCollisionShape* sphereShape = new btSphereShape(cur_info.radius);
+            btDefaultMotionState* sphereMotionState = new btDefaultMotionState(btTransform(btQuaternion(cur_info.trans_x, cur_info.trans_y, cur_info.trans_z, cur_info.trans_w),btVector3(cur_info.pos_x, cur_info.pos_y, cur_info.pos_z)));
+            if(cur_info.isStatic)
+                btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(0, sphereMotionState,sphereShape,btVector3(0,0,0));
+            else
+            {
+                btVector3 sphereInertia(0,0,0);
+                sphereShape->calculateLocalInertia(cur_info.mass,sphereInertia);
+                btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(cur_info.mass, sphereMotionState, sphereShape, sphereInertia);
+            }
+            btRigidBody* sphereRigidBody = new btRigidBody(sphereRigidBodyCI);
+            dynamicsWorld->addRigidBody(sphereRigidBody);
+            collisionShapes.push_back(sphereShape);
+            motionsStates.push_back(sphereMotionState);
+            rigidBodies.push_back(sphereRigidBody);
             break;
         case ObjectType.PLANE:
-            btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0,1,0),1);
+            PlanePhysicsInfo cur_info = (PlanePhysicsInfo)info;
+            btCollisionShape* planeShape = new btStaticPlaneShape(btVector3(cur_info.normal_x, cur_info.normal_y, cur_info.normal_z),1);
+            btDefaultMotionState* planeMotionState = new btDefaultMotionState(btTransform(btQuaternion(cur_info.trans_x, cur_info.trans_y, cur_info.trans_z, cur_info.trans_w),btVector3(cur_info.pos_x, cur_info.pos_y, cur_info.pos_z)));
+            if(cur_info.isStatic)
+                btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI(0, planeMotionState,planeShape,btVector3(0,0,0));
+            else
+                ;//TODO
+            btRigidBody* planeRigidBody = new btRigidBody(planeRigidBodyCI);
+            dynamicsWorld->addRigidBody(planeRigidBody);
+            collisionShapes.push_back(planeShape);
+            motionsStates.push_back(planeMotionState);
+            rigidBodies.push_back(planeRigidBody);
             break;
     }
 }
 
 void PhysicsEngine::updateObjects(std::vector<GameObject *> &objects) {
+    dynamicsWorld->stepSimulation(1/60.f,10);
     
+    for(int i = 0;i < rigidBodies.size();++i)
+    {
+        btTransform trans;
+        rigidBodies[i]->getMotionState()->getWorldTransform(trans);
+        
+    }
 }

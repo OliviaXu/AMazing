@@ -27,6 +27,9 @@ private:
     btCollisionDispatcher* dispatcher;
     btSequentialImpulseConstraintSolver* solver;
     btDiscreteDynamicsWorld* dynamicsWorld;
+    vector<btCollisionShape*> collisionShapes;
+    vector<btDefaultMotionState*> motionsStates;
+    vector<btRigidBody*> rigidBodies;
 };
 
 #endif
