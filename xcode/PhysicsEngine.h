@@ -12,14 +12,14 @@
 #include <vector>
 #include "GameObject.h"
 #include "PhysicsInfo.h"
-//#include "btBulletDynamicsCommon.h"
+#include "btBulletDynamicsCommon.h"
 
 class PhysicsEngine {
 public:
     PhysicsEngine();
     ~PhysicsEngine();
-    //void init();
-   // void addObject(ObjectType type, PhysicsInfo info);
+    void init();
+    void addObject(ObjectType type, PhysicsInfo info);
     void updateObjects(std::vector<GameObject*> &objects);  // ???
 private:
     btBroadphaseInterface* broadphase;
