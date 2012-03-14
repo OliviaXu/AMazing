@@ -24,6 +24,7 @@ public:
 	bool in(const struct Vec3* pos);
 	void setSize(float w, float h);
 	void setPos(float x, float y, float z);
+	struct Vec3 getPos();
 	struct Vec3 getSW();
 	struct Vec3 getSE();
 	struct Vec3 getNW();

@@ -11,14 +11,20 @@ GameObject *GameObjectMaker::make(char *args, MapLoader *mld){
 	return obj;
 }
 
-void GameObjectMaker::setParam(GameObject *obj, GameObjectParam &param, MapLoader *mld){
+void GameObjectMaker::setParam(GameObject *obj, struct GameObjectParam &param, MapLoader *mld){
 	//assert(portals.size() > param.iPortal);
 	obj->setPortal(param.iPortal);
 
 	obj->setMass(param.mass);
 
     Vec3 pos = Vec3(-param.x/25.4, param.y/25.4, param.z/25.4);
-	obj->setPos(pos);
+	Portal *portal = (Portal *)mld->getPortal(param.iPortal);
+	Vec3 worldPos = portal->getPos();
+	worldPos.x = pos.x + worldPos.x;
+	worldPos.y = pos.y + worldPos.y;
+	worldPos.z = pos.z + worldPos.z;
+
+	obj->setPos(worldPos);
 
 	//assert(shaders.size() > prop->iShader);
 	obj->setShader(mld->getShader(param.iShader));
@@ -36,6 +42,13 @@ void GameObjectMaker::setParam(GameObject *obj, GameObjectParam &param, MapLoade
 	if(param.iSTex >= 0)
 		stex = mld->getTexture(param.iSTex);
 	obj->setTexture(dtex, stex);
+
+	obj->phyinfo = mld->phyinfos[param.iPhyInfo]->clone();
+
+	pos = obj->getPos();
+	obj->phyinfo->pos_x = pos.x - obj->phyinfo->pos_x;
+	obj->phyinfo->pos_y = pos.y + obj->phyinfo->pos_y;
+	obj->phyinfo->pos_z = pos.z + obj->phyinfo->pos_z;
 }
 
 
@@ -61,11 +74,11 @@ void GameObjectMaker::parseParam(char *args, GameObjectParam *param){
 	param->iShader = atoi(str);
 
 	assert(str = strtok(NULL, " \t"));
-	param->mass = atoi(str);
-
-	assert(str = strtok(NULL, " \t"));
 	param->iDTex = atoi(str);
 
 	assert(str = strtok(NULL, " \t"));
 	param->iSTex = atoi(str);
+
+	assert(str = strtok(NULL, " \t"));
+	param->iPhyInfo = atoi(str);
 }

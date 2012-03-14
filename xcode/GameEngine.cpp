@@ -18,7 +18,7 @@ GameEngine::GameEngine(string map_file, string config_file)
     camera = new Camera();
     plane = new Plane();
     mapLoader->load(map_file);
-    physicsEngine->init();
+    //physicsEngine->init();
     ball = new Ball();
 }
 

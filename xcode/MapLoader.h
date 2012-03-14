@@ -6,6 +6,7 @@
 #include "Portal.h"
 #include "Shader.h"
 #include "GameObjectFactory.h"
+#include "PhysicsInfo.h"
 
 // contain all the information of the map
 
@@ -30,11 +31,14 @@ public:
 	const sf::Image *getTexture(int iTex);
 	const Portal *getPortal(int iPortal);
 	const Shader *getShader(int iShader);
+	
+	std::vector<PhysicsInfo *> phyinfos;
 private:
 	void readModel();
 	void readTexture();
 	void loadShader();
 	void readPortal();
+	void readPhyInfo();
 	void readObject(bool portalObj);
 	void assertMapValidity();
 	void computePortalPos(Portal *p);
@@ -46,6 +50,7 @@ private:
 	std::vector<Portal *> portals;
 	std::vector<GameObject *> objs;
 	std::vector<Shader *> shaders;
+
 	bool *visitBuff;//For portal iteration. visitBuff[i] = true means the ith portal has been
 					//visited
 	int currentPortal;

@@ -25,7 +25,7 @@ bool Portal::cullDraw(struct MAZEmat *projviewMat, struct MAZEmat *viewportMat,
 	//TODO: implement BV for objects
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
-	glMultMatrixf(transformation.mat);
+	//glMultMatrixf(transformation.mat);
 
 	portalObj->draw();
 	for(int i=0; i<objs.size(); i++)
@@ -190,4 +190,8 @@ MAZEorientation Portal::getOrientation(){
 	if(verticalVote == horizontalVote || (verticalVote == 1 && horizontalVote == 1))
 		return JOINT;
 	return horizontalVote > verticalVote ? HORIZONTAL : VERTICAL;
+}
+
+struct Vec3 Portal::getPos(){
+	return pos;
 }

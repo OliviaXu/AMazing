@@ -1,5 +1,7 @@
 #include "MapLoader.h"
 #include "GameObjectFactory.h"
+#include "SpherePhysicsInfo.h"
+#include "PlanePhysicsInfo.h"
 
 using namespace std;
 
@@ -18,7 +20,6 @@ typedef struct{
 	int iSTex;
 	char *className;
 } ObjProp;
-
 
 MapLoader::MapLoader(){
 	visitBuff = NULL;
@@ -52,6 +53,10 @@ MapLoader::~MapLoader(){
 
 	for(int i=0; i<textures.size(); i++){
 		delete textures[i];
+	}
+
+	for(int i=0; i<phyinfos.size(); i++){
+		delete phyinfos[i];
 	}
 }
 
@@ -235,6 +240,8 @@ void MapLoader::load(string map_file){
 			readPortal();
 		else if(strcmp(str, "t") == 0)
 			readTexture();
+		else if(strcmp(str, "phy") == 0)
+			readPhyInfo();
 		else if(strcmp(str, "pobj") == 0)
 			readObject(true);
 		else if(strcmp(str, "obj") == 0)
@@ -244,6 +251,21 @@ void MapLoader::load(string map_file){
 	}
 
 	assertMapValidity();
+}
+
+void MapLoader::readPhyInfo(){
+	PhysicsInfo *info;
+
+	char *str;
+	assert(str = strtok(NULL, " \t"));
+	if(strcmp(str, "plane") == 0)
+		info = new PlanePhysicsInfo();
+	else if(strcmp(str, "sphere") == 0)
+		info = new SpherePhysicsInfo();
+
+	str = str + strlen(str) + 1;
+	info->parse(str);
+	phyinfos.push_back(info);
 }
 
 void MapLoader::assertMapValidity(){

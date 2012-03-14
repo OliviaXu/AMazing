@@ -9,7 +9,7 @@ GameObject::GameObject(){
 }
 
 GameObject::~GameObject(){
-	
+	delete phyinfo;
 }
 
 void GameObject::updatePhysicalProperty(Vec3 &newPos, 
@@ -31,6 +31,7 @@ void GameObject::setMass(int mass){
 
 void GameObject::setPos(struct Vec3 posIn){
 	pos = posIn;
+	
 	transformation.mat[12] = pos.x;
 	transformation.mat[13] = pos.y;
 	transformation.mat[14] = pos.z;
@@ -54,6 +55,7 @@ void GameObject::setTexture(const sf::Image *dtex, const sf::Image *stex){
 	this->dtex = dtex;
 	this->stex = stex;
 }
+
 
 sf::Image default_tex(1,1,sf::Color(255, 255, 255));
 
