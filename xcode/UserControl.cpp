@@ -6,7 +6,7 @@ UserControl::UserControl() : angSpeed(0.01){
 	angEW=0.;
 	camdir=(Keyorientation)0;//or UP
 	camM=NO;//no camera movement at first start
-	lightP=Vec3(0.,2.,-1.);
+	lightP=Vec3(1.,1.,0.);
 }
 
 void UserControl::setWindow(sf::Window* _window) {
@@ -85,6 +85,8 @@ void UserControl::handleInput(){
             break;
 
         }
+
+		cout << "light " << lightP.x << "," << lightP.y <<"," << lightP.z<<endl;
     }
 
 }

@@ -17,7 +17,6 @@ public:
      * Releases the texture and the underlying framebuffer object.
      */
     ~DepthRenderTarget();
-
     /**
      * Binds this target to the OpenGL pipeline, so that all colors are
      * output to the texture.
@@ -29,16 +28,17 @@ public:
      */
     void unbind();
 
+	GLuint genColorTexutre();
     /**
      * Returns the texture that was used for render-depth-to-texture.  This
      * texture will contain the contents of the depth buffer.
      */
-    GLuint textureID() const;
+    GLuint depthTextureID();
+	GLuint colorTextureID();
 
 private:
-    GLuint textureID_;
+    GLuint depth_textureID_;
     GLuint frameBufferID_;
-    GLuint depthBufferID_;
     GLuint width_;
     GLuint height_;
 

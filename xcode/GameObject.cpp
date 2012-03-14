@@ -1,10 +1,13 @@
 #include "GameObject.h"
+#include "Portal.h"
+
 using namespace std;
 
 GameObject::GameObject(){
 	dtex = NULL;
 	stex = NULL;
 	velocity=Vec3(0.,0.,0.);
+	hide = false;
 	//transformation.mat[0] = -1;
 }
 
@@ -56,12 +59,9 @@ void GameObject::setTexture(const sf::Image *dtex, const sf::Image *stex){
 	this->stex = stex;
 }
 
-
-sf::Image default_tex(1,1,sf::Color(255, 255, 255));
-
-void setMaterial(const aiScene *scene, const aiMesh *mesh, GLuint shaderID, 
-	const sf::Image *dtex, const sf::Image *stex) {
-    aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+void GameObject::setMaterial(const aiMesh *mesh) {
+	GLuint shaderID = shader->programID();
+    aiMaterial* material = model->mMaterials[mesh->mMaterialIndex];
     aiColor3D color;
     // Get a handle to the diffuse, specular, and ambient variables
     // inside the shader.  Then set them with the diffuse, specular, and
@@ -84,7 +84,11 @@ void setMaterial(const aiScene *scene, const aiMesh *mesh, GLuint shaderID,
     GLint shininess = GL_CHECK(glGetUniformLocation(shaderID, "alpha"));
     float value = 40;
     GL_CHECK(glUniform1f(shininess, value));
+}
 
+static sf::Image default_tex(1,1,sf::Color(255, 255, 255));
+void GameObject::bindTexture(){
+	GLuint shaderID = shader->programID();
 	GLint diffuseMap = GL_CHECK(glGetUniformLocation(shaderID, "diffuseMap"));
 	GL_CHECK(glActiveTexture(GL_TEXTURE0));
 	if(dtex){
@@ -104,7 +108,8 @@ void setMaterial(const aiScene *scene, const aiMesh *mesh, GLuint shaderID,
 	GL_CHECK(glUniform1i(specularMap, 1));	
 }
 
-void setMeshData(const aiMesh *mesh, GLuint shaderID) {
+void GameObject::setMeshData(const aiMesh *mesh) {
+	GLuint shaderID = shader->programID();
     // Get a handle to the variables for the vertex data inside the shader.
     GLint position = GL_CHECK(glGetAttribLocation(shaderID, "positionIn"));
     GL_CHECK(glEnableVertexAttribArray(position)); 
@@ -122,12 +127,13 @@ void setMeshData(const aiMesh *mesh, GLuint shaderID) {
 }
 
 //This shall be a abstract method later on
-void GameObject::passShaderParam(const aiMesh *mesh, GLuint shaderID){
-	setMaterial(model, mesh, shaderID, dtex, stex);
-	setMeshData(mesh, shaderID);
+void GameObject::passShaderParam(const aiMesh *mesh){
+	setMaterial(mesh);
+	bindTexture();
+	setMeshData(mesh);
 }
 
-void GameObject::draw(){
+void GameObject::draw(const std::vector<Portal *> *portals){
 	GLuint shaderID = shader->programID();
 	GL_CHECK(glUseProgram(shaderID));
 
@@ -171,7 +177,7 @@ void GameObject::draw(){
 	glMultMatrixf(mat);
 
 	aiMesh *mesh = model->mMeshes[child->mMeshes[0]];
-	passShaderParam(mesh, shaderID);
+	passShaderParam(mesh);
 	GL_CHECK(glDrawElements(GL_TRIANGLES, 3*mesh->mNumFaces, 
 					GL_UNSIGNED_INT, &(*indexBuff)[0]));
 	glMatrixMode(GL_MODELVIEW);
@@ -180,4 +186,12 @@ void GameObject::draw(){
 
 int GameObject::getPortal(){
 	return iPortal;
+}
+
+void GameObject::setHide(bool flag){
+	hide = flag;
+}
+
+bool GameObject::isHidden(){
+	return hide;
 }

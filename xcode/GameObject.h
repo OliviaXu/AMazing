@@ -5,12 +5,14 @@
 #include "Shader.h"
 #include "PhysicsInfo.h"
 
+class Portal;
+
 class GameObject {
 public:
     GameObject();
     ~GameObject();//TODO: Class name is generated via strdup. Free it!
-    void draw();
-	virtual void passShaderParam(const aiMesh *mesh, GLuint shaderID);
+    virtual void draw(const std::vector<Portal *> *portals);
+	virtual void passShaderParam(const aiMesh *mesh);
     void updatePhysicalProperty(Vec3 &newPos, float newMass, float newVel, float newAcc);
     void setPortal(int iPortal);
     void setShader(const Shader *shader);
@@ -22,10 +24,15 @@ public:
 	struct Vec3 getPos();
     struct Vec3 &getVelocity();
 	int getPortal();
-
+	void setHide(bool flag);
+	bool isHidden();
 	PhysicsInfo *phyinfo;
 
 protected:
+	void setMaterial(const aiMesh *mesh);
+	void bindTexture();
+	void setMeshData(const aiMesh *mesh);
+
 	MAZEmat transformation;
     struct Vec3 pos;
     const Shader *shader;
@@ -39,6 +46,7 @@ protected:
     float mass;
     struct Vec3 velocity;
     float acceleration;
+	bool hide;
     // TODO: add status field
 };
 

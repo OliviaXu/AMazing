@@ -87,4 +87,8 @@ bool Vequal(struct Vec3 *vecIna, struct Vec3 *vecInb);
 void VMulti(struct Vec3 *vecIna, float num);
 void multMat(struct MAZEmat *mat1, struct MAZEmat *mat2, struct MAZEmat *matout);
 struct Vec3 vec2vecAdd(struct Vec3 *vecIn, float dx, float dy, float dz);
+
+void getWindowProjMat(struct MAZErectangle &viewport, struct MAZEmat &projviewMat, struct MAZEmat &viewportMat);
+void vecAdd(struct Vec3 *vec1, struct Vec3 *vec2, struct Vec3 *vecOut);
+void inverse(struct MAZEmat *matIn, struct MAZEmat *matOut);
 #endif

@@ -26,10 +26,11 @@ bool Portal::cullDraw(struct MAZEmat *projviewMat, struct MAZEmat *viewportMat,
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	//glMultMatrixf(transformation.mat);
-
-	portalObj->draw();
+	if(!portalObj->isHidden())
+		portalObj->draw(portals);
 	for(int i=0; i<objs.size(); i++)
-		objs[i]->draw();
+		if(!objs[i]->isHidden())
+			objs[i]->draw(portals);
 
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
@@ -51,6 +52,7 @@ bool Portal::cullDraw(struct MAZEmat *projviewMat, struct MAZEmat *viewportMat,
 
 		struct Vec3 p[4];
 		float left = FLT_MAX, right = FLT_MIN, top = FLT_MIN, bottom = FLT_MAX;
+		float nearC = FLT_MAX, farC = FLT_MIN;
 		for(int j=0; j<4; j++){
 			struct Vec3 tmp;
 			matMultVec3_normalize(&finalProjViewMat, &doorPoints[i][j], &tmp);
@@ -64,7 +66,16 @@ bool Portal::cullDraw(struct MAZEmat *projviewMat, struct MAZEmat *viewportMat,
 				top = p[j].y;
 			if(p[j].y < bottom)
 				bottom = p[j].y;
+
+			if(p[j].z < nearC)
+				nearC = p[j].z;
+
+			if(p[j].z > farC)
+				farC = p[j].z;
 		}
+		if(farC < 0 || nearC > 1)
+			continue;
+
 		left = left > rec.left ? left : rec.left;
 		right = right < (rec.left+rec.width) ? right : rec.left+rec.width;
 		bottom = bottom > rec.bottom ? bottom : rec.bottom;
