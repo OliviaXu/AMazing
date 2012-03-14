@@ -1,5 +1,6 @@
 #include "Util.h"
 #include "stdio.h"
+#include "Framework.h"
 
 //this is to do increment of one Vec3
 void vecAdd(struct Vec3 *vecIn, float dx, float dy, float dz){
@@ -58,4 +59,59 @@ void VMulti(struct Vec3 *vecIna, float num){
 	vecIna->x*=num;
 	vecIna->y*=num;
 	vecIna->z*=num;
+}
+
+
+void getWindowProjMat(struct MAZErectangle &viewport, struct MAZEmat &projviewMat, struct MAZEmat &viewportMat){
+	MAZEmat modelviewMat;
+	MAZEmat projMat;
+	
+	glGetFloatv(GL_MODELVIEW_MATRIX, modelviewMat.mat);
+	glGetFloatv(GL_PROJECTION_MATRIX, projMat.mat);
+	
+	float farv = 1., nearv = 0.;
+	viewportMat.mat[0] = viewport.width/2;
+	viewportMat.mat[5] = viewport.height/2;
+	viewportMat.mat[10] = (farv-nearv)/2;
+	viewportMat.mat[12] = viewport.width/2;
+	viewportMat.mat[13] = viewport.height/2;
+	viewportMat.mat[14] = (farv + nearv)/2;
+
+	multMat(&projMat, &modelviewMat, &projviewMat);
+}
+
+void vecAdd(struct Vec3 *vec1, struct Vec3 *vec2, struct Vec3 *vecOut){
+	vecOut->x = vec1->x + vec2->x;
+	vecOut->y = vec1->y + vec2->y;
+	vecOut->z = vec1->z + vec2->z;
+}
+
+void inverse(struct MAZEmat *matIn, struct MAZEmat *matOut){
+	float *matf = matIn->mat;
+	aiMatrix4x4 mat(matf[0], matf[4], matf[8], matf[12],
+					matf[1], matf[5], matf[9], matf[13],
+					matf[2], matf[6], matf[10], matf[14],
+					matf[3], matf[7], matf[11], matf[15]);
+	mat.Inverse();
+
+	matf = matOut->mat;
+	matf[0] = mat.a1;
+	matf[1] = mat.b1;
+	matf[2] = mat.c1;
+	matf[3] = mat.d1;
+
+	matf[4] = mat.a2;
+	matf[5] = mat.b2;
+	matf[6] = mat.c2;
+	matf[7] = mat.d2;
+
+	matf[8] = mat.a3;
+	matf[9] = mat.b3;
+	matf[10] = mat.c3;
+	matf[11] = mat.d3;
+
+	matf[12] = mat.a4;
+	matf[13] = mat.b4;
+	matf[14] = mat.c4;
+	matf[15] = mat.d4;
 }

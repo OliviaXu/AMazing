@@ -44,13 +44,22 @@ void GameEngine::init(sf::Window* _window)
     userControl->setWindow(window);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0); 
-	GLfloat light_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
-	GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
-	GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat light_ambient[] = { 0.3, 0.3, 0.3, 1.0 };
+	GLfloat light_diffuse[] = { 1, 1, 1, 1.0 };
+	GLfloat light_specular[] = { 0.3, 0.3, 0.3, 1. };
+
 	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	//glLightfv(GL_LIGHT0, GL_POSITION, light0_pos);
 
+	GLfloat light1_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
+	GLfloat light1_diffuse[] = { 1, 1, 1, 1. };
+	GLfloat light1_specular[] = { 0.3, 0.3, 0.3, 1. };
+	glEnable(GL_LIGHT1);
+	glLightfv(GL_LIGHT1, GL_AMBIENT, light1_ambient);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_diffuse);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, light1_specular);
 }
 
 void GameEngine::run()
@@ -80,7 +89,8 @@ void GameEngine::run()
 		struct Vec3 lP=userControl->lightPos();
 		GLfloat light_position[]={lP.x,lP.y,lP.z,0.};//directinal light;
 		glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-
+		GLfloat light1_pos[] = {-0.5, 1, -1, 0};
+		glLightfv(GL_LIGHT1, GL_POSITION, light1_pos);
 		//printf("cam mov: % d light: %f %f %f\n",userControl->getCamM(),light_position[0],light_position[1],light_position[2]);
         drawScene();
         
@@ -99,30 +109,12 @@ void GameEngine::handleEvents()
     
 }
 
-void getWindowProjMat(struct MAZErectangle &viewport, struct MAZEmat &projviewMat, struct MAZEmat &viewportMat){
-	MAZEmat modelviewMat;
-	MAZEmat projMat;
-	
-	glGetFloatv(GL_MODELVIEW_MATRIX, modelviewMat.mat);
-	glGetFloatv(GL_PROJECTION_MATRIX, projMat.mat);
-	
-	float farv = 1., nearv = 0.;
-	viewportMat.mat[0] = viewport.width/2;
-	viewportMat.mat[5] = viewport.height/2;
-	viewportMat.mat[10] = (farv-nearv)/2;
-	viewportMat.mat[12] = viewport.width/2;
-	viewportMat.mat[13] = viewport.height/2;
-	viewportMat.mat[14] = (farv + nearv)/2;
-
-	multMat(&projMat, &modelviewMat, &projviewMat);
-}
-
 void GameEngine::drawScene()
 {
-    const Portal *portal = mapLoader->getCurrentPortal();
+    //const Portal *portal = mapLoader->getCurrentPortal();
     
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	int iRootPortal = mapLoader->getCurrentPortalIdx();
+	//int iRootPortal = mapLoader->getCurrentPortalIdx();
 	//cout << iRootPortal << endl;
 	struct MAZEmat projviewMat;
 	struct MAZEmat viewportMat;
@@ -132,6 +124,8 @@ void GameEngine::drawScene()
 	//This cast from const to non-const is pretty dirty.
 	//Not sure how to call rootPortal->cullDraw without doing this...
 	Portal *rootPortal = (Portal *)mapLoader->getCurrentPortal();
+	int ip = mapLoader->getCurrentPortalIdx();
+	cout << "portal " << ip << endl;
 	/*rootPortal->doorStatus[0] = 0;
 	rootPortal->doorStatus[1] = 0;
 	rootPortal->doorStatus[2] = 0;
