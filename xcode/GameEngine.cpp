@@ -65,7 +65,7 @@ void GameEngine::init(sf::Window* _window)
 void GameEngine::run()
 {
     while(1){
-        //userControl->handleInput();    // constant * window.GetFrameTime() 
+        userControl->handleInput();    // constant * window.GetFrameTime() 
 
 		//what's the reason for this??? 
        
@@ -79,7 +79,7 @@ void GameEngine::run()
 		if(mapLoader->updateCurrentPortal(camera->getPos()))
 			updateObjects();
 
-        physicsEngine->updateObjects(objects);
+        physicsEngine->updateObjects(mapLoader->getObject());
         
         eventMgr->updateEvents(objects, mapLoader, events);
         handleEvents();

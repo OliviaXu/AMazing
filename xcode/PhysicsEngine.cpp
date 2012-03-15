@@ -96,7 +96,7 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info)
     }
 }
 
-void PhysicsEngine::updateObjects(std::vector<GameObject *> &objects) {
+void PhysicsEngine::updateObjects(std::vector<GameObject *> *objects) {
     dynamicsWorld->stepSimulation(1/60.f,10);
     
     for(int i = 0;i < rigidBodies.size();++i)
@@ -106,7 +106,7 @@ void PhysicsEngine::updateObjects(std::vector<GameObject *> &objects) {
         btScalar m[15];
         trans.getOpenGLMatrix(m);
         
-        if(i == 1)
+        //if(i == 1)
         {
         cout << "Rigid Object #" << i << ": X = " << trans.getOrigin().getX() << ", Y = " << trans.getOrigin().getY() << ", Z = " << trans.getOrigin().getZ() << endl;
         /*for(int j = 0;j < 15;++j)
@@ -114,6 +114,6 @@ void PhysicsEngine::updateObjects(std::vector<GameObject *> &objects) {
         cout << endl;*/
         }
         
-        objects[i]->setTrans(m);
+        //(*objects)[i]->setTrans(m);
     }
 }

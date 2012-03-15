@@ -20,7 +20,7 @@ public:
     ~PhysicsEngine();
     void init();
     void addObject(PhysicsShapeTy type, PhysicsInfo* info);
-    void updateObjects(std::vector<GameObject*> &objects);  // ???
+    void updateObjects(std::vector<GameObject*> *objects);  // ???
 private:
     btBroadphaseInterface* broadphase;
     btDefaultCollisionConfiguration* collisionConfiguration;

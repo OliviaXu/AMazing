@@ -369,3 +369,8 @@ const Portal *MapLoader::getPortal(int iPortal){
 const Shader *MapLoader::getShader(int iShader){
 	return shaders[iShader];
 }
+
+std::vector<GameObject *>* MapLoader::getObject()
+{
+    return &objs;
+}

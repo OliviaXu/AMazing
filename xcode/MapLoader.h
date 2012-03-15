@@ -32,6 +32,8 @@ public:
 	const sf::Image *getTexture(int iTex);
 	const Portal *getPortal(int iPortal);
 	const Shader *getShader(int iShader);
+    
+    std::vector<GameObject *>* getObject();
 	
 	std::vector<PhysicsInfo *> phyinfos;
 private:
