@@ -13,12 +13,12 @@ GameEngine::GameEngine(string map_file, string config_file)
 {
     mapLoader = new MapLoader();
     physicsEngine = new PhysicsEngine();
+    physicsEngine->init();
     eventMgr = new EventMgr();
     userControl = new UserControl();
     camera = new Camera();
     plane = new Plane();
-    mapLoader->load(map_file);
-    physicsEngine->init();
+    mapLoader->load(map_file, physicsEngine);
     ball = new Ball();
 }
 
@@ -65,7 +65,7 @@ void GameEngine::init(sf::Window* _window)
 void GameEngine::run()
 {
     while(1){
-        userControl->handleInput();    // constant * window.GetFrameTime() 
+        //userControl->handleInput();    // constant * window.GetFrameTime() 
 
 		//what's the reason for this??? 
        
@@ -74,8 +74,6 @@ void GameEngine::run()
         
         plane->update(dAngleNS, dAngleEW);
         
-        /*if(mapLoader->updateCurrentPortal(ball->getPos()))
-            updateObjects();*/
         //I think updating current portal according to camera is more appropriate.
 		camera->updatePos(userControl->getCamM(),userControl->getCamDirUpdate(),ball);//input camera movement ball direction and ball to determin camera position and direction
 		if(mapLoader->updateCurrentPortal(camera->getPos()))

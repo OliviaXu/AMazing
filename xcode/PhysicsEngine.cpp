@@ -10,6 +10,9 @@
 #include "SpherePhysicsInfo.h"
 #include "PlanePhysicsInfo.h"
 
+#include <iostream>
+using namespace std;
+
 PhysicsEngine::PhysicsEngine() {
     
 }
@@ -101,5 +104,6 @@ void PhysicsEngine::updateObjects(std::vector<GameObject *> &objects) {
         btTransform trans;
         rigidBodies[i]->getMotionState()->getWorldTransform(trans);
         
+        cout << "Rigid Object #" << i << ": Y = " << trans.getOrigin().getY() << endl;
     }
 }

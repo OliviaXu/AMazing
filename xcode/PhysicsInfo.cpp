@@ -5,28 +5,28 @@ void PhysicsInfo::parse(char *args){
 	assert(str = strtok(args, " \t"));
 	mass = atoi(str);
 
-	assert(str = strtok(args, " \t"));
+	assert(str = strtok(NULL, " \t"));
 	is_static = atoi(str);
 
-	assert(str = strtok(args, " \t"));
+	assert(str = strtok(NULL, " \t"));
 	trans_x = atoi(str);
 
-	assert(str = strtok(args, " \t"));
+	assert(str = strtok(NULL, " \t"));
 	trans_y = atoi(str);
 
-	assert(str = strtok(args, " \t"));
+	assert(str = strtok(NULL, " \t"));
 	trans_z = atoi(str);
 
-	assert(str = strtok(args, " \t"));
+	assert(str = strtok(NULL, " \t"));
 	trans_w = atoi(str);
 
-	assert(str = strtok(args, " \t"));
+	assert(str = strtok(NULL, " \t"));
 	pos_x = atoi(str);
 
-	assert(str = strtok(args, " \t"));
+	assert(str = strtok(NULL, " \t"));
 	pos_y = atoi(str);
 
-	assert(str = strtok(args, " \t"));
+	assert(str = strtok(NULL, " \t"));
 	pos_z = atoi(str);
 }
 
