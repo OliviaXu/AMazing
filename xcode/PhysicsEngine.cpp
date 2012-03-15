@@ -43,7 +43,7 @@ void PhysicsEngine::init() {
     btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
     
     dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
-    dynamicsWorld->setGravity(btVector3(0,0,-10));
+    dynamicsWorld->setGravity(btVector3(0,-10,0));
 }
 
 void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info)
@@ -103,7 +103,17 @@ void PhysicsEngine::updateObjects(std::vector<GameObject *> &objects) {
     {
         btTransform trans;
         rigidBodies[i]->getMotionState()->getWorldTransform(trans);
+        btScalar m[15];
+        trans.getOpenGLMatrix(m);
         
-        cout << "Rigid Object #" << i << ": Y = " << trans.getOrigin().getY() << endl;
+        if(i == 1)
+        {
+        cout << "Rigid Object #" << i << ": X = " << trans.getOrigin().getX() << ", Y = " << trans.getOrigin().getY() << ", Z = " << trans.getOrigin().getZ() << endl;
+        /*for(int j = 0;j < 15;++j)
+            cout << m[j] << " ";
+        cout << endl;*/
+        }
+        
+        objects[i]->setTrans(m);
     }
 }
