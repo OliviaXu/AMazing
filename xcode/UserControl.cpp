@@ -86,7 +86,8 @@ void UserControl::handleInput(){
 
         }
 
-		cout << "light " << lightP.x << "," << lightP.y <<"," << lightP.z<<endl;
+		if(DEBUG_OUTPUT)
+            cout << "light " << lightP.x << "," << lightP.y <<"," << lightP.z<<endl;
     }
 
 }

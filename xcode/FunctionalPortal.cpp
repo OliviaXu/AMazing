@@ -67,7 +67,8 @@ void FunctionalPortal::draw(const std::vector<Portal *> *portals){
 	struct Vec3 portalPos = portal->getPos();
 	time_t t;
 	time(&t);
-	cout << "time " << (float)(t%100) << endl;
+	if(DEBUG_OUTPUT)
+        cout << "time " << (float)(t%100) << endl;
 	GL_CHECK(glUniform3f(lpos, lookPos.x+portalPos.x, lookPos.y+portalPos.y, lookPos.z+portalPos.z));
 	GL_CHECK(glUniform3f(mnormal, motionNormal.x, motionNormal.y, motionNormal.z));
 	GL_CHECK(glUniform1f(timeIn, (float)(t%100)));

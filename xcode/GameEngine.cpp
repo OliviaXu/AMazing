@@ -18,7 +18,7 @@ GameEngine::GameEngine(string map_file, string config_file)
     camera = new Camera();
     plane = new Plane();
     mapLoader->load(map_file);
-    //physicsEngine->init();
+    physicsEngine->init();
     ball = new Ball();
 }
 
@@ -125,7 +125,8 @@ void GameEngine::drawScene()
 	//Not sure how to call rootPortal->cullDraw without doing this...
 	Portal *rootPortal = (Portal *)mapLoader->getCurrentPortal();
 	int ip = mapLoader->getCurrentPortalIdx();
-	cout << "portal " << ip << endl;
+	if(DEBUG_OUTPUT)
+        cout << "portal " << ip << endl;
 	/*rootPortal->doorStatus[0] = 0;
 	rootPortal->doorStatus[1] = 0;
 	rootPortal->doorStatus[2] = 0;

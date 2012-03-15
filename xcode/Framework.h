@@ -37,6 +37,8 @@
 
 #include "Util.h"
 
+#define DEBUG_OUTPUT 0
+
 #define GL_CHECK(x)		(x);\
 						{GLenum __MY_GL_ERROR = glGetError();\
 						if (GL_NO_ERROR != __MY_GL_ERROR) {\

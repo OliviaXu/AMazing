@@ -28,9 +28,6 @@ void PhysicsInfo::parse(char *args){
 
 	assert(str = strtok(args, " \t"));
 	pos_z = atoi(str);
-
-	assert(str = strtok(args, " \t"));
-	pos_w = atoi(str);
 }
 
 void PhysicsInfo::set(PhysicsInfo *info){
@@ -42,7 +39,6 @@ void PhysicsInfo::set(PhysicsInfo *info){
 	pos_x = info->pos_x;
 	pos_y = info->pos_y;
 	pos_z = info->pos_z;
-	pos_w = info->pos_w;
 
 	is_static = info->is_static;
 	mass = info->mass;

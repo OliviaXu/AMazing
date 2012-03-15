@@ -4,7 +4,7 @@
 #include "Framework.h"
 #include "Ball.h"
 #define VOFFSET 0.6//vetrtical offset of camera to ball
-#define HOFFSET -0.4//horizontal offset of camera to ball
+#define HOFFSET 0.4//horizontal offset of camera to ball
 
 
 class Camera{

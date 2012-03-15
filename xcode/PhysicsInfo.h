@@ -20,7 +20,7 @@ public:
 	virtual void set(PhysicsInfo *info);
 
     float trans_x, trans_y, trans_z, trans_w;
-    float pos_x, pos_y, pos_z, pos_w;
+    float pos_x, pos_y, pos_z;
     int is_static;
     float mass;
     PhysicsShapeTy shapeTy;

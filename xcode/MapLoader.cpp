@@ -317,7 +317,8 @@ bool MapLoader::updateCurrentPortal(const struct Vec3 *pos){
 
 	DetectPortalBundle bundle = {pos, -1};
 	iteratePortals(currentPortal, detectCurrentPortal, &bundle);
-	cout << bundle.currentPortal << endl;
+	if(DEBUG_OUTPUT)
+        cout << bundle.currentPortal << endl;
 	if(bundle.currentPortal == currentPortal)
 		return false;
 

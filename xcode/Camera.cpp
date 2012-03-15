@@ -10,7 +10,8 @@
 # define VTH 15.0//assuming the threshold of changing the orientation of camera is 15.0 by now
 
 Camera::Camera() {
-	pos=Vec3(0.,0.+VOFFSET,0.-HOFFSET);//the original position need to be changed
+	//pos=Vec3(0.,0.+VOFFSET,0.-HOFFSET);//the original position need to be changed
+    pos=Vec3(0.,0.,0.);//the original position need to be changed
 	dir=Vec3(0.,0.,1.);
 	camO=NORTH;
 	ballO=NORTH;
@@ -156,6 +157,7 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball) {
 		pos.z--;
 	}
 	gluLookAt(pos.x,pos.y,pos.z,pos.x+dir.x,pos.y+dir.y,pos.z+dir.z,0.,1.,0.);
-	printf("cam pos %f %f %f\n",pos.x,pos.y,pos.z);
+	if(DEBUG_OUTPUT)
+        printf("cam pos %f %f %f\n",pos.x,pos.y,pos.z);
 	//gluLookAt(100, 0, 0, 0, 0, 0, 0, 1, 0);
 }
