@@ -13,12 +13,12 @@ m models/sphere.3ds #9
 m models/portal_plane_z.3ds #10
 
 # List of Textures
-t textures/tiles_d.jpg  #0
-t textures/tiles_s.jpg  #1
-t textures/stone_d.jpg  #2
-t textures/stone_s.jpg  #3
-t textures/BARK5.jpg    #4
-t textures/mirror.jpg   #5
+t models/tiles_d.jpg  #0
+t models/tiles_s.jpg  #1
+t models/stone_d.jpg  #2
+t models/stone_s.jpg  #3
+t models/BARK5.jpg    #4
+#t models/mirror.jpg   #5
 
 # List of Shaders
 s shaders/phong		# 0

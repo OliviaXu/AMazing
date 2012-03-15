@@ -130,7 +130,7 @@ void GameEngine::drawScene()
 	rootPortal->doorStatus[1] = 0;
 	rootPortal->doorStatus[2] = 0;
 	rootPortal->doorStatus[3] = 0;*/
-	hash_set<int *> visitedEdgeSet;
+	set<int *> visitedEdgeSet;
 	rootPortal->cullDraw(&projviewMat, &viewportMat, viewport, 
 							mapLoader->getPortals(), visitedEdgeSet);
 }

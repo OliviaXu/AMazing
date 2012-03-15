@@ -5,6 +5,9 @@
 #include "Camera.h"
 #include "GameObject.h"
 
+#define MY_FLT_MIN -999999.9
+#define MY_FLT_MAX 999999.9
+
 enum MAZEorientation{HORIZONTAL, VERTICAL, JOINT};
 
 class Portal{
@@ -17,7 +20,7 @@ public:
 	//volumes to windows coordinate and decide whether it shall be culled
     bool cullDraw(struct MAZEmat *projviewMat, struct MAZEmat *viewportMat, 
 					struct MAZErectangle &rec, const std::vector<Portal *> *portals, 
-						std::hash_set<int *> &visitedEdgeSet);
+						std::set<int *> &visitedEdgeSet);
     int *getNeighbors();
     void addObject(GameObject *obj);
     void setPortalObject(GameObject *obj);

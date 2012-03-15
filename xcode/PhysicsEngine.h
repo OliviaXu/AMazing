@@ -19,7 +19,7 @@ public:
     PhysicsEngine();
     ~PhysicsEngine();
     void init();
-    void addObject(ObjectType type, PhysicsInfo info);
+    void addObject(PhysicsShapeTy type, PhysicsInfo* info);
     void updateObjects(std::vector<GameObject*> &objects);  // ???
 private:
     btBroadphaseInterface* broadphase;
@@ -27,9 +27,9 @@ private:
     btCollisionDispatcher* dispatcher;
     btSequentialImpulseConstraintSolver* solver;
     btDiscreteDynamicsWorld* dynamicsWorld;
-    vector<btCollisionShape*> collisionShapes;
-    vector<btDefaultMotionState*> motionsStates;
-    vector<btRigidBody*> rigidBodies;
+    std::vector<btCollisionShape*> collisionShapes;
+    std::vector<btDefaultMotionState*> motionsStates;
+    std::vector<btRigidBody*> rigidBodies;
 };
 
 #endif

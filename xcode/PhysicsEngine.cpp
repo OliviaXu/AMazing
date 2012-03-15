@@ -28,7 +28,7 @@ PhysicsEngine::~PhysicsEngine() {
         delete rigidBodies[i];
     }
     for(int i = 0;i < collisionShapes.size();++i)
-        delete collisonShapes[i];
+        delete collisionShapes[i];
 }
 
 void PhysicsEngine::init() {
@@ -43,41 +43,53 @@ void PhysicsEngine::init() {
     dynamicsWorld->setGravity(btVector3(0,0,-10));
 }
 
-void addObject(ObjectType type, PhysicsInfo info)
+void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info)
 {
     switch (type) {
-        case ObjectType.SPHERE:
-            SpherePhysicsInfo cur_info = (SpherePhysicsInfo)info;;
-            btCollisionShape* sphereShape = new btSphereShape(cur_info.radius);
-            btDefaultMotionState* sphereMotionState = new btDefaultMotionState(btTransform(btQuaternion(cur_info.trans_x, cur_info.trans_y, cur_info.trans_z, cur_info.trans_w),btVector3(cur_info.pos_x, cur_info.pos_y, cur_info.pos_z)));
-            if(cur_info.isStatic)
+        case PHYSP_SPHERE:
+        {
+            SpherePhysicsInfo* cur_info = (SpherePhysicsInfo*)info;
+            btCollisionShape* sphereShape = new btSphereShape(cur_info->radius);
+            btDefaultMotionState* sphereMotionState = new btDefaultMotionState(btTransform(btQuaternion(cur_info->trans_x, cur_info->trans_y, cur_info->trans_z, cur_info->trans_w),btVector3(cur_info->pos_x, cur_info->pos_y, cur_info->pos_z)));
+            btRigidBody* sphereRigidBody;
+            if(cur_info->is_static)
+            {
                 btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(0, sphereMotionState,sphereShape,btVector3(0,0,0));
+                sphereRigidBody = new btRigidBody(sphereRigidBodyCI);
+            }
             else
             {
                 btVector3 sphereInertia(0,0,0);
-                sphereShape->calculateLocalInertia(cur_info.mass,sphereInertia);
-                btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(cur_info.mass, sphereMotionState, sphereShape, sphereInertia);
+                sphereShape->calculateLocalInertia(cur_info->mass,sphereInertia);
+                btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(cur_info->mass, sphereMotionState, sphereShape, sphereInertia);
+                sphereRigidBody = new btRigidBody(sphereRigidBodyCI);
             }
-            btRigidBody* sphereRigidBody = new btRigidBody(sphereRigidBodyCI);
+            
             dynamicsWorld->addRigidBody(sphereRigidBody);
             collisionShapes.push_back(sphereShape);
             motionsStates.push_back(sphereMotionState);
             rigidBodies.push_back(sphereRigidBody);
             break;
-        case ObjectType.PLANE:
-            PlanePhysicsInfo cur_info = (PlanePhysicsInfo)info;
-            btCollisionShape* planeShape = new btStaticPlaneShape(btVector3(cur_info.normal_x, cur_info.normal_y, cur_info.normal_z),1);
-            btDefaultMotionState* planeMotionState = new btDefaultMotionState(btTransform(btQuaternion(cur_info.trans_x, cur_info.trans_y, cur_info.trans_z, cur_info.trans_w),btVector3(cur_info.pos_x, cur_info.pos_y, cur_info.pos_z)));
-            if(cur_info.isStatic)
+        }
+        case PHYSP_PLANE:
+        {
+            PlanePhysicsInfo* cur_info = (PlanePhysicsInfo*)info;
+            btCollisionShape* planeShape = new btStaticPlaneShape(btVector3(cur_info->normal_x, cur_info->normal_y, cur_info->normal_z),1);
+            btDefaultMotionState* planeMotionState = new btDefaultMotionState(btTransform(btQuaternion(cur_info->trans_x, cur_info->trans_y, cur_info->trans_z, cur_info->trans_w),btVector3(cur_info->pos_x, cur_info->pos_y, cur_info->pos_z)));
+            btRigidBody* planeRigidBody;
+            if(cur_info->is_static)
+            {
                 btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI(0, planeMotionState,planeShape,btVector3(0,0,0));
+                planeRigidBody = new btRigidBody(planeRigidBodyCI);
+            }
             else
                 ;//TODO
-            btRigidBody* planeRigidBody = new btRigidBody(planeRigidBodyCI);
             dynamicsWorld->addRigidBody(planeRigidBody);
             collisionShapes.push_back(planeShape);
             motionsStates.push_back(planeMotionState);
             rigidBodies.push_back(planeRigidBody);
             break;
+        }
     }
 }
 

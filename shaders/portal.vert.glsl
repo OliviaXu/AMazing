@@ -27,12 +27,12 @@ void main() {
 
 	// Transform the normal, just like in Assignment 2.
 	//normal = gl_NormalMatrix * normalIn;
-	float angle = timeIn*1.2f;
+	float angle = timeIn*1.2;
 	normal = gl_NormalMatrix * normalIn;
-	vec4 normalTemp = transpose(gl_TextureMatrix[1]) * vec4(normal, 1);
-	normalTemp = normalTemp + 0.5 * sin(angle+worldPos.z/5.f) * vec4(motionNormalIn, 1);
+	/*vec4 normalTemp = transpose(gl_TextureMatrix[1]) * vec4(normal, 1);
+	normalTemp = normalTemp + 0.5 * sin(angle+worldPos.z/5.0) * vec4(motionNormalIn, 1);
 	normalTemp = transpose(gl_TextureMatrix[0]) * vec4(normal, 1);
-	normal = normalTemp.xyz;
+	normal = normalTemp.xyz;*/
 
 
 /*	// Transform the vertex to get the eye-space position of the vertex

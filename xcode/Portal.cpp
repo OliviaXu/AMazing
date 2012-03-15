@@ -18,7 +18,7 @@ Portal::~Portal(){
 }
 
 bool Portal::cullDraw(struct MAZEmat *projviewMat, struct MAZEmat *viewportMat, 
-					struct MAZErectangle &rec, const std::vector<Portal *> *portals, hash_set<int *> &visitedEdgeSet){
+					struct MAZErectangle &rec, const std::vector<Portal *> *portals, set<int *> &visitedEdgeSet){
 	MAZEmat finalProjViewMat;
 	multMat(projviewMat, &transformation, &finalProjViewMat);
 
@@ -51,8 +51,8 @@ bool Portal::cullDraw(struct MAZEmat *projviewMat, struct MAZEmat *viewportMat,
 		visitedEdgeSet.insert(neighbors+i);
 
 		struct Vec3 p[4];
-		float left = FLT_MAX, right = FLT_MIN, top = FLT_MIN, bottom = FLT_MAX;
-		float nearC = FLT_MAX, farC = FLT_MIN;
+		float left = MY_FLT_MAX, right = MY_FLT_MIN, top = MY_FLT_MIN, bottom = MY_FLT_MAX;
+		float nearC = MY_FLT_MAX, farC = MY_FLT_MIN;
 		for(int j=0; j<4; j++){
 			struct Vec3 tmp;
 			matMultVec3_normalize(&finalProjViewMat, &doorPoints[i][j], &tmp);
