@@ -1,3 +1,4 @@
+#version 120
 // This is a texture sampler.  It lets you sample textures!  The keyword
 // "uniform" means constant - sort of.  The uniform variables are the same
 // for all fragments in an object, but they can change in between objects.
@@ -9,7 +10,6 @@ uniform vec3 Kd;
 uniform vec3 Ks;
 uniform vec3 Ka;
 uniform float alpha;
-
 // These are values that OpenGL interpoates for us.  Note that some of these
 // are repeated from the fragment shader.  That's because they're passed
 // across.

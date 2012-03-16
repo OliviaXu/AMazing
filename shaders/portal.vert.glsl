@@ -1,4 +1,4 @@
-
+#version 120
 uniform vec3 lookPosIn;
 uniform vec3 motionNormalIn;
 uniform float timeIn;

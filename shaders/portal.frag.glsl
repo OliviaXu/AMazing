@@ -1,3 +1,4 @@
+#version 120
 // This is a texture sampler.  It lets you sample textures!  The keyword
 // "uniform" means constant - sort of.  The uniform variables are the same
 // for all fragments in an object, but they can change in between objects.
@@ -35,7 +36,7 @@ void main() {
 	float Rd = max(0.0, dot(L, N));
 	vec3 Td = texture2D(diffuseMap, texcoord).rgb;
 	vec3 Te = textureCube(environmentMap, cubemapRay).rgb;
-	vec3 diffuse = Rd * Kd * 2*Te * gl_LightSource[0].diffuse.rgb;
+	vec3 diffuse = Rd * Kd * 2 * Te * gl_LightSource[0].diffuse.rgb;
 	
 	float Rd1 = max(0.0, dot(L1, N));
 	diffuse = diffuse + Rd1 * Kd * (Te) *gl_LightSource[1].diffuse.rgb;
