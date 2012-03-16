@@ -63,14 +63,16 @@ void FunctionalPortal::draw(const std::vector<Portal *> *portals){
 	GLuint lpos = GL_CHECK(glGetUniformLocation(shaderID, "lookPosIn"));
 	GLuint mnormal = GL_CHECK(glGetUniformLocation(shaderID, "motionNormalIn"));
 	GLuint timeIn = GL_CHECK(glGetUniformLocation(shaderID, "timeIn"));
+	GLuint centerPos = GL_CHECK(glGetUniformLocation(shaderID, "centerPos"));
 
 	struct Vec3 portalPos = portal->getPos();
 	time_t t;
 	time(&t);
-	cout << "time " << (float)(t%100) << endl;
+	cout << "time " << clock() << endl;
 	GL_CHECK(glUniform3f(lpos, lookPos.x+portalPos.x, lookPos.y+portalPos.y, lookPos.z+portalPos.z));
 	GL_CHECK(glUniform3f(mnormal, motionNormal.x, motionNormal.y, motionNormal.z));
-	GL_CHECK(glUniform1f(timeIn, (float)(t%100)));
+	GL_CHECK(glUniform1f(timeIn, (float)(clock()/CLOCKS_PER_SEC)));
+	GL_CHECK(glUniform3f(centerPos, pos.x, pos.y, pos.z));
 
 	createEnvironmentMap(portals);
 
@@ -123,6 +125,15 @@ void FunctionalPortal::passShaderParam(const aiMesh *mesh){
 	setMaterial(mesh);
 	bindTexture();
 	setMeshData(mesh);
+	  
+	GLuint shaderID = shader->programID();
+	GLint tangent = GL_CHECK(glGetAttribLocation(shaderID, "tangentIn"));
+    GL_CHECK(glEnableVertexAttribArray(tangent)); 
+	GL_CHECK(glVertexAttribPointer(tangent, 3, GL_FLOAT, 0, sizeof(aiVector3D), mesh->mTangents));
+
+	GLint bitangent = GL_CHECK(glGetAttribLocation(shaderID, "bitangentIn"));
+    GL_CHECK(glEnableVertexAttribArray(bitangent)); 
+	GL_CHECK(glVertexAttribPointer(bitangent, 3, GL_FLOAT, 0, sizeof(aiVector3D), mesh->mBitangents));
 }
 
 void FunctionalPortal::createEnvironmentMap(const std::vector<Portal *> *portals){
@@ -250,7 +261,7 @@ void FunctionalPortal::createEnvironmentMap(const std::vector<Portal *> *portals
 							portals, visitedEdgeSet);
 		
 		glBindTexture(GL_TEXTURE_CUBE_MAP, dstCubemap);
-		//debug
+	/*	//debug
 	sf::Uint8 *pixelArray = new sf::Uint8[width*height*4];
 	glGetTexImage(GL_TEXTURE_CUBE_MAP_POSITIVE_X+i, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelArray); // to read from texture instead
 	sf::Image temp(width, height, pixelArray);
@@ -259,7 +270,7 @@ void FunctionalPortal::createEnvironmentMap(const std::vector<Portal *> *portals
 	filename.append(a);
 	filename.append(".jpg");
 	temp.SaveToFile(filename);
-	delete pixelArray;
+	delete pixelArray;*/
 	}
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();

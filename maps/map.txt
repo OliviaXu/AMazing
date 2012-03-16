@@ -10,6 +10,7 @@ m models/dragon.dae             # 6
 m models/joint_hole.3DS #7
 m models/box_box.3DS #8
 m models/sphere.3ds #9
+m models/portal_plane_z_dense.3ds #10
 
 # List of Textures
 t textures/tiles_d.jpg  #0
@@ -17,9 +18,11 @@ t textures/tiles_s.jpg  #1
 t textures/stone_d.jpg  #2
 t textures/stone_s.jpg  #3
 t textures/BARK5.jpg    #4
+t textures/mirror.jpg   #5
 
 # List of Shaders
 s shaders/phong		# 0
+s shaders/portal	# 1
 
 # List of Portals
 # ________________________________
@@ -56,4 +59,5 @@ pobj gameobject 2 6 0 0 0 0 2 3 0
 # obj class_name mesh_num portal_num pos shader_num d_tex_num s_tex_num iphyinfo
 obj gameobject 5 0 50 0 250 0 4 -1 0
 obj gameobject 6 0 100 100 250 0 2 3 0
-obj ball 9 0 100 0 100 0 0 1 1
+obj funportal 10 0 2 30 30 1 -1 -1 0
+#obj ball 9 0 100 0 100 0 0 1 1

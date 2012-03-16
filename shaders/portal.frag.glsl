@@ -3,6 +3,8 @@
 // for all fragments in an object, but they can change in between objects.
 uniform sampler2D diffuseMap;
 uniform sampler2D specularMap;
+uniform samplerCube environmentMap;
+uniform vec3 lookPosIn;
 
 // Diffuse, ambient, and specular materials.  These are also uniform.
 uniform vec3 Kd;
@@ -16,9 +18,11 @@ uniform float alpha;
 varying vec2 texcoord;
 varying vec3 normal;
 varying vec3 eyePosition;
+varying vec3 worldPos;
 
 void main() {
-	// Normalize the normal, and calculate light vector and view vector
+	vec3 cubemapRay = normalize(worldPos - lookPosIn);
+		// Normalize the normal, and calculate light vector and view vector
 	// Note: this is doing a directional light, which is a little different
 	// from what you did in Assignment 2.
 	vec3 N = normalize(normal);
@@ -30,10 +34,11 @@ void main() {
 	// Calculate the diffuse color coefficient, and sample the diffuse texture
 	float Rd = max(0.0, dot(L, N));
 	vec3 Td = texture2D(diffuseMap, texcoord).rgb;
-	vec3 diffuse = Rd * Kd * Td * gl_LightSource[0].diffuse.rgb;
+	vec3 Te = textureCube(environmentMap, cubemapRay).rgb;
+	vec3 diffuse = Rd * Kd * 2*Te * gl_LightSource[0].diffuse.rgb;
 	
 	float Rd1 = max(0.0, dot(L1, N));
-	diffuse = diffuse + Rd1 * Kd * Td *gl_LightSource[1].diffuse.rgb;
+	diffuse = diffuse + Rd1 * Kd * (Te) *gl_LightSource[1].diffuse.rgb;
 
 	// Calculate the specular coefficient
 	vec3 R = reflect(-L, N);
@@ -46,8 +51,10 @@ void main() {
 	specular = specular + Rs1 * Ks * Ts * gl_LightSource[1].specular.rgb;
 
 	// Ambient is easy
-	vec3 ambient = Ka * Td * (gl_LightSource[0].ambient.rgb + gl_LightSource[1].ambient.rgb);
+	vec3 ambient = Ka * Te * (gl_LightSource[0].ambient.rgb + gl_LightSource[1].ambient.rgb);
 	
+gl_FragColor = vec4(diffuse + specular + ambient, 1);
+
 	// This actually writes to the frame buffer
-	gl_FragColor = vec4(diffuse + specular + ambient, 1);
+	//gl_FragColor = vec4(texcoord, 0, 1);
 }

@@ -12,6 +12,7 @@ varying vec3 normal;
 varying vec3 eyePosition;
 
 void main() {
+
 	// Transform the vertex to get the eye-space position of the vertex
 	vec4 eyeTemp = gl_ModelViewMatrix * vec4(positionIn, 1);
 	eyePosition = eyeTemp.xyz;
@@ -19,7 +20,7 @@ void main() {
 	// Transform again to get the clip-space position.  The gl_Position
 	// variable tells OpenGL where the vertex should go.
 	gl_Position = gl_ProjectionMatrix * eyeTemp;
-	//gl_Position = vec4(0,0,0,1);
+
 	// Transform the normal, just like in Assignment 2.
 	normal = gl_NormalMatrix * normalIn;
 
