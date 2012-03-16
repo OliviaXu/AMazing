@@ -1,7 +1,7 @@
 #include "UserControl.h"
 using namespace std;
 
-UserControl::UserControl() : angSpeed(0.01){
+UserControl::UserControl() : angSpeed(10){
 	angNS=0.;
 	angEW=0.;
 	camdir=(Keyorientation)0;//or UP

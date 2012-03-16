@@ -10,6 +10,7 @@
 # define VTH 15.0//assuming the threshold of changing the orientation of camera is 15.0 by now
 
 Camera::Camera() {
+	control_m=true;
 	//pos=Vec3(0.,0.+VOFFSET,0.-HOFFSET);//the original position need to be changed
     pos=Vec3(0.,0.,0.);//the original position need to be changed
 	dir=Vec3(0.,0.,1.);
@@ -21,7 +22,7 @@ const struct Vec3 *Camera::getPos(){
 	return &pos;
 }
 
-void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball) {
+void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float AngleNS,float AngleEW) {
     //Just some shameful hack to render the scene. MUST replace this with matu code!
 
     GLfloat aspectRatio = (GLfloat)800.f/600;
@@ -38,8 +39,6 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball) {
  	5,
  	0,
  	2);*/
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
 
 	Vec3 ballv=ball->getVelocity();
 	//TODO:what if all 0?
@@ -161,7 +160,31 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball) {
 	case B:
 		pos.z--;
 	}
-	gluLookAt(pos.x,pos.y,pos.z,pos.x+dir.x,pos.y+dir.y,pos.z+dir.z,0.,1.,0.);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	/*
+	if(control_m){//if it isn't controlled by people
+		float rAngleEW=AngleEW*3.1415/180.;
+		float rAngleNS=AngleNS*3.1415/180.;
+		//pos.x=ball->getPos().x+sin(rAngleEW)*VOFFSET;//ball pos...+
+		//pos.z=ball->getPos().z-1*(cos(rAngleNS)*HOFFSET+cos(rAngleEW)*sin(rAngleNS)*VOFFSET);
+		//pos.y=ball->getPos().y-1*sin(rAngleNS)*HOFFSET+cos(rAngleEW)*cos(rAngleNS)*VOFFSET;
+		pos.x=-1*50/2.54+sin(rAngleEW)*VOFFSET;//ball pos...+
+		pos.z=250/2.54-1*(cos(rAngleNS)*HOFFSET+cos(rAngleEW)*sin(rAngleNS)*VOFFSET);
+		pos.y=-1*sin(rAngleNS)*HOFFSET+cos(rAngleEW)*cos(rAngleNS)*VOFFSET;
+	}
+	*/
+	//printf("cam pos %f %f %f\n",pos.x,pos.y,pos.z);
+	//printf("world orient %f %f \n",AngleNS,AngleEW);
+	//gluLookAt(pos.x,pos.y,pos.z,pos.x+dir.x,pos.y+dir.y,pos.z+dir.z,0.,1.,0.);
+	//gluLookAt(ball->getPos().x,ball->getPos().y,ball->getPos().z,ball->getPos().x+dir.x,ball->getPos().y+dir.y,ball->getPos().z+dir.z,0.,1.,0.);
+	//gluLookAt(-1*50/2.54,0,250/2.54,-1*50/2.54+dir.x,0+dir.y,250/2.54+dir.z,0.,1.,0.);
+	if(control_m){gluLookAt(-50/25.4,0,0,-50/25.4+dir.x,dir.y,dir.z,0.,1.,0.);}//for testing should be the ball
+	else{gluLookAt(pos.x,pos.y,pos.z,pos.x+dir.x,pos.y+dir.y,pos.z+dir.z,0.,1.,0.);}
+	glRotated(AngleNS,1,0,0); //need oriented according to the center of the portal
+	glRotated(AngleEW,0,0,1);//w is ok as well
+	if(control_m){glTranslated(0,-1*VOFFSET,HOFFSET);}//the whole universe thus revere...
+
 	if(DEBUG_OUTPUT)
         printf("cam pos %f %f %f\n",pos.x,pos.y,pos.z);
 	//gluLookAt(100, 0, 0, 0, 0, 0, 0, 1, 0);
