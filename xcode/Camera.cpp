@@ -32,7 +32,12 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(fieldOfView, aspectRatio, nearClip, farClip);
-
+	/*glOrtho(	-5,
+ 	5,
+ 	-5,
+ 	5,
+ 	0,
+ 	2);*/
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
