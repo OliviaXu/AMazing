@@ -203,7 +203,8 @@ void GameObject::setTrans(float* mat)
         {
             if(i != 3 || j != 3)
             {
-                transformation.mat[4*i+j] = mat[4*j+i];
+                //transformation.mat[4*i+j] = mat[4*j+i];
+                transformation.mat[4*i+j] = mat[4*i+j];
             }
         }
     }

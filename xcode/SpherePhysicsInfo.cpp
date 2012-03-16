@@ -13,7 +13,7 @@ void SpherePhysicsInfo::parse(char *args){
 PhysicsInfo *SpherePhysicsInfo::clone(){
 	SpherePhysicsInfo *info = new SpherePhysicsInfo();
 	info->set(this);
-	info->radius = radius;
+	info->radius = radius / 25.4;
 
 	return info;
 }

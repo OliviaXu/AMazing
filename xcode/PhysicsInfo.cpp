@@ -9,25 +9,25 @@ void PhysicsInfo::parse(char *args){
 	is_static = atoi(str);
 
 	assert(str = strtok(NULL, " \t"));
-	trans_x = atoi(str);
+	trans_x = atoi(str) / 25.4;
 
 	assert(str = strtok(NULL, " \t"));
-	trans_y = atoi(str);
+	trans_y = atoi(str) / 25.4;
 
 	assert(str = strtok(NULL, " \t"));
-	trans_z = atoi(str);
+	trans_z = atoi(str) / 25.4;
 
 	assert(str = strtok(NULL, " \t"));
 	trans_w = atoi(str);
 
 	assert(str = strtok(NULL, " \t"));
-	pos_x = atoi(str);
+	pos_x = atoi(str) / 25.4;
 
 	assert(str = strtok(NULL, " \t"));
-	pos_y = atoi(str);
+	pos_y = atoi(str) / 25.4;
 
 	assert(str = strtok(NULL, " \t"));
-	pos_z = atoi(str);
+	pos_z = atoi(str) / 25.4;
 }
 
 void PhysicsInfo::set(PhysicsInfo *info){

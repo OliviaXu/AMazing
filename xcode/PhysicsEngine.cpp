@@ -77,7 +77,7 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info)
         case PHYSP_PLANE:
         {
             PlanePhysicsInfo* cur_info = (PlanePhysicsInfo*)info;
-            btCollisionShape* planeShape = new btStaticPlaneShape(btVector3(cur_info->normal_x, cur_info->normal_y, cur_info->normal_z),1);
+            btCollisionShape* planeShape = new btStaticPlaneShape(btVector3(cur_info->normal_x, cur_info->normal_y, cur_info->normal_z),0);
             btDefaultMotionState* planeMotionState = new btDefaultMotionState(btTransform(btQuaternion(cur_info->trans_x, cur_info->trans_y, cur_info->trans_z, cur_info->trans_w),btVector3(cur_info->pos_x, cur_info->pos_y, cur_info->pos_z)));
             btRigidBody* planeRigidBody;
             if(cur_info->is_static)
@@ -109,11 +109,12 @@ void PhysicsEngine::updateObjects(std::vector<GameObject *> *objects) {
         //if(i == 1)
         {
         cout << "Rigid Object #" << i << ": X = " << trans.getOrigin().getX() << ", Y = " << trans.getOrigin().getY() << ", Z = " << trans.getOrigin().getZ() << endl;
-        /*for(int j = 0;j < 15;++j)
+        /*cout << "Rigid Object #" << i << ": ";
+        for(int j = 0;j < 15;++j)
             cout << m[j] << " ";
         cout << endl;*/
         }
         
-        //(*objects)[i]->setTrans(m);
+        (*objects)[i]->setTrans(m);
     }
 }
