@@ -3,31 +3,31 @@
 void PhysicsInfo::parse(char *args){
 	char *str;
 	assert(str = strtok(args, " \t"));
-	mass = atoi(str);
+	mass = atof(str)/25.4;
 
 	assert(str = strtok(NULL, " \t"));
 	is_static = atoi(str);
 
 	assert(str = strtok(NULL, " \t"));
-	trans_x = atoi(str) / 25.4;
+	trans_x = atof(str) / 25.4;
 
 	assert(str = strtok(NULL, " \t"));
-	trans_y = atoi(str) / 25.4;
+	trans_y = atof(str) / 25.4;
 
 	assert(str = strtok(NULL, " \t"));
-	trans_z = atoi(str) / 25.4;
+	trans_z = atof(str) / 25.4;
 
 	assert(str = strtok(NULL, " \t"));
-	trans_w = atoi(str);
+	trans_w = atof(str);
 
 	assert(str = strtok(NULL, " \t"));
-	pos_x = atoi(str) / 25.4;
+	pos_x = atof(str) / 25.4;
 
 	assert(str = strtok(NULL, " \t"));
-	pos_y = atoi(str) / 25.4;
+	pos_y = atof(str) / 25.4;
 
 	assert(str = strtok(NULL, " \t"));
-	pos_z = atoi(str) / 25.4;
+	pos_z = atof(str) / 25.4;
 }
 
 void PhysicsInfo::set(PhysicsInfo *info){
