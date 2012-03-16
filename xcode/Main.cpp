@@ -13,9 +13,14 @@ sf::Window window(sf::VideoMode(800, 600), "CS248 Rules!", sf::Style::Close, set
 sf::Clock clck;
 
 //#define MAP_FILE "maps/map.txt"
+<<<<<<< HEAD
 #define MAP_FILE "maps/map_physics.txt"
 //#define MAP_FILE "maps/map.txt"
 #define CONFIG_FILE "config_file"	
+=======
+#define MAP_FILE "maps/map.txt"
+#define CONFIG_FILE "config_file"
+>>>>>>> upstream/master
 
 GameEngine *gameEngine;
 
