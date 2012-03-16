@@ -14,6 +14,7 @@ sf::Clock clck;
 
 //#define MAP_FILE "maps/map.txt"
 #define MAP_FILE "maps/map_physics.txt"
+//#define MAP_FILE "maps/map.txt"
 #define CONFIG_FILE "config_file"	
 
 GameEngine *gameEngine;
