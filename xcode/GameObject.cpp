@@ -41,8 +41,7 @@ void GameObject::setPos(struct Vec3 posIn){
 }
 
 struct Vec3 GameObject::getPos(){
-    	Vec3 res = Vec3(0, 0, 0);
-	return res;
+	return pos;
 }
 
 struct Vec3 &GameObject::getVelocity(){
@@ -167,7 +166,7 @@ void GameObject::draw(const std::vector<Portal *> *portals){
 	//aiMatrix4x4 &atransformMat = root->mTransformation;
 	//aiMatrix4x4 &btransformMat = child->mTransformation;
 
-	aiMatrix4x4 &transformMat =	root->mTransformation * child->mTransformation;
+	aiMatrix4x4 transformMat =	root->mTransformation * child->mTransformation;
 	GLfloat mat[] = {
 		transformMat.a1, transformMat.b1, transformMat.c1, transformMat.d1,
 		transformMat.a2, transformMat.b2, transformMat.c2, transformMat.d2,
@@ -194,4 +193,19 @@ void GameObject::setHide(bool flag){
 
 bool GameObject::isHidden(){
 	return hide;
+}
+
+void GameObject::setTrans(float* mat)
+{
+    for(int i = 0;i < 4;++i)
+    {
+        for(int j = 0;j < 4;++j)
+        {
+            if(i != 3 || j != 3)
+            {
+                transformation.mat[4*i+j] = mat[4*j+i];
+            }
+        }
+    }
+    transformation.mat[15] = 1;
 }

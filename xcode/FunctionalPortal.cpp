@@ -68,7 +68,6 @@ void FunctionalPortal::draw(const std::vector<Portal *> *portals){
 	struct Vec3 portalPos = portal->getPos();
 	time_t t;
 	time(&t);
-	cout << "time " << clock() << endl;
 	GL_CHECK(glUniform3f(lpos, lookPos.x+portalPos.x, lookPos.y+portalPos.y, lookPos.z+portalPos.z));
 	GL_CHECK(glUniform3f(mnormal, motionNormal.x, motionNormal.y, motionNormal.z));
 	GL_CHECK(glUniform1f(timeIn, (float)(clock()/CLOCKS_PER_SEC)));
@@ -256,7 +255,7 @@ void FunctionalPortal::createEnvironmentMap(const std::vector<Portal *> *portals
 
 		getWindowProjMat(viewport, projviewMat, viewportMat);
 
-		hash_set<int *> visitedEdgeSet;
+		set<int *> visitedEdgeSet;
 		destPortal->cullDraw(&projviewMat, &viewportMat, viewport, 
 							portals, visitedEdgeSet);
 		

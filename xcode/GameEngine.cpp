@@ -13,12 +13,12 @@ GameEngine::GameEngine(string map_file, string config_file)
 {
     mapLoader = new MapLoader();
     physicsEngine = new PhysicsEngine();
+    physicsEngine->init();
     eventMgr = new EventMgr();
     userControl = new UserControl();
     camera = new Camera();
     plane = new Plane();
-    mapLoader->load(map_file);
-    //physicsEngine->init();
+    mapLoader->load(map_file, physicsEngine);
     ball = new Ball();
 }
 
@@ -74,14 +74,12 @@ void GameEngine::run()
         
         plane->update(dAngleNS, dAngleEW);
         
-        /*if(mapLoader->updateCurrentPortal(ball->getPos()))
-            updateObjects();*/
         //I think updating current portal according to camera is more appropriate.
 		camera->updatePos(userControl->getCamM(),userControl->getCamDirUpdate(),ball);//input camera movement ball direction and ball to determin camera position and direction
 		if(mapLoader->updateCurrentPortal(camera->getPos()))
 			updateObjects();
 
-        physicsEngine->updateObjects(objects);
+        physicsEngine->updateObjects(mapLoader->getObject());
         
         eventMgr->updateEvents(objects, mapLoader, events);
         handleEvents();
@@ -125,12 +123,13 @@ void GameEngine::drawScene()
 	//Not sure how to call rootPortal->cullDraw without doing this...
 	Portal *rootPortal = (Portal *)mapLoader->getCurrentPortal();
 	int ip = mapLoader->getCurrentPortalIdx();
-	cout << "portal " << ip << endl;
+	if(DEBUG_OUTPUT)
+        cout << "portal " << ip << endl;
 	/*rootPortal->doorStatus[0] = 0;
 	rootPortal->doorStatus[1] = 0;
 	rootPortal->doorStatus[2] = 0;
 	rootPortal->doorStatus[3] = 0;*/
-	hash_set<int *> visitedEdgeSet;
+	set<int *> visitedEdgeSet;
 	rootPortal->cullDraw(&projviewMat, &viewportMat, viewport, 
 							mapLoader->getPortals(), visitedEdgeSet);
 }

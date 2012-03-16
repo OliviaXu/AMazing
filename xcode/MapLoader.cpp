@@ -190,7 +190,7 @@ void MapLoader::readPortal(){
 	portals.push_back(p);
 }
 
-void MapLoader::readObject(bool portalObject){
+void MapLoader::readObject(bool portalObject, PhysicsEngine *engine){
 	char *str;
 	assert(str = strtok(NULL, " \t"));
 	
@@ -205,6 +205,8 @@ void MapLoader::readObject(bool portalObject){
 		portals[obj->getPortal()]->setPortalObject(obj);
 	else
 		portals[obj->getPortal()]->addObject(obj);
+    
+    engine->addObject(obj->phyinfo->shapeTy, obj->phyinfo);
 }
 
 void MapLoader::readTexture(){
@@ -215,7 +217,7 @@ void MapLoader::readTexture(){
 	textures.push_back(tex);
 }
 
-void MapLoader::load(string map_file){
+void MapLoader::load(string map_file, PhysicsEngine *engine){
 	ifstream in(map_file.c_str(), ifstream::in);
 	if(!in){
 		cout << "Failed to load map file" << endl;
@@ -243,9 +245,9 @@ void MapLoader::load(string map_file){
 		else if(strcmp(str, "phy") == 0)
 			readPhyInfo();
 		else if(strcmp(str, "pobj") == 0)
-			readObject(true);
+			readObject(true, engine);
 		else if(strcmp(str, "obj") == 0)
-			readObject(false);
+			readObject(false, engine);
 
 		free(l);
 	}
@@ -317,7 +319,8 @@ bool MapLoader::updateCurrentPortal(const struct Vec3 *pos){
 
 	DetectPortalBundle bundle = {pos, -1};
 	iteratePortals(currentPortal, detectCurrentPortal, &bundle);
-	cout << bundle.currentPortal << endl;
+	if(DEBUG_OUTPUT)
+        cout << bundle.currentPortal << endl;
 	if(bundle.currentPortal == currentPortal)
 		return false;
 
@@ -365,4 +368,9 @@ const Portal *MapLoader::getPortal(int iPortal){
 
 const Shader *MapLoader::getShader(int iShader){
 	return shaders[iShader];
+}
+
+std::vector<GameObject *>* MapLoader::getObject()
+{
+    return &objs;
 }

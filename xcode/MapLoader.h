@@ -7,6 +7,7 @@
 #include "Shader.h"
 #include "GameObjectFactory.h"
 #include "PhysicsInfo.h"
+#include "PhysicsEngine.h"
 
 // contain all the information of the map
 
@@ -17,7 +18,7 @@ class MapLoader{
 public:
 	MapLoader();
 	~MapLoader();
-	void load(std::string map_file);
+	void load(std::string map_file, PhysicsEngine *engine);
     bool updateCurrentPortal(const struct Vec3 *pos);     // update current portal according to the position of the ball
     void fillObjects(std::vector<GameObject*> &objects);   // fill objects with current portal and its neighboring portals' objects
 	int getCurrentPortalIdx();
@@ -31,6 +32,8 @@ public:
 	const sf::Image *getTexture(int iTex);
 	const Portal *getPortal(int iPortal);
 	const Shader *getShader(int iShader);
+    
+    std::vector<GameObject *>* getObject();
 	
 	std::vector<PhysicsInfo *> phyinfos;
 private:
@@ -39,7 +42,7 @@ private:
 	void loadShader();
 	void readPortal();
 	void readPhyInfo();
-	void readObject(bool portalObj);
+	void readObject(bool portalObj, PhysicsEngine *engine);
 	void assertMapValidity();
 	void computePortalPos(Portal *p);
 

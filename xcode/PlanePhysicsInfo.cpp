@@ -4,9 +4,11 @@ void PlanePhysicsInfo::parse(char *args){
 	char *str;
 	assert(str = strtok(args, " \t"));
 	normal_x = atoi(str);
+    args = str + strlen(str) + 1;
 
 	assert(str = strtok(args, " \t"));
 	normal_y = atoi(str);
+    args = str + strlen(str) + 1;
 
 	assert(str = strtok(args, " \t"));
 	normal_z = atoi(str);

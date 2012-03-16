@@ -26,6 +26,7 @@ public:
 	int getPortal();
 	void setHide(bool flag);
 	bool isHidden();
+    void setTrans(float* mat);
 	PhysicsInfo *phyinfo;
 
 protected:

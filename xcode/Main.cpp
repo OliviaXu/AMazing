@@ -1,7 +1,6 @@
 #include "Framework.h"
 #include "Shader.h"
 #include "GameEngine.h"
-//#include "btBulletDynamicsCommon.h"
 
 // Note: See the SMFL documentation for info on setting up fullscreen mode
 // and using rendering settings
@@ -13,17 +12,11 @@ sf::Window window(sf::VideoMode(800, 600), "CS248 Rules!", sf::Style::Close, set
 // http://www.sfml-dev.org/tutorials/1.6/window-time.php
 sf::Clock clck;
 
-#define MAP_FILE "maps/map.txt"
+//#define MAP_FILE "maps/map.txt"
+#define MAP_FILE "maps/map_physics.txt"
 #define CONFIG_FILE "config_file"	
 
 GameEngine *gameEngine;
-
-/*
-btBroadphaseInterface* broadphase;
-btDefaultCollisionConfiguration* collisionConfiguration;
-btCollisionDispatcher* dispatcher;
-btSequentialImpulseConstraintSolver* solver;
-btDiscreteDynamicsWorld* dynamicsWorld;*/
 
 #include "assimp.h"
 #include <vector>
@@ -34,9 +27,7 @@ Shader* regShader;
 
 
 void initOpenGL();
-void intiBullet();
 void initWorld();
-void cleanupBullet();
 
 
 int main(int argc, char** argv) {
@@ -100,31 +91,9 @@ void initOpenGL() {
 	GL_CHECK(glEnable(GL_TEXTURE_2D));
     glViewport(0, 0, window.GetWidth(), window.GetHeight());
 }
-/*
-void initBullet()
-{
-    broadphase = new btDbvtBroadphase();
-    
-    btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
-    btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
-    
-    btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
-    
-    dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
-    dynamicsWorld->setGravity(btVector3(0,0,-10));
-}
-*/
+
 void initWorld()
 {
     gameEngine = new GameEngine(MAP_FILE, CONFIG_FILE);
     gameEngine->init(&window);
 }
-/*
-void cleanupBullet()
-{
-    delete dynamicsWorld;
-    delete solver;
-    delete dispatcher;
-    delete collisionConfiguration;
-    delete broadphase;
-}*/

@@ -33,9 +33,11 @@
 #include <cmath>
 #include <map>
 #include <climits>
-#include <hash_set>
+#include <set>
 
 #include "Util.h"
+
+#define DEBUG_OUTPUT 0
 
 #define GL_CHECK(x)		(x);\
 						{GLenum __MY_GL_ERROR = glGetError();\
