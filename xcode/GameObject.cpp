@@ -81,7 +81,7 @@ void GameObject::setMaterial(const aiMesh *mesh) {
 
     // Specular power
     GLint shininess = GL_CHECK(glGetUniformLocation(shaderID, "alpha"));
-    float value = 40;
+    float value = 4;
     GL_CHECK(glUniform1f(shininess, value));
 }
 
