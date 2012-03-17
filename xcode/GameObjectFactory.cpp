@@ -1,7 +1,6 @@
 #include "GameObjectFactory.h"
-#include "BallMaker.h"
+#include "Makers.h"
 #include "MapLoader.h"
-#include "FunctionalPortalMaker.h"
 
 using namespace std;
 
@@ -9,6 +8,7 @@ GameObjectFactory::GameObjectFactory(){
 	makers["gameobject"] = new GameObjectMaker();
 	makers["ball"] = new BallMaker();
 	makers["funportal"] = new FunctionalPortalMaker();
+	makers["wall"] = new WallMaker();
 }
 
 GameObjectFactory::~GameObjectFactory(){

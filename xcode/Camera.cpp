@@ -10,7 +10,7 @@
 # define VTH 15.0//assuming the threshold of changing the orientation of camera is 15.0 by now
 
 Camera::Camera() {
-	control_m=true;
+	control_m=false;
 	//pos=Vec3(0.,0.+VOFFSET,0.-HOFFSET);//the original position need to be changed
     pos=Vec3(0.,0.,0.);//the original position need to be changed
 	dir=Vec3(0.,0.,1.);
