@@ -5,6 +5,7 @@
 #include "Portal.h"
 #include "GameObject.h"
 #include "DepthRenderTarget.h"
+#include "ParticleEmitter.h"
 
 class FunctionalPortal : public GameObject{
 public:
@@ -26,6 +27,7 @@ private:
 	struct Vec3 destPos_pcoord;
 	struct Vec3 motionNormal;
 	struct Vec3 lookPos;//In world coordinate. Used to obtain sample ray for cubemap
+	ParticleEmitter *emt;
 };
 
 #endif
