@@ -174,13 +174,20 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
 		pos.y=-1*sin(rAngleNS)*HOFFSET+cos(rAngleEW)*cos(rAngleNS)*VOFFSET;
 	}
 	*/
-	//printf("cam pos %f %f %f\n",pos.x,pos.y,pos.z);
+	printf("ball pos %f %f %f\n",ball->getPos().x,ball->getPos().y,ball->getPos().z);
 	//printf("world orient %f %f \n",AngleNS,AngleEW);
 	//gluLookAt(pos.x,pos.y,pos.z,pos.x+dir.x,pos.y+dir.y,pos.z+dir.z,0.,1.,0.);
 	//gluLookAt(ball->getPos().x,ball->getPos().y,ball->getPos().z,ball->getPos().x+dir.x,ball->getPos().y+dir.y,ball->getPos().z+dir.z,0.,1.,0.);
 	//gluLookAt(-1*50/2.54,0,250/2.54,-1*50/2.54+dir.x,0+dir.y,250/2.54+dir.z,0.,1.,0.);
-	if(control_m){gluLookAt(-50/25.4,0,0,-50/25.4+dir.x,dir.y,dir.z,0.,1.,0.);}//for testing should be the ball
-	else{gluLookAt(pos.x,pos.y,pos.z,pos.x+dir.x,pos.y+dir.y,pos.z+dir.z,0.,1.,0.);}
+	//if(control_m){gluLookAt(-50/25.4,0,0,-50/25.4+dir.x,dir.y,dir.z,0.,1.,0.);}//for testing should be the ball
+	if(control_m){
+		pos.x=ball->getPos().x;
+		pos.y=ball->getPos().y;
+		pos.z=ball->getPos().z;
+	}//for testing should be the ball
+	//original center of camera should be the center of the obj(sphere)
+	gluLookAt(pos.x,pos.y,pos.z,pos.x+dir.x,pos.y+dir.y,pos.z+dir.z,0.,1.,0.);
+	printf("cam pos %f %f %f\n",pos.x,pos.y,pos.z);
 	glRotated(AngleNS,1,0,0); //need oriented according to the center of the portal
 	glRotated(AngleEW,0,0,1);//w is ok as well
 	if(control_m){glTranslated(0,-1*VOFFSET,HOFFSET);}//the whole universe thus revere...

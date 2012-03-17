@@ -108,7 +108,7 @@ void PhysicsEngine::updateObjects(std::vector<GameObject *> *objects) {
         
         //if(i == 1)
         {
-        cout << "Rigid Object #" << i << ": X = " << trans.getOrigin().getX() << ", Y = " << trans.getOrigin().getY() << ", Z = " << trans.getOrigin().getZ() << endl;
+        //cout << "Rigid Object #" << i << ": X = " << trans.getOrigin().getX() << ", Y = " << trans.getOrigin().getY() << ", Z = " << trans.getOrigin().getZ() << endl;
         /*cout << "Rigid Object #" << i << ": ";
         for(int j = 0;j < 15;++j)
             cout << m[j] << " ";

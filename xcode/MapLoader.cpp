@@ -23,12 +23,15 @@ typedef struct{
 
 MapLoader::MapLoader(){
 	visitBuff = NULL;
+	ball = NULL;
     currentPortal = 0;//The map file must supply at least one portal.
 }
 
 MapLoader::~MapLoader(){
 	if(visitBuff)
 		delete visitBuff;
+
+	delete ball;
 
 	for(int i=0; i<importers.size(); i++){
 		importers[i]->FreeScene();
@@ -199,6 +202,9 @@ void MapLoader::readObject(bool portalObject, PhysicsEngine *engine){
 	//object according to its name.
 	char *args = str+strlen(str)+1;
 	GameObject *obj = factory.produce(str, args, this);
+
+	if(!ball)
+		ball = dynamic_cast<Ball *>(obj);
 
 	objs.push_back(obj);
 	if(portalObject)
@@ -373,4 +379,8 @@ const Shader *MapLoader::getShader(int iShader){
 std::vector<GameObject *>* MapLoader::getObject()
 {
     return &objs;
+}
+
+Ball *MapLoader::getBall(){
+	return ball;
 }
