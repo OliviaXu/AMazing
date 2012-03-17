@@ -105,7 +105,7 @@ void PhysicsEngine::updateObjects(std::vector<GameObject *> *objects) {
         rigidBodies[i]->getMotionState()->getWorldTransform(trans);
         btScalar m[15];
         trans.getOpenGLMatrix(m);
-        
+
         //if(i == 7)
         //{
         cout << "Rigid Object #" << i << ": X = " << trans.getOrigin().getX() << ", Y = " << trans.getOrigin().getY() << ", Z = " << trans.getOrigin().getZ() << endl;
@@ -116,5 +116,7 @@ void PhysicsEngine::updateObjects(std::vector<GameObject *> *objects) {
         //}
         
         (*objects)[i]->setTrans(m);
+        btVector3 p = trans.getOrigin();
+        (*objects)[i]->setPos(p.getX(), p.getY(), p.getZ());
     }
 }
