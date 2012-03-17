@@ -42,7 +42,8 @@ void PhysicsEngine::init() {
     btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
     
     dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
-    dynamicsWorld->setGravity(btVector3(0,-10,0));
+
+    dynamicsWorld->setGravity(btVector3(0,-GRAVITY,0));
 }
 
 void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info)
@@ -96,23 +97,27 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info)
 }
 
 void PhysicsEngine::updateObjects(std::vector<GameObject *> *objects) {
-    dynamicsWorld->stepSimulation(1/60.f,10);
+    dynamicsWorld->stepSimulation(1/600.f,10);
     
     for(int i = 0;i < rigidBodies.size();++i)
     {
+        rigidBodies[i]->setActivationState(1);
+        
         btTransform trans;
         rigidBodies[i]->getMotionState()->getWorldTransform(trans);
         btScalar m[15];
         trans.getOpenGLMatrix(m);
-
-        //if(i == 7)
-        //{
-        cout << "Rigid Object #" << i << ": X = " << trans.getOrigin().getX() << ", Y = " << trans.getOrigin().getY() << ", Z = " << trans.getOrigin().getZ() << endl;
-        /*cout << "Rigid Object #" << i << ": ";
-        for(int j = 0;j < 15;++j)
-            cout << m[j] << " ";
-        cout << endl;*/
-        //}
+        
+        if(i == 1)
+        {
+            //cout << "Rigid Object #" << i << ": X = " << trans.getOrigin().getX() << ", Y = " << trans.getOrigin().getY() << ", Z = " << trans.getOrigin().getZ() << endl;
+            //cout << trans.getOrigin().getX() << " " << trans.getOrigin().getY() << " " << trans.getOrigin().getZ() << endl;
+            //cout << "Activation State: " << rigidBodies[i]->getActivationState() << endl;
+            /*cout << "Rigid Object #" << i << ": ";
+             for(int j = 0;j < 15;++j)
+             cout << m[j] << " ";
+             cout << endl;*/
+        }
         
         (*objects)[i]->setTrans(m);
         btVector3 p = trans.getOrigin();

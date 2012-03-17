@@ -1,6 +1,6 @@
 # List of Meshes
 m models/planeforCY.3DS	# 0
-m models/sphereforCY.3DS #1
+m models/sphere_5.3DS #1
 
 # List of Textures
 t models/tiles_d.jpg  #0
@@ -27,7 +27,7 @@ p NULL NULL NULL NULL 125 500 # 0
 # plane normal_x normal_y normal_z mass is_static tran_x tran_y tran_z tran_w pos_x pos_y pos_z
 # sphere radius mass is_static tran_x tran_y tran_z tran_w pos_x pos_y pos_z
 phy plane 0 1 0 0 1 0 0 0 1 0 0 0 #0
-phy sphere 5 0.1 0 0 0 0 1 0 0 0 #1	
+phy sphere 5 10 0 0 0 0 1 0 0 0 #1	
 
 # List of Portal Object
 # pobj class_name mesh_num portal_num pos shader_num d_tex_num s_tex_num iphyinfo
@@ -35,4 +35,4 @@ pobj gameobject 0 0 -50 -50 50 0 0 1 0
 
 # List of Object
 # obj class_name mesh_num portal_num pos shader_num d_tex_num s_tex_num iphyinfo
-obj ball 1 0 0 100 100 0 0 1 1
+obj ball 1 0 0 -45 100 0 0 1 1

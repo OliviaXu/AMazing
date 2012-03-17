@@ -14,6 +14,8 @@
 #include "PhysicsInfo.h"
 #include "btBulletDynamicsCommon.h"
 
+#define GRAVITY 9.8/10
+
 class PhysicsEngine {
 public:
     PhysicsEngine();
