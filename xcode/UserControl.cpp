@@ -1,7 +1,7 @@
 #include "UserControl.h"
 using namespace std;
 
-UserControl::UserControl() : angSpeed(10){
+UserControl::UserControl() : angSpeed(500){
 	angNS=0.;
 	angEW=0.;
 	camdir=(Keyorientation)0;//or UP
@@ -44,9 +44,6 @@ void UserControl::handleInput(){
 			}
 			else if(evt.Key.Code==sf::Key::Up){
 				angNS+=angSpeed*window->GetFrameTime(); 
-			}
-			else if(evt.Key.Code==sf::Key::Down){
-				angNS-=angSpeed*window->GetFrameTime(); 
 			}
 			else if(evt.Key.Code==sf::Key::Down){
 				angNS-=angSpeed*window->GetFrameTime(); 

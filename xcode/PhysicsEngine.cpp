@@ -108,18 +108,17 @@ void PhysicsEngine::updateObjects(std::vector<GameObject *> *objects) {
         
         if(i == 1)
         {
-        //cout << "Rigid Object #" << i << ": X = " << trans.getOrigin().getX() << ", Y = " << trans.getOrigin().getY() << ", Z = " << trans.getOrigin().getZ() << endl;
-<<<<<<< HEAD
-=======
+            //cout << "Rigid Object #" << i << ": X = " << trans.getOrigin().getX() << ", Y = " << trans.getOrigin().getY() << ", Z = " << trans.getOrigin().getZ() << endl;
             cout << trans.getOrigin().getX() << " " << trans.getOrigin().getY() << " " << trans.getOrigin().getZ() << endl;
->>>>>>> upstream/master
-        /*cout << "Rigid Object #" << i << ": ";
-        for(int j = 0;j < 15;++j)
-            cout << m[j] << " ";
-        cout << endl;*/
+            /*cout << "Rigid Object #" << i << ": ";
+             for(int j = 0;j < 15;++j)
+             cout << m[j] << " ";
+             cout << endl;*/
         }
         
         (*objects)[i]->setTrans(m);
+        btVector3 p = trans.getOrigin();
+        (*objects)[i]->setPos(p.getX(), p.getY(), p.getZ());
     }
 }
 

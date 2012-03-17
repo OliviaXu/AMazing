@@ -27,6 +27,7 @@ public:
 	void setHide(bool flag);
 	bool isHidden();
     void setTrans(float* mat);
+    void setPos(float x, float y, float z);
 	PhysicsInfo *phyinfo;
 
 protected:
