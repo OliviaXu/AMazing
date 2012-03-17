@@ -11,8 +11,8 @@ class GameObject {
 public:
     GameObject();
     ~GameObject();//TODO: Class name is generated via strdup. Free it!
-    virtual void draw(const std::vector<Portal *> *portals);
-	virtual void passShaderParam(const aiMesh *mesh);
+    virtual void draw(const std::vector<Portal *> *portals);//the function I'm gonna rewrite...
+	virtual void passShaderParam(const aiMesh *mesh);//the function I'm gonna rewrite
     void updatePhysicalProperty(Vec3 &newPos, float newMass, float newVel, float newAcc);
     void setPortal(int iPortal);
     void setShader(const Shader *shader);
@@ -27,6 +27,7 @@ public:
 	void setHide(bool flag);
 	bool isHidden();
     void setTrans(float* mat);
+    void setPos(float x, float y, float z);
 	PhysicsInfo *phyinfo;
 
 protected:

@@ -8,6 +8,7 @@
 #include "GameObjectFactory.h"
 #include "PhysicsInfo.h"
 #include "PhysicsEngine.h"
+#include "Ball.h"
 
 // contain all the information of the map
 
@@ -36,6 +37,8 @@ public:
     std::vector<GameObject *>* getObject();
 	
 	std::vector<PhysicsInfo *> phyinfos;
+	Ball *getBall();
+
 private:
 	void readModel();
 	void readTexture();
@@ -59,6 +62,7 @@ private:
 	int currentPortal;
 	MAZEorientation currentOrient;
 	GameObjectFactory factory;
+	Ball *ball;
 };
 
 #endif

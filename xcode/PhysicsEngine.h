@@ -21,6 +21,8 @@ public:
     void init();
     void addObject(PhysicsShapeTy type, PhysicsInfo* info);
     void updateObjects(std::vector<GameObject*> *objects);  // ???
+    void setGravity(float x, float y, float z);
+    btVector3 getGravity();
 private:
     btBroadphaseInterface* broadphase;
     btDefaultCollisionConfiguration* collisionConfiguration;

@@ -3,8 +3,8 @@
 
 #include "Framework.h"
 #include "Ball.h"
-#define VOFFSET 0.6//vetrtical offset of camera to ball
-#define HOFFSET 0.4//horizontal offset of camera to ball
+#define VOFFSET 4//vetrtical offset of camera to ball
+#define HOFFSET 4//horizontal offset of camera to ball
 
 
 class Camera{
@@ -13,7 +13,7 @@ public:
     //void updatePos(MAZEorientation pOri,Ball *ball);
 	//void updatePos(Keyorientation keyd,Ball *ball);//fist try... implement the ball purely according to the movement direction of the ball
     //debug version can change the camera's position
-	void updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball);
+	void updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float AngleNS, float AngleEW);
 	static const float nearClip;
 	static const float farClip;
 	static const float aspectRatio;
@@ -25,7 +25,7 @@ private:
     struct Vec3 dir;
 	Morientation camO;
 	Morientation ballO;
-	
+	bool control_m;//user cotrol as false
 };
 
 #endif

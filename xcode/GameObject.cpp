@@ -210,3 +210,10 @@ void GameObject::setTrans(float* mat)
     }
     transformation.mat[15] = 1;
 }
+
+void GameObject::setPos(float x, float y, float z)
+{
+    pos.x = x;
+    pos.y = y;
+    pos.z = z;
+}
