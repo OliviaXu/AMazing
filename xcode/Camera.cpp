@@ -9,8 +9,10 @@
 #include "Camera.h"
 #define VTH 15.0//assuming the threshold of changing the orientation of camera is 15.0 by now
 
-#define LEN 30/25.4
-#define ALPHA 0
+#define LEN 50/25.4
+#define ALPHA 30
+#define HDIS 1.5
+#define VDIS 0.8
 
 Camera::Camera() {
 	control_m=false;
@@ -39,7 +41,16 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
     
-    gluLookAt(bpos.x, bpos.y + LEN * sin((ALPHA + AngleNS)/180*PI), bpos.z - LEN * cos((ALPHA + AngleNS)/180*PI), bpos.x, bpos.y, bpos.z, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
+    //gluLookAt(bpos.x, bpos.y + LEN * sin((ALPHA + AngleNS)/180*PI), bpos.z - LEN * cos((ALPHA + AngleNS)/180*PI), bpos.x, bpos.y, bpos.z, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
+    //gluLookAt(bpos.x, bpos.y + LEN * sin((ALPHA + AngleNS)/180*PI), bpos.z - LEN * cos((ALPHA + AngleNS)/180*PI), bpos.x, bpos.y + LEN * sin((ALPHA + AngleNS)/180*PI) - sin(AngleNS/180*PI), bpos.z - LEN * cos((ALPHA + AngleNS)/180*PI) + cos(AngleNS/180*PI), -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
+    float cost = cos(AngleNS/180*PI);
+    float sint = sin(AngleNS/180*PI);
+    float eye_y = bpos.y + VDIS * cost;
+    float eye_z = bpos.z - HDIS / cost + VDIS * sint;
+    //float eye_y = bpos.y + HDIS;
+    //float eye_z = bpos.z - VDIS;
+    gluLookAt(bpos.x, eye_y, eye_z, bpos.x, eye_y - sint, eye_z + cost, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
+    
 
 	if(DEBUG_OUTPUT)
         printf("cam pos %f %f %f\n",pos.x,pos.y,pos.z);

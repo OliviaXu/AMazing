@@ -2,6 +2,7 @@
 #include "GameObjectFactory.h"
 #include "SpherePhysicsInfo.h"
 #include "PlanePhysicsInfo.h"
+#include "BoxPhysicsInfo.h"
 
 using namespace std;
 
@@ -270,6 +271,8 @@ void MapLoader::readPhyInfo(){
 		info = new PlanePhysicsInfo();
 	else if(strcmp(str, "sphere") == 0)
 		info = new SpherePhysicsInfo();
+    else if(strcmp(str, "box") == 0)
+        info = new BoxPhysicsInfo();
 
 	str = str + strlen(str) + 1;
 	info->parse(str);
