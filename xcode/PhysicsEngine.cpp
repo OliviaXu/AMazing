@@ -124,3 +124,8 @@ void PhysicsEngine::updateObjects(std::vector<GameObject *> *objects) {
         (*objects)[i]->setPos(p.getX(), p.getY(), p.getZ());
     }
 }
+
+void PhysicsEngine::setGravity(float x, float y, float z)
+{
+    dynamicsWorld->setGravity(btVector3(x,y,z));
+}
