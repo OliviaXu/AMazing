@@ -129,6 +129,12 @@ void PhysicsEngine::updateObjects(std::vector<GameObject *> *objects) {
     }
 }
 
+<<<<<<< HEAD
 void PhysicsEngine::setGravity(float x, float y, float z){
 	dynamicsWorld->setGravity(btVector3(x,y,z));
+=======
+void PhysicsEngine::setGravity(float x, float y, float z)
+{
+    dynamicsWorld->setGravity(btVector3(x,y,z));
+>>>>>>> upstream/master
 }

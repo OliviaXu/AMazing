@@ -80,7 +80,7 @@ void GameEngine::run()
         float dAngleNS, dAngleEW;
         userControl->getAngleUpdate(dAngleNS, dAngleEW);
         
-        plane->update(dAngleNS, dAngleEW);
+        //plane->update(dAngleNS, dAngleEW);    // no use anymore
         
         //I think updating current portal according to camera is more appropriate.
 		camera->updatePos(userControl->getCamM(),userControl->getCamDirUpdate(),ball,dAngleNS, dAngleEW);//input camera movement ball direction and ball to determin camera position and direction
