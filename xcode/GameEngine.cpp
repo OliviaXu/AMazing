@@ -14,11 +14,11 @@ GameEngine::GameEngine(string map_file, string config_file)
     mapLoader = new MapLoader();
     physicsEngine = new PhysicsEngine();
     physicsEngine->init();
+	mapLoader->load(map_file, physicsEngine);
     eventMgr = new EventMgr();
     userControl = new UserControl();
     camera = new Camera();
     plane = new Plane();
-    mapLoader->load(map_file, physicsEngine);
 	ball = mapLoader->getBall();
 }
 
@@ -68,6 +68,11 @@ void GameEngine::init(sf::Window* _window)
 void GameEngine::run()
 {
     while(1){
+		static float t1 = 0;
+		static float t2 = t1;
+		t1 = window->GetFrameTime();
+		cout << "delta time " << t2-t1 << endl;
+
         userControl->handleInput();    // constant * window.GetFrameTime() 
 
 		//what's the reason for this??? 
@@ -156,5 +161,5 @@ void GameEngine::drawScene()
 	rootPortal->cullDraw(&projviewMat, &viewportMat, viewport, 
 							mapLoader->getPortals(), visitedEdgeSet);
 
-	drawParticles(window, emt);
+	//drawParticles(window, emt);
 }

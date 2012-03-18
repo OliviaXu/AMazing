@@ -50,7 +50,6 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
     //float eye_y = bpos.y + HDIS;
     //float eye_z = bpos.z - VDIS;
     gluLookAt(bpos.x, eye_y, eye_z, bpos.x, eye_y - sint, eye_z + cost, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
-    
 
 	if(DEBUG_OUTPUT)
         printf("cam pos %f %f %f\n",pos.x,pos.y,pos.z);

@@ -26,3 +26,11 @@ void Wall::setTan(const aiMesh *mesh) {
 	glEnableVertexAttribArray(bitan);
 	glVertexAttribPointer(bitan, 3, GL_FLOAT, 0, sizeof(aiVector3D), mesh->mBitangents);
 }
+
+void Wall::setNormalTex(const sf::Image *normalTex){
+	this->normalTex = normalTex;
+}
+
+void Wall::setDepthTex(const sf::Image *depthTex){
+	this->depthTex = depthTex;
+}
