@@ -58,7 +58,7 @@ void GameObjectMaker::setParam(GameObject *obj, struct GameObjectParam &param, M
 }
 
 
-void GameObjectMaker::parseParam(char *args, GameObjectParam *param){
+char *GameObjectMaker::parseParam(char *args, GameObjectParam *param){
 	char *str;
 
 	assert(str = strtok(args, " \t"));
@@ -87,6 +87,8 @@ void GameObjectMaker::parseParam(char *args, GameObjectParam *param){
 
 	assert(str = strtok(NULL, " \t"));
 	param->iPhyInfo = atoi(str);
+
+	return str + strlen(str) + 1;
 }
 
 /*------------------------------------------------------------------------------
@@ -142,9 +144,19 @@ WallMaker::~WallMaker(){
 
 GameObject *WallMaker::make(char *args, MapLoader *mld){
 	struct GameObjectParam param;
-	parseParam(args, &param);
-	Wall *wall = new Wall();
+	args = parseParam(args, &param);
+
+	char *str;
+	assert(str = strtok(args, " \t"));
+	int iNormalTex = atoi(str);
+
+	assert(str = strtok(args, " \t"));
+	int iDepthTex = atoi(str);
 	
+	Wall *wall = new Wall();
+	wall->setNormalTex(mld->getTexture(iNormalTex));
+	wall->setDepthTex(mld->getTexture(iDepthTex));
+
 	setParam(wall, param, mld);
 	return wall;
 }

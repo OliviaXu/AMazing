@@ -6,6 +6,8 @@
 #define VOFFSET 4//vetrtical offset of camera to ball
 #define HOFFSET 4//horizontal offset of camera to ball
 
+#define PI 3.1415926
+
 
 class Camera{
 public:

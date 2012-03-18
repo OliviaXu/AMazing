@@ -27,7 +27,6 @@ using namespace std;
 Assimp::Importer importer;
 Shader* regShader;
 
-
 void initOpenGL();
 void initWorld();
 

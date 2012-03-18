@@ -42,7 +42,8 @@ void PhysicsEngine::init() {
     btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
     
     dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
-    dynamicsWorld->setGravity(btVector3(0,-10,0));
+
+    dynamicsWorld->setGravity(btVector3(0,-GRAVITY,0));
 }
 
 void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info)
@@ -58,6 +59,7 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info)
             {
                 btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(0, sphereMotionState,sphereShape,btVector3(0,0,0));
                 sphereRigidBody = new btRigidBody(sphereRigidBodyCI);
+				sphereRigidBody->setFriction(40000);
             }
             else
             {
@@ -65,6 +67,7 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info)
                 sphereShape->calculateLocalInertia(cur_info->mass,sphereInertia);
                 btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(cur_info->mass, sphereMotionState, sphereShape, sphereInertia);
                 sphereRigidBody = new btRigidBody(sphereRigidBodyCI);
+				sphereRigidBody->setFriction(40000);
             }
             
             dynamicsWorld->addRigidBody(sphereRigidBody);
@@ -83,6 +86,7 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info)
             {
                 btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI(0, planeMotionState,planeShape,btVector3(0,0,0));
                 planeRigidBody = new btRigidBody(planeRigidBodyCI);
+				planeRigidBody->setFriction(40000);	
             }
             else
                 ;//TODO
@@ -100,22 +104,32 @@ void PhysicsEngine::updateObjects(std::vector<GameObject *> *objects) {
     
     for(int i = 0;i < rigidBodies.size();++i)
     {
+        rigidBodies[i]->setActivationState(1);
+        
         btTransform trans;
         rigidBodies[i]->getMotionState()->getWorldTransform(trans);
-        btScalar m[15];
+        btScalar m[16];
         trans.getOpenGLMatrix(m);
-
-        //if(i == 7)
-        //{
-        cout << "Rigid Object #" << i << ": X = " << trans.getOrigin().getX() << ", Y = " << trans.getOrigin().getY() << ", Z = " << trans.getOrigin().getZ() << endl;
-        /*cout << "Rigid Object #" << i << ": ";
-        for(int j = 0;j < 15;++j)
-            cout << m[j] << " ";
-        cout << endl;*/
-        //}
+        
+        if(i == 10)
+        {
+            cout << "Rigid Object #" << i << ": X = " << trans.getOrigin().getX() << ", Y = " << trans.getOrigin().getY() << ", Z = " << trans.getOrigin().getZ() << endl;
+			cout << "Rigid body " << rigidBodies[i]->getInvMass() << endl;
+            //cout << trans.getOrigin().getX() << " " << trans.getOrigin().getY() << " " << trans.getOrigin().getZ() << endl;
+            //cout << "Activation State: " << rigidBodies[i]->getActivationState() << endl;
+            /*cout << "Rigid Object #" << i << ": ";
+             for(int j = 0;j < 15;++j)
+             cout << m[j] << " ";
+             cout << endl;*/
+        }
         
         (*objects)[i]->setTrans(m);
         btVector3 p = trans.getOrigin();
         (*objects)[i]->setPos(p.getX(), p.getY(), p.getZ());
     }
+}
+
+void PhysicsEngine::setGravity(float x, float y, float z)
+{
+    dynamicsWorld->setGravity(btVector3(x,y,z));
 }

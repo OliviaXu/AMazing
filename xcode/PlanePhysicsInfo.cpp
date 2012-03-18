@@ -21,7 +21,7 @@ void PlanePhysicsInfo::parse(char *args){
 PhysicsInfo *PlanePhysicsInfo::clone(){
 	PlanePhysicsInfo *info = new PlanePhysicsInfo();
 	info->set(this);
-	info->normal_x = normal_x;
+	info->normal_x = -normal_x;
 	info->normal_y = normal_y;
 	info->normal_z = normal_z;
 

@@ -20,7 +20,7 @@ struct GameObjectParam{
 class GameObjectMaker{
 public:
 	virtual GameObject *make(char *args, MapLoader *mld);
-	virtual void parseParam(char *args, struct GameObjectParam *param);
+	virtual char *parseParam(char *args, struct GameObjectParam *param);
 	void setParam(GameObject *obj, struct GameObjectParam &param, MapLoader *mld);
 };
 

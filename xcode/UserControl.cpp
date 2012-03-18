@@ -1,7 +1,7 @@
 #include "UserControl.h"
 using namespace std;
 
-UserControl::UserControl() : angSpeed(500){
+UserControl::UserControl() : angSpeed(200){
 	angNS=0.;
 	angEW=0.;
 	camdir=(Keyorientation)0;//or UP
@@ -35,6 +35,7 @@ void UserControl::handleInput(){
 		case sf::Event::MouseMoved:
 			break;
 		case sf::Event::KeyPressed:
+                cout << window->GetFrameTime() << endl;
 			if(evt.Key.Code==sf::Key::Left){
 				angEW-=angSpeed*window->GetFrameTime(); 
 				//TODO: this is problematic should be changed according to the direction of ball movcement
