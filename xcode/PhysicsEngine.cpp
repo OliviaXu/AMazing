@@ -59,6 +59,7 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info)
             {
                 btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(0, sphereMotionState,sphereShape,btVector3(0,0,0));
                 sphereRigidBody = new btRigidBody(sphereRigidBodyCI);
+				sphereRigidBody->setFriction(40000);
             }
             else
             {
@@ -66,6 +67,7 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info)
                 sphereShape->calculateLocalInertia(cur_info->mass,sphereInertia);
                 btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(cur_info->mass, sphereMotionState, sphereShape, sphereInertia);
                 sphereRigidBody = new btRigidBody(sphereRigidBodyCI);
+				sphereRigidBody->setFriction(40000);
             }
             
             dynamicsWorld->addRigidBody(sphereRigidBody);
@@ -84,6 +86,7 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info)
             {
                 btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI(0, planeMotionState,planeShape,btVector3(0,0,0));
                 planeRigidBody = new btRigidBody(planeRigidBodyCI);
+				planeRigidBody->setFriction(40000);	
             }
             else
                 ;//TODO
@@ -97,7 +100,7 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info)
 }
 
 void PhysicsEngine::updateObjects(std::vector<GameObject *> *objects) {
-    dynamicsWorld->stepSimulation(1/600.f,10);
+    dynamicsWorld->stepSimulation(1/60.f,10);
     
     for(int i = 0;i < rigidBodies.size();++i)
     {
@@ -105,12 +108,13 @@ void PhysicsEngine::updateObjects(std::vector<GameObject *> *objects) {
         
         btTransform trans;
         rigidBodies[i]->getMotionState()->getWorldTransform(trans);
-        btScalar m[15];
+        btScalar m[16];
         trans.getOpenGLMatrix(m);
         
-        if(i == 1)
+        if(i == 10)
         {
-            //cout << "Rigid Object #" << i << ": X = " << trans.getOrigin().getX() << ", Y = " << trans.getOrigin().getY() << ", Z = " << trans.getOrigin().getZ() << endl;
+            cout << "Rigid Object #" << i << ": X = " << trans.getOrigin().getX() << ", Y = " << trans.getOrigin().getY() << ", Z = " << trans.getOrigin().getZ() << endl;
+			cout << "Rigid body " << rigidBodies[i]->getInvMass() << endl;
             //cout << trans.getOrigin().getX() << " " << trans.getOrigin().getY() << " " << trans.getOrigin().getZ() << endl;
             //cout << "Activation State: " << rigidBodies[i]->getActivationState() << endl;
             /*cout << "Rigid Object #" << i << ": ";
@@ -123,4 +127,8 @@ void PhysicsEngine::updateObjects(std::vector<GameObject *> *objects) {
         btVector3 p = trans.getOrigin();
         (*objects)[i]->setPos(p.getX(), p.getY(), p.getZ());
     }
+}
+
+void PhysicsEngine::setGravity(float x, float y, float z){
+	dynamicsWorld->setGravity(btVector3(x,y,z));
 }

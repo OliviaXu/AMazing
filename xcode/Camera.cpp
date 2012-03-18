@@ -10,7 +10,7 @@
 #define VTH 15.0//assuming the threshold of changing the orientation of camera is 15.0 by now
 
 #define LEN 30/25.4
-#define ALPHA 0
+#define ALPHA 20
 
 Camera::Camera() {
 	control_m=false;
@@ -39,7 +39,9 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
     
+	//float tmp = sin((ALPHA + AngleNS)/180*PI);
     gluLookAt(bpos.x, bpos.y + LEN * sin((ALPHA + AngleNS)/180*PI), bpos.z - LEN * cos((ALPHA + AngleNS)/180*PI), bpos.x, bpos.y, bpos.z, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
+	//gluLookAt(bpos.x, bpos.y + 10, bpos.z - 10, bpos.x, bpos.y, bpos.z, 0, 1, 0.);
 
 	if(DEBUG_OUTPUT)
         printf("cam pos %f %f %f\n",pos.x,pos.y,pos.z);
