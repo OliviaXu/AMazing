@@ -213,7 +213,7 @@ void MapLoader::readObject(bool portalObject, PhysicsEngine *engine){
 	else
 		portals[obj->getPortal()]->addObject(obj);
     
-    engine->addObject(obj->phyinfo->shapeTy, obj->phyinfo);
+    engine->addObject(obj->phyinfo->shapeTy, obj->phyinfo, obj);
 }
 
 void MapLoader::readTexture(){
@@ -370,7 +370,7 @@ const aiScene *MapLoader::getModel(int iModel){
 }
 
 const std::vector<unsigned int> *MapLoader::getIndexBuff(int iBuff){
-	return indexBuff[iBuff];
+return indexBuff[iBuff];
 }
 
 const sf::Image *MapLoader::getTexture(int iTex){
@@ -392,4 +392,18 @@ std::vector<GameObject *>* MapLoader::getObject()
 
 Ball *MapLoader::getBall(){
 	return ball;
+}
+
+void MapLoader::updateObjPortal(GameObject *obj){
+	struct Vec3 pos = obj->getPos();
+	DetectPortalBundle bundle = {&pos, -1};
+	int objCurrentPortal = obj->getPortal();
+	iteratePortals(objCurrentPortal, detectCurrentPortal, &bundle);
+	if(bundle.currentPortal == objCurrentPortal)
+		return;
+
+	//Portal changed
+	portals[objCurrentPortal]->removeObject(obj);
+	portals[bundle.currentPortal]->addObject(obj);
+	obj->setPortal(bundle.currentPortal);
 }

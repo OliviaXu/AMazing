@@ -33,7 +33,7 @@ public:
 	const sf::Image *getTexture(int iTex);
 	const Portal *getPortal(int iPortal);
 	const Shader *getShader(int iShader);
-    
+    void updateObjPortal(GameObject *obj);
     std::vector<GameObject *>* getObject();
 	
 	std::vector<PhysicsInfo *> phyinfos;

@@ -21,7 +21,7 @@ void BoxPhysicsInfo::parse(char *args){
 	assert(str = strtok(args, " \t"));
 	half_z = atoi(str);
     
-	PhysicsInfo::shapeTy = PHYSP_PLANE;
+	PhysicsInfo::shapeTy = PHYSP_BOX;
 	args = str + strlen(str) + 1;
 	PhysicsInfo::parse(args);
 }
@@ -29,7 +29,7 @@ void BoxPhysicsInfo::parse(char *args){
 PhysicsInfo *BoxPhysicsInfo::clone(){
 	BoxPhysicsInfo *info = new BoxPhysicsInfo();
 	info->set(this);
-	info->half_x = -half_x / 25.4;
+	info->half_x = half_x / 25.4;
 	info->half_y = half_y / 25.4;
 	info->half_z = half_z / 25.4;
     

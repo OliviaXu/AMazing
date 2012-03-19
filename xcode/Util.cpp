@@ -115,3 +115,10 @@ void inverse(struct MAZEmat *matIn, struct MAZEmat *matOut){
 	matf[14] = mat.c4;
 	matf[15] = mat.d4;
 }
+
+void normalize(struct Vec3 *v){
+	float sum = sqrt(v->x*v->x + v->y*v->y + v->z*v->z);
+	v->x = v->x / sum;
+	v->y = v->y / sum;
+	v->z = v->z / sum;
+}

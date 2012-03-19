@@ -11,7 +11,7 @@
 
 #include "Framework.h"
 
-enum PhysicsShapeTy{PHYSP_PLANE, PHYSP_SPHERE, PHYSP_OTHERS};
+enum PhysicsShapeTy{PHYSP_PLANE, PHYSP_SPHERE, PHYSP_BOX, PHYSP_OTHERS};
 
 class PhysicsInfo {
 public:
@@ -24,6 +24,7 @@ public:
     int is_static;
     float mass;
     PhysicsShapeTy shapeTy;
+	int forceActivation;
 };
 
 #endif

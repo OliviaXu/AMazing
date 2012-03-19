@@ -226,3 +226,29 @@ void GameObject::setPos(float x, float y, float z)
     pos.y = y;
     pos.z = z;
 }
+
+void GameObject::respondToCollision(GameObject *obj, std::queue<MAZEevent> *eq){
+	return;
+}
+
+void GameObject::setRigidBody(btRigidBody *rb){
+	rigidBody = rb;
+}
+
+void GameObject::moveTo(float x, float y, float z){
+	float deltaX = x-pos.x;
+	float deltaY = y-pos.y;
+	float deltaZ = z-pos.z;
+
+	rigidBody->translate(btVector3(deltaX, deltaY, deltaZ));
+	//rigidBody->translate(btVector3(x, y, z));
+	btTransform trans;
+	btScalar m[16];
+	rigidBody->getMotionState()->getWorldTransform(trans);
+	trans.getOpenGLMatrix(m);
+	setTrans(m);
+
+	btVector3 o = trans.getOrigin();
+	setPos(o.getX(), o.getY(), o.getZ());
+	cout << x << "," << y << "," << z << "----" << pos.x <<"," << pos.y << "," << pos.z << endl;
+}

@@ -35,6 +35,7 @@ public:
 	struct Vec2 getSize();
 	MAZEorientation getOrientation();
 	//int doorStatus[4];
+	void removeObject(GameObject *obj);
 
 private:
 	int neighbors[4];

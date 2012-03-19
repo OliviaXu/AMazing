@@ -36,10 +36,10 @@ void main() {
 	float Rd = max(0.0, dot(L, N));
 	vec3 Td = texture2D(diffuseMap, texcoord).rgb;
 	vec3 Te = textureCube(environmentMap, cubemapRay).rgb;
-	vec3 diffuse = Rd * Kd * 2 * Te * gl_LightSource[0].diffuse.rgb;
+	vec3 diffuse = Rd * Kd * Te * gl_LightSource[0].diffuse.rgb;
 	
 	float Rd1 = max(0.0, dot(L1, N));
-	diffuse = diffuse + Rd1 * Kd * (Te) *gl_LightSource[1].diffuse.rgb;
+	diffuse = diffuse + Rd1 * Kd * Te *gl_LightSource[1].diffuse.rgb;
 
 	// Calculate the specular coefficient
 	vec3 R = reflect(-L, N);
@@ -57,5 +57,5 @@ void main() {
 gl_FragColor = vec4(diffuse + specular + ambient, 1);
 
 	// This actually writes to the frame buffer
-	//gl_FragColor = vec4(texcoord, 0, 1);
+	//gl_FragColor = vec4(normal, 1);
 }
