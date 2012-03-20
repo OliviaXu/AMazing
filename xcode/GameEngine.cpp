@@ -12,7 +12,7 @@
 
 using namespace std;
 
-#define SLOW_FRAME 400
+#define EFFECT_TIME 400
 
 GameEngine::GameEngine(string map_file, string config_file)
 {
@@ -27,6 +27,7 @@ GameEngine::GameEngine(string map_file, string config_file)
 	ball = mapLoader->getBall();
 	//DepthRenderTarget::init();
     slowdown = 0;
+    upspeed = 0;
 }
 
 GameEngine::~GameEngine()
@@ -70,18 +71,28 @@ void GameEngine::init(sf::Window* _window)
 	glLightfv(GL_LIGHT1, GL_SPECULAR, light1_specular);
 
 	emt = new ParticleEmitter(ParticleEmitter::PARTICLE_FIRE, "models/Electricity.png", 800);
-	//emt->mPosition.Set(-50/25.4, 50/25.4, 50.0/25.4);
     emt->mPosition.Set(-200/25.4, 5/25.4, 600.0/25.4);
+    emt2 = new ParticleEmitter(ParticleEmitter::PARTICLE_FIRE, "models/BurstGold.png", 800);
+    emt2->mPosition.Set(-400/25.4, 5/25.4, 900.0/25.4);
 }
 
 void GameEngine::run()
 {
     while(1){
-        Vec3 bpos = *(ball->getPos());
-        double dis = (bpos.x+200/25.4)*(bpos.x+200/25.4) + (bpos.y - 5/25.4)*(bpos.y - 5/25.4) + (bpos.z-600.0/25.4)*(bpos.z-600.0/25.4);
-        dis = log(dis+1);
-        if(dis < 0.6 && slowdown == 0)
-            slowdown = SLOW_FRAME;
+        double dis2 = ball->calcDis(-200/25.4, 5/25.4, 600.0/25.4);
+        double dis1 = ball->calcDis(-400/25.4, 5/25.4, 900.0/25.4);
+        dis1 = log(dis1+1);
+        dis2 = log(dis2+1);
+        if(dis1 < 0.6 && slowdown == 0)
+        {
+            slowdown = EFFECT_TIME;
+        }
+        if(dis2 < 0.6 && upspeed == 0)
+        {
+            btRigidBody* brb = ball->rigidBody;
+            brb->setLinearVelocity(2 * brb->getLinearVelocity());
+            upspeed = EFFECT_TIME;
+        }
         
 		static float t1 = 0;
 		static float t2 = t1;
@@ -146,6 +157,8 @@ void GameEngine::run()
             printf("slowdown: %d\n",slowdown);
             slowdown -= 1;
         }
+        if(upspeed)
+            --upspeed;
         
         drawScene();
         
@@ -245,4 +258,5 @@ void GameEngine::drawScene()
 							mapLoader->getPortals(), visitedEdgeSet);
 
 	drawParticles(window, emt);
+    drawParticles(window, emt2);
 }

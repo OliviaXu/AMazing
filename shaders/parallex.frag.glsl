@@ -4,6 +4,8 @@
 // for all fragments in an object, but they can change in between objects.
 uniform sampler2D diffuseMap;
 uniform sampler2D specularMap;
+uniform sampler2D normalMap;
+uniform sampler2D depthMap;
 //I will use diffuse Map and specularMap first to do the job of normal map
 
 // Diffuse, ambient, and specular materials.  These are also uniform.
@@ -30,7 +32,7 @@ float inter(vec2 dp,vec2 ds){
   int i=0;
   for(i;i<linear_steps-1;i++){
     dep=dep+size;
-    vec4 t=texture2D(specularMap,dp+ds*dep);
+    vec4 t=texture2D(depthMap,dp+ds*dep);
     if(best>0.996)
     if(!(dep<t.r))
     //maybe try to see whether w has value.....
@@ -41,8 +43,9 @@ float inter(vec2 dp,vec2 ds){
   int j=0;
   for(j;j<bi_steps-1;j++){
     size=size*0.5;
-    vec4 t=texture2D(specularMap,dp+ds*dep);
-    if(!(dep<t.r)){
+    //vec4 t=texture2D(depthMap,dp+ds*dep);
+    vec4 t2=texture2D(normalMap,dp+ds*dep);
+    if(!(dep<t2.r)){
       best=dep;
       dep=dep-2*size;
     }
@@ -53,7 +56,7 @@ float inter(vec2 dp,vec2 ds){
 void main() {
 
   float depth=0.0;//don't know what exactly
-  float tile=1.0;//don't know this as well...
+  float tile=2.0;//don't know this as well...
   
 	vec3 V = normalize(eyePosition);
     vec3 tanv=normalize(vec3(dot(V,tan),dot(V,bin),dot(normal,-V)));
@@ -61,17 +64,20 @@ void main() {
     vec2 dp=texcoord*tile;
     float d=inter(dp,ds);
     vec2 uv=dp+ds*d;
-    vec3 tn=texture2D(diffuseMap,uv).xyz;
+    vec3 tn=texture2D(normalMap,uv).xyz;
     //maybe color texture
     tn=tn*2.0-1.0;
     tn.xyz=normalize(tn.x*tan+tn.y*bin+tn*normal);
     //light
     vec3 pos=eyePosition+V*d*tanv.z;
-    vec3 ldir=normalize(pos-gl_LightSource[0].position.xyz);
+    //vec3 ldir=normalize(pos-gl_LightSource[0].position.xyz);//it isn't point light
+    vec3 ldir=normalize(-gl_LightSource[0].position.xyz);
     
     //need to do depth correction???
     	float Rd = max(0.0, dot(-ldir,tn));
-      float Rs = pow(max(0.0, dot(normalize(-ldir-V), tn)), alpha);
+    	vec3 R = reflect(ldir,tn);//vec3 R = reflect(-L, N);
+    	float Rs=pow(max(0.0, dot(-V, R)), alpha);
+      //float Rs = pow(max(0.0, dot(normalize(-ldir-V),tn)), alpha);
       //why the diffuse is like this?
      
      
@@ -84,24 +90,27 @@ void main() {
     float dl=inter(dp,ds);
     if(dl<d-0.05){
       //in shadow
-      Rd*=dot(gl_LightSource[0].ambient.rgb,vec3(1.,1.,1)*0.3333);
+      Rd*=0.2;
       Rs=0;
     }
     
     
     
     //with no diffuse map at this moment
-     vec3 diffuse = Rd * Kd * gl_LightSource[0].diffuse.rgb;
-     vec3 specular = Rs * Ks * gl_LightSource[0].specular.rgb;
-     vec3 ambient = Ka * gl_LightSource[0].ambient.rgb;
+     vec3 diffuse = Rd * gl_LightSource[0].diffuse.rgb*texture2D(diffuseMap,dp).rgb;
+     vec3 specular = Rs * gl_LightSource[0].specular.rgb;   
+     //vec3 diffuse = Rd * Kd * gl_LightSource[0].diffuse.rgb;
+     //vec3 specular = Rs * Ks * gl_LightSource[0].specular.rgb;
+     //vec3 ambient = Ka * gl_LightSource[0].ambient.rgb;
      
     // This actually writes to the frame buffer
-    vec3 color = diffuse + specular + ambient;
+    //vec3 color = diffuse + specular + ambient;
+    vec3 color = diffuse + specular;
     if(color.r>1) color.r=1;
     if(color.g>1) color.g=1;
     if(color.b>1) color.b=1;
     gl_FragColor = vec4(color, 1);
-    //gl_FragColor = vec4(texture2D(specularMap,texcoord).xyz,1);
+    //gl_FragColor = vec4(texture2D(normalMap,texcoord).w,0,0,1);
      //gl_FragColor = vec4(tan,1);
 
 }

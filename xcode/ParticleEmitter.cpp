@@ -141,17 +141,17 @@ void ParticleEmitter::renderParticles() {
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 	// pass in transparency and point size parameters
-	GLint	alphaId = glGetAttribLocation(shaderId, "alphaIn"),
+	GLuint	alphaId = glGetAttribLocation(shaderId, "alphaIn"),
 			sizeId = glGetAttribLocation(shaderId, "sizeIn");
 	glEnableVertexAttribArray(alphaId);
 	glEnableVertexAttribArray(sizeId);
 
 	// pass in screen width to rescale the point sprite size
-	GLint widthId = glGetUniformLocation(shaderId, "widthIn");
+	GLuint widthId = glGetUniformLocation(shaderId, "widthIn");
 	glUniform1f(widthId, mWindowWidth);
 
 	// Set texture
-	GLint diffuseId = glGetUniformLocation(shaderId, "diffuse");
+	GLuint diffuseId = glGetUniformLocation(shaderId, "diffuse");
 	glUniform1i(diffuseId, 0);
 	glActiveTexture(GL_TEXTURE0);
 	mTexture.Bind();
