@@ -22,8 +22,6 @@ varying vec3 tan;
 varying vec3 bin;
 varying vec3 eyePosition;
 
-varying float alpha_blend;
-
 float inter(vec2 dp,vec2 ds){
   int linear_steps=10;
   int bi_steps=5;
@@ -114,8 +112,7 @@ void main() {
     gl_FragColor = vec4(color, 1);
     //gl_FragColor = vec4(texture2D(normalMap,texcoord).w,0,0,1);
      //gl_FragColor = vec4(tan,1);
-     
-     gl_FragColor = (1-alpha_blend) * gl_FragColor + alpha_blend*vec4(1,1,1,1);
+
 }
 
 
