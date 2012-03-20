@@ -46,6 +46,10 @@ private:
 	MAZErectangle viewport;
 
 	ParticleEmitter *emt;
+    ParticleEmitter *emt2;
+    
+    int slowdown;
+    int upspeed;
 };
 
 #endif

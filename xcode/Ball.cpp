@@ -49,3 +49,8 @@ void Ball::respondToCollision(GameObject *obj, std::queue<MAZEevent> *eq){
 		}
 	}
 }
+
+float Ball::calcDis(float x, float y, float z)
+{
+    return (x-pos.x)*(x-pos.x) + (y-pos.y)*(y-pos.y) + (z-pos.z)*(z-pos.z);
+}

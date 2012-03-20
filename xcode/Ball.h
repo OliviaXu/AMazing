@@ -16,6 +16,7 @@ class Ball: public GameObject {
 public:
     Ball();
 	float getV();
+    float calcDis(float x, float y, float z);
 	virtual void respondToCollision(GameObject *obj, std::queue<MAZEevent> *eq);
 };
 

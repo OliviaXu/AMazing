@@ -35,6 +35,8 @@
 #include <climits>
 #include <set>
 
+#include <time.h>
+
 #include "Util.h"
 
 #define DEBUG_OUTPUT 0

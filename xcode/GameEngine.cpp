@@ -12,6 +12,8 @@
 
 using namespace std;
 
+#define EFFECT_TIME 400
+
 GameEngine::GameEngine(string map_file, string config_file)
 {
     mapLoader = new MapLoader();
@@ -24,6 +26,8 @@ GameEngine::GameEngine(string map_file, string config_file)
     plane = new Plane();
 	ball = mapLoader->getBall();
 	//DepthRenderTarget::init();
+    slowdown = 0;
+    upspeed = 0;
 }
 
 GameEngine::~GameEngine()
@@ -66,18 +70,35 @@ void GameEngine::init(sf::Window* _window)
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, light1_diffuse);
 	glLightfv(GL_LIGHT1, GL_SPECULAR, light1_specular);
 
-	emt = new ParticleEmitter(ParticleEmitter::PARTICLE_FIRE, "models/FireGold.png", 800);
-	emt->mPosition.Set(-50/25.4, 50/25.4, 50.0/25.4);
+	emt = new ParticleEmitter(ParticleEmitter::PARTICLE_FIRE, "models/Electricity.png", 800);
+    emt->mPosition.Set(-200/25.4, 5/25.4, 600.0/25.4);
+    emt2 = new ParticleEmitter(ParticleEmitter::PARTICLE_FIRE, "models/BurstGold.png", 800);
+    emt2->mPosition.Set(-400/25.4, 5/25.4, 900.0/25.4);
 }
 
 void GameEngine::run()
 {
     while(1){
+        double dis2 = ball->calcDis(-200/25.4, 5/25.4, 600.0/25.4);
+        double dis1 = ball->calcDis(-400/25.4, 5/25.4, 900.0/25.4);
+        dis1 = log(dis1+1);
+        dis2 = log(dis2+1);
+        if(dis1 < 0.6 && slowdown == 0)
+        {
+            slowdown = EFFECT_TIME;
+        }
+        if(dis2 < 0.6 && upspeed == 0)
+        {
+            btRigidBody* brb = ball->rigidBody;
+            brb->setLinearVelocity(2 * brb->getLinearVelocity());
+            upspeed = EFFECT_TIME;
+        }
+        
 		static float t1 = 0;
 		static float t2 = t1;
 		t2 = t1;
 		t1 = window->GetFrameTime();
-		cout << "delta time " << t1 << endl;
+		//cout << "delta time " << t1 << endl;
 
         userControl->handleInput();    // constant * window.GetFrameTime() 
 
@@ -92,7 +113,7 @@ void GameEngine::run()
         //plane->update(dAngleNS, dAngleEW);    // no use anymore
         
         //I think updating current portal according to camera is more appropriate.
-		camera->updatePos(userControl->getCamM(),userControl->getCamDirUpdate(),ball,dAngleNS, dAngleEW);//input camera movement ball direction and ball to determin camera position and direction
+		camera->updatePos(userControl->getCamM(),userControl->getCamDirUpdate(),ball,dAngleNS, dAngleEW, ((Portal*)(mapLoader->getCurrentPortal()))->getN(), ((Portal*)(mapLoader->getCurrentPortal()))->getS(), ((Portal*)(mapLoader->getCurrentPortal()))->getW(), ((Portal*)(mapLoader->getCurrentPortal()))->getE());//input camera movement ball direction and ball to determin camera position and direction
 		/*if(mapLoader->updateCurrentPortal(&(ball->getPos()))){
 			//updateObjects();
 			ball->setPortal(mapLoader->getCurrentPortalIdx());
@@ -100,7 +121,7 @@ void GameEngine::run()
 		mapLoader->updateCurrentPortal(camera->getPos(), (ball->getPos()));
         
         //printf("%f, %f, %f\n", GRAVITY * sin(dAngleEW/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * cos(dAngleNS/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * sin(dAngleNS/180*PI));
-        printf("NS: %f, EW: %f\n", dAngleNS, dAngleEW);
+        //printf("NS: %f, EW: %f\n", dAngleNS, dAngleEW);
         physicsEngine->setGravity(GRAVITY * sin(dAngleEW/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * cos(dAngleNS/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * sin(dAngleNS/180*PI));
 
         physicsEngine->updateObjects();
@@ -114,6 +135,31 @@ void GameEngine::run()
 		GLfloat light1_pos[] = {-0.5, 1, -1, 0};
 		glLightfv(GL_LIGHT1, GL_POSITION, light1_pos);
 		//printf("cam mov: % d light: %f %f %f\n",userControl->getCamM(),light_position[0],light_position[1],light_position[2]);
+        
+        /*if(slowdown>10)
+        {
+            for(int i = 1;i < slowdown/1.2;++i)
+                drawScene();
+            //clock_t goal = 500 * (slowdown%2) + clock();
+            //while (goal > clock());
+            
+            printf("slowdown: %d\n",slowdown);
+            
+            slowdown -= 1;
+        }
+        else */if(slowdown)
+        {
+            //clock_t goal = 500 * slowdown + clock();
+            int count;
+            count = 500*(slowdown/10);
+            clock_t goal = count + clock();
+            while (goal > clock());
+            printf("slowdown: %d\n",slowdown);
+            slowdown -= 1;
+        }
+        if(upspeed)
+            --upspeed;
+        
         drawScene();
         
         window->Display();
@@ -209,5 +255,6 @@ void GameEngine::drawScene()
 	rootPortal->cullDraw(&projviewMat, &viewportMat, viewport, 
 							mapLoader->getPortals(), visitedEdgeSet);
 
-	//drawParticles(window, emt);
+	drawParticles(window, emt);
+    drawParticles(window, emt2);
 }

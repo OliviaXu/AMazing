@@ -14,10 +14,12 @@
 #define HDIS 5
 #define VDIS 3
 
-#define FLOOR_DIS 6.0
-#define CAM_HEIGHT 4.0
+#define FLOOR_DIS 3.0//3.0
+#define CAM_HEIGHT 2.0//2.0
 #define FOLLOW_RATE 0.1
 #define LOOKAT_BALL 0
+
+#define EPS 0.01
 
 Camera::Camera() {
 	control_m=false;
@@ -31,7 +33,7 @@ const struct Vec3 *Camera::getPos(){
 	return &pos;
 }
 
-void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float AngleNS,float AngleEW) 
+void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float AngleNS,float AngleEW, float N, float S, float W, float E) 
 {
     GLfloat aspectRatio = (GLfloat)800.f/600;
     GLfloat nearClip = 0.1f;
@@ -90,6 +92,48 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
 #endif
     float look_y_dif = sin(final_look_angle);
     float look_z_dif = cos(final_look_angle);
+    
+    bool outside = false;
+    float factor = 0;
+    printf("NSWE: %f,%f,%f,%f\n",N,S,W,E);
+    printf("bpos.x: %f\n", bpos.x);
+    switch(keyd)
+    {
+        case UP:
+            if(bpos.z - cam_back <= S + EPS)
+            {
+                outside = true;
+                factor = (bpos.z - S - EPS) / cam_back;
+            }
+            break;
+        case DOWN:
+            if(bpos.z + cam_back >= N - EPS)
+            {
+                outside = true;
+                factor = (N - EPS - bpos.z) / cam_back;
+            }
+            break;
+        case LEFT:
+            if(-bpos.x + cam_back >= -E - EPS)
+            {
+                outside = true;
+                factor = (-E - EPS + bpos.x) / cam_back;
+            }
+            break;
+        case RIGHT:
+            if(-bpos.x - cam_back <= -W + EPS)
+            {
+                outside = true;
+                factor = (-bpos.x + W - EPS) / cam_back;
+            }
+            break;
+    }
+    if(outside)
+    {
+        printf("factor: %f\n", factor);
+        cam_lift *= factor;
+        cam_back *= factor;
+    }
     
     switch (keyd) {
         case UP:
