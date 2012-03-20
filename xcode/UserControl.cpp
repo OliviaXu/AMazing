@@ -1,7 +1,7 @@
 #include "UserControl.h"
 using namespace std;
 
-#define CAM_ANG_LIMIT 30
+#define CAM_ANG_LIMIT 20
 
 UserControl::UserControl() : angSpeed(200){
 	angNS=0.;
@@ -39,25 +39,45 @@ void UserControl::handleInput(){
 		case sf::Event::KeyPressed:
                 cout << window->GetFrameTime() << endl;
 			if(evt.Key.Code==sf::Key::Left){
-				angEW-=angSpeed*window->GetFrameTime(); 
-                if(angEW < -CAM_ANG_LIMIT)
-                    angEW = CAM_ANG_LIMIT;
+                if(camdir == UP)
+                    angEW -= angSpeed*window->GetFrameTime();
+                else if(camdir == DOWN)
+                    angEW += angSpeed*window->GetFrameTime();
+                else if(camdir == LEFT)
+                    angNS -= angSpeed*window->GetFrameTime();
+                else if(camdir == RIGHT)
+                    angNS += angSpeed*window->GetFrameTime();
 				//TODO: this is problematic should be changed according to the direction of ball movcement
 			}
 			else if(evt.Key.Code==sf::Key::Right){
-				angEW+=angSpeed*window->GetFrameTime(); 
-                if(angEW > CAM_ANG_LIMIT)
-                    angEW = CAM_ANG_LIMIT;
+                if(camdir == UP)
+                    angEW += angSpeed*window->GetFrameTime();
+                else if(camdir == DOWN)
+                    angEW -= angSpeed*window->GetFrameTime();
+                else if(camdir == LEFT)
+                    angNS += angSpeed*window->GetFrameTime();
+                else if(camdir == RIGHT)
+                    angNS -= angSpeed*window->GetFrameTime();
 			}
 			else if(evt.Key.Code==sf::Key::Up){
-				angNS+=angSpeed*window->GetFrameTime(); 
-                if(angNS > CAM_ANG_LIMIT)
-                    angNS = CAM_ANG_LIMIT;
+                if(camdir == UP)
+                    angNS += angSpeed*window->GetFrameTime();
+                else if(camdir == DOWN)
+                    angNS -= angSpeed*window->GetFrameTime();
+                else if(camdir == LEFT)
+                    angEW -= angSpeed*window->GetFrameTime();
+                else if(camdir == RIGHT)
+                    angEW += angSpeed*window->GetFrameTime();
 			}
 			else if(evt.Key.Code==sf::Key::Down){
-				angNS-=angSpeed*window->GetFrameTime(); 
-                if(angNS < -CAM_ANG_LIMIT)
-                    angNS = CAM_ANG_LIMIT;
+                if(camdir == UP)
+                    angNS -= angSpeed*window->GetFrameTime();
+                else if(camdir == DOWN)
+                    angNS += angSpeed*window->GetFrameTime();
+                else if(camdir == LEFT)
+                    angEW += angSpeed*window->GetFrameTime();
+                else if(camdir == RIGHT)
+                    angEW -= angSpeed*window->GetFrameTime();
 			}else if(evt.Key.Code=='a' || evt.Key.Code=='A' ){
 				camdir=LEFT;
 			}
@@ -93,6 +113,15 @@ void UserControl::handleInput(){
             break;
 
         }
+        
+        if(angNS > CAM_ANG_LIMIT)
+            angNS = CAM_ANG_LIMIT;
+        if(angNS < -CAM_ANG_LIMIT)
+            angNS = -CAM_ANG_LIMIT;
+        if(angEW > CAM_ANG_LIMIT)
+            angEW = CAM_ANG_LIMIT;
+        if(angEW < -CAM_ANG_LIMIT)
+            angEW = -CAM_ANG_LIMIT;
 
 		if(DEBUG_OUTPUT)
             cout << "light " << lightP.x << "," << lightP.y <<"," << lightP.z<<endl;

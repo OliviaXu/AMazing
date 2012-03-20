@@ -14,6 +14,11 @@
 #define HDIS 5
 #define VDIS 3
 
+#define FLOOR_DIS 2
+#define CAM_HEIGHT 2.0
+#define FOLLOW_RATE 0.1
+#define LOOKAT_BALL 0
+
 Camera::Camera() {
 	control_m=false;
     pos=Vec3(0.,0.,0.);//the original position need to be changed
@@ -31,7 +36,7 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
     GLfloat aspectRatio = (GLfloat)800.f/600;
     GLfloat nearClip = 0.1f;
 	GLfloat farClip = 4000.0f;
-    GLfloat fieldOfView = 90.0f; // TODO Degrees
+    GLfloat fieldOfView = 120.0f; // TODO Degrees
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -50,18 +55,42 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
     float sint = sin(AngleNS/180*PI);
     float eye_y = bpos.y + VDIS * cost;
     float eye_dif = HDIS / cost + VDIS * sint;
+    
+    switch(keyd)
+    {
+        case UP: case DOWN:
+            break;
+        case LEFT: case RIGHT:
+            float tmp = AngleEW;
+            AngleEW = -AngleNS; // should be AngleNS, don't know why their is a minus sign
+            AngleNS = tmp;
+            break;
+    }
+    
+    float cam_lift = CAM_HEIGHT * cos(AngleNS/180*PI);
+    float cam_back = FLOOR_DIS + CAM_HEIGHT * sin(AngleNS/180*PI);
+    float ball_down_look_angle = atan(cam_lift/cam_back);
+#ifdef LOOKAT_BALL
+    float final_look_angle = AngleNS/180*PI - FOLLOW_RATE * (AngleNS/180*PI + ball_down_look_angle);
+#else
+    float final_look_angle = (1 - FOLLOW_RATE) * AngleNS;
+#endif
+    float look_y_dif = sin(final_look_angle);
+    float look_z_dif = cos(final_look_angle);
+    
     switch (keyd) {
         case UP:
-            gluLookAt(bpos.x, eye_y, bpos.z - eye_dif, bpos.x, eye_y - sint, bpos.z - eye_dif + cost, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
+            //gluLookAt(bpos.x, eye_y, bpos.z - eye_dif, bpos.x, eye_y - sint, bpos.z - eye_dif + cost, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
+            gluLookAt(bpos.x, bpos.y + cam_lift, bpos.z - cam_back, bpos.x, bpos.y + cam_lift + look_y_dif, bpos.z - cam_back + look_z_dif, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
             break;
         case DOWN:
-            gluLookAt(bpos.x, eye_y, bpos.z + eye_dif, bpos.x, eye_y - sint, bpos.z + eye_dif - cost, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
+            gluLookAt(bpos.x, bpos.y + cam_lift, bpos.z + cam_back, bpos.x, bpos.y + cam_lift + look_y_dif, bpos.z + cam_back - look_z_dif, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
             break;
         case LEFT:
-            gluLookAt(bpos.x - eye_dif, eye_y, bpos.z, bpos.x - eye_dif + cost, eye_y - sint, bpos.z, 0., cos((AngleEW)/180*PI), -sin((AngleEW)/180*PI));
+            gluLookAt(bpos.x - cam_back, bpos.y + cam_lift, bpos.z, bpos.x - cam_back + look_z_dif, bpos.y + cam_lift + look_y_dif, bpos.z, 0., cos((AngleEW)/180*PI), -sin((AngleEW)/180*PI));
             break;
         case RIGHT:
-            gluLookAt(bpos.x + eye_dif, eye_y, bpos.z, bpos.x + eye_dif - cost, eye_y - sint, bpos.z, 0., cos((AngleEW)/180*PI), sin((AngleEW)/180*PI));
+            gluLookAt(bpos.x + cam_back, bpos.y + cam_lift, bpos.z, bpos.x + cam_back - look_z_dif, bpos.y + cam_lift + look_y_dif, bpos.z, 0., cos((AngleEW)/180*PI), -sin((AngleEW)/180*PI));
             break;
     }
     
