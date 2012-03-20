@@ -14,8 +14,8 @@
 #define HDIS 5
 #define VDIS 3
 
-#define FLOOR_DIS 3.0
-#define CAM_HEIGHT 2.0
+#define FLOOR_DIS 3.0//3.0
+#define CAM_HEIGHT 2.0//2.0
 #define FOLLOW_RATE 0.1
 #define LOOKAT_BALL 0
 
