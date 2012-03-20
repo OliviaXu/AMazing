@@ -126,8 +126,8 @@ void GameEngine::run()
 			ball->setPortal(mapLoader->getCurrentPortalIdx());
 		}*/
 		mapLoader->updateCurrentPortal(camera->getPos(), (ball->getPos()));
-		cout << "here2" <<endl;
-		cout << "current portal " << mapLoader->getCurrentPortalIdx() << endl;
+		//cout << "here2" <<endl;
+		//cout << "current portal " << mapLoader->getCurrentPortalIdx() << endl;
         //printf("%f, %f, %f\n", GRAVITY * sin(dAngleEW/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * cos(dAngleNS/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * sin(dAngleNS/180*PI));
         //printf("NS: %f, EW: %f\n", dAngleNS, dAngleEW);
         physicsEngine->setGravity(GRAVITY * sin(dAngleEW/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * cos(dAngleNS/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * sin(dAngleNS/180*PI));
@@ -259,8 +259,8 @@ void GameEngine::drawScene()
 	//Not sure how to call rootPortal->cullDraw without doing this...
 	Portal *rootPortal = (Portal *)mapLoader->getCurrentPortal();
 	int ip = mapLoader->getCurrentPortalIdx();
-	if(DEBUG_OUTPUT)
-        cout << "portal " << ip << endl;
+	//if(DEBUG_OUTPUT)
+    //    cout << "portal " << ip << endl;
 	/*rootPortal->doorStatus[0] = 0;
 	rootPortal->doorStatus[1] = 0;
 	rootPortal->doorStatus[2] = 0;

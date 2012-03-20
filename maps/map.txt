@@ -4,7 +4,7 @@ m models/left.3DS #1
 m models/right.3DS #2
 m models/front.3DS #3
 m models/back.3DS #4
-m models/sphere_5.3DS #5
+m models/sphere_6.3DS #5
 m models/portal_plane_plain.3ds #6
 m models/portal_plane_f.3ds #7
 m models/hole_floor.3ds #8
@@ -13,28 +13,48 @@ m models/option_box2.3ds #9
 m models/box_box.3DS #10
 
 # List of Textures
-t models/grid.jpg  #0
-t models/x.jpg #1
-t models/stone.jpg #2
-t models/little_stone.jpg #3
-t models/tiles_d.jpg #4
-t models/start.jpg    #5
-t models/restart.jpg  #6
-t models/quit.jpg     #7
-t models/dry_land.jpg #8
-t models/beautiful.jpg #9
-t models/sea.jpg #10
-t models/sea2.jpg #11
-t models/metal_grid.jpg #12
-t models/bean.jpg #13
-t models/flower.jpg #14
-t models/number.jpg #15
-t models/4.jpg #16
-t models/wool1.jpg #17
+t textures/grid.jpg  #0
+t textures/white.jpg #1
+#parallex 1
+t textures/10014-diffuse.jpg    #2
+t textures/10014-normal.jpg    #3
+t textures/10014-height.jpg    #4
+#parallex 2
+t textures/9548-diffuse.jpg    #5
+t textures/9548-normal.jpg    #6
+t textures/9548-height.jpg    #7
+#wood
+t textures/8892-diffuse.jpg    #8
+t textures/8892-normal.jpg    #9
+t textures/8892-height.jpg    #10
+t textures/8892-specstrength.jpg    #11
+#stone wall
+t textures/7525-diffuse.jpg    #12
+t textures/7525-normal.jpg    #13
+t textures/7525-height.jpg    #14
+t textures/7525-specstrength.jpg    #15
+#brick
+t textures/375-diffuse.jpg    #16
+t textures/375-normal.jpg    #17
+t textures/375-height.jpg    #18
+
+t textures/start.jpg    #19
+t textures/restart.jpg  #20
+t textures/quit.jpg     #21
+
+t textures/x.jpg #22
+t textures/beautiful.jpg #23
+t textures/sea.jpg #24
+t textures/sea2.jpg #25
+t textures/number.jpg #26
+t textures/metal_grid.jpg #27
+t textures/little_stone.jpg #28
 
 # List of Shaders
 s shaders/phong		# 0
 s shaders/portal	# 1
+s shaders/parallex      # 2
+s shaders/normal	# 3
 
 # List of Portals
 # ________________________________
@@ -47,26 +67,24 @@ p 1 NULL NULL NULL 500 1000 # 0
 p NULL 0 NULL 2 500 500	# 1
 p NULL NULL 1 3 1000 500 	# 2
 p 4 NULL 2 NULL 500 500 # 3
-p 5 3 NULL NULL 500 1500	# 4
+p 5 3 NULL NULL 500 500	# 4
 p NULL 4 6 9 500 500 #5
 p 7 NULL 8 5 500 500 #6
 p NULL 6 NULL NULL 500 500 #7
 p NULL NULL NULL 6 1000 500 #8
 p NULL NULL 5 10 500 500 #9
 #p 18 11 9 17 500 500 #10
-p 17 11 9 16 500 500 #10
+p 18 11 9 17 500 500 #10
+#p NULL NULL 9 NULL 500 500 #10
 p 10 12 NULL NULL 500 500 #11
 p 11 NULL NULL 13 500 500 #12
 p NULL NULL 12 14 500 500 #13
 p 15 NULL 13 NULL 500 500 #14
-#p 16 14 NULL NULL 500 500 #15
-p NULL 14 NULL NULL 500 500 #15
-p NULL NULL 10 NULL 500 500 #16
-p NULL 10 NULL NULL 500 1000 #17
-
+p 16 14 NULL NULL 500 500 #15
 #p NULL 15 17 NULL 500 500 #16
-#p NULL NULL 10 16 500 500 #17
-#p NULL 10 NULL NULL 500 1000 #18
+p NULL 15 17 NULL 500 500 #16
+p NULL NULL 10 16 500 500 #17
+p NULL 10 NULL NULL 500 1000 #18
 
 #List of Bullet Physics Properties
 # plane inormal_x inormal_y inormal_z mass is_static itran_x itran_y itran_z itran_w ipos_x ipos_y ipos_z ipos_w
@@ -83,162 +101,187 @@ phy box 100 50 75 0 1 0 0 0 1 0 0 0 1 #8 option box
 
 # List of Portal Object
 # pobj class_name mesh_num portal_num pos shader_num d_tex_num s_tex_num iphyinfo
-pobj gameobject 0 0 0 0 0 0 17 1 0
-pobj gameobject 0 1 0 0 0 0 0 1 0
-pobj gameobject 0 2 0 0 0 0 0 1 0
-pobj gameobject 0 3 0 0 0 0 0 1 0
-pobj gameobject 0 4 0 0 0 0 0 1 0
-pobj gameobject 0 5 0 0 0 0 0 1 0
-pobj gameobject 0 6 0 0 0 0 0 1 0
-pobj gameobject 0 7 0 0 0 0 0 1 0
-pobj gameobject 0 8 0 0 0 0 0 1 0
-pobj gameobject 0 9 0 0 0 0 0 1 0
-pobj gameobject 0 10 0 0 0 0 0 1 0
-pobj gameobject 0 11 0 0 0 0 0 1 0
-pobj gameobject 0 12 0 0 0 0 0 1 0
-pobj gameobject 0 13 0 0 0 0 0 1 0
-pobj gameobject 0 14 0 0 0 0 0 1 0
-pobj gameobject 0 15 0 0 0 0 0 1 0
-pobj gameobject 0 16 0 0 0 0 0 1 0
-pobj gameobject 0 17 0 0 0 0 0 1 0
-#pobj gameobject 0 18 0 0 0 0 0 1 0
+pobj wall 0 0 0 0 0 3 8 11 0 9 10
+pobj wall 0 1 0 0 0 3 8 11 0 9 10
+pobj wall 0 2 0 0 0 3 8 11 0 9 10
+pobj wall 0 3 0 0 0 3 16 1 0 17 1
+pobj wall 0 4 0 0 0 2 2 1 0 3 4
+#pobj gameobject 0 5 0 0 0 0 0 1 0
+pobj wall 0 5 0 0 0 3 16 1 0 17 1
+#pobj gameobject 0 6 0 0 0 0 0 1 0
+pobj wall 0 6 0 0 0 2 5 1 0 6 7
+pobj gameobject 0 7 0 0 0 0 26 1 0
+pobj gameobject 0 8 0 0 0 0 27 1 0
+pobj gameobject 0 9 0 0 0 0 28 1 0
+pobj gameobject 0 10 0 0 0 0 23 1 0
+pobj gameobject 0 11 0 0 0 0 23 1 0
+pobj gameobject 0 12 0 0 0 0 24 1 0
+pobj gameobject 0 13 0 0 0 0 24 1 0
+pobj gameobject 0 14 0 0 0 0 24 1 0
+pobj gameobject 0 15 0 0 0 0 25 1 0
+pobj gameobject 0 16 0 0 0 0 25 1 0
+pobj gameobject 0 17 0 0 0 0 23 1 0
+pobj gameobject 0 18 0 0 0 0 23 1 0
 
 # List of Object
 # obj class_name mesh_num portal_num pos shader_num d_tex_num s_tex_num iphyinfo
 #portal 0
-obj gameobject 0 0 0 0 500 0 0 1 0
-obj gameobject 1 0 0 250 250 0 0 1 1
-obj gameobject 1 0 0 250 750 0 0 1 1
-obj gameobject 2 0 500 250 250 0 0 1 1
-obj gameobject 2 0 500 250 750 0 0 1 1
-obj gameobject 4 0 250 250 0 0 0 1 2
+#obj gameobject 0 0 0 0 500 0 0 1 0
+obj wall 0 0 0 0 500 3 8 11 0 9 10
+#obj gameobject 1 0 0 250 250 0 0 1 1
+obj wall 1 0 0 250 250 3 8 11 1 9 10
+#obj gameobject 1 0 0 250 750 0 0 1 1
+obj wall 1 0 0 250 750 3 8 11 1 9 10
+#obj gameobject 2 0 500 250 250 0 0 1 1
+obj wall 2 0 500 250 250 3 8 11 1 9 10
+#obj gameobject 2 0 500 250 750 0 0 1 1
+obj wall 2 0 500 250 750 3 8 11 1 9 10
+#obj gameobject 4 0 250 250 0 0 0 1 2
+obj wall 4 0 250 250 0 2 2 1 2 3 4
 
-#obj ball 5 0 250 100010 250 0 0 -1 3
-obj ball 5 0 250 10 250 0 10 -1 3
+obj ball 5 0 250 100010 250 0 0 1 3
+#obj ball 5 18 250 10 250 0 0 1 3
 #start scene #really just a hack...
-obj gameobject 0 0 0 100000 0 0 8 1 7
-obj gameobject 0 0 0 100000 500 0 8 1 7
-obj gameobject 0 0 500 100000 0 0 8 1 7
-obj gameobject 0 0 500 100000 500 0 8 1 7
-obj gameobject 1 0 0 100200 250 0 8 1 1
-obj gameobject 1 0 0 100200 750 0 8 1 1
-obj gameobject 2 0 1000 100200 250 0 8 1 1
-obj gameobject 2 0 1000 100200 750 0 8 1 1
-obj gameobject 3 0 250 100200 1000 0 8 1 2
-obj gameobject 3 0 750 100200 1000 0 8 1 2 
-obj gameobject 4 0 250 100200 0 0 8 1 2
-obj gameobject 4 0 750 100200 0 0 8 1 2 
-obj optionbox 9 0 250 100000 850 0 5 5 8 start
-obj optionbox 9 0 750 100000 850 0 7 7 8 quit
+obj gameobject 0 0 0 100000 0 0 0 1 7
+obj gameobject 0 0 0 100000 500 0 0 1 7
+obj gameobject 0 0 500 100000 0 0 0 1 7
+obj gameobject 0 0 500 100000 500 0 0 1 7
+obj gameobject 1 0 0 100200 250 0 0 1 1
+obj gameobject 1 0 0 100200 750 0 0 1 1
+obj gameobject 2 0 1000 100200 250 0 0 1 1
+obj gameobject 2 0 1000 100200 750 0 0 1 1
+obj gameobject 3 0 250 100200 1000 0 0 1 2
+obj gameobject 3 0 750 100200 1000 0 0 1 2 
+obj gameobject 4 0 250 100200 0 0 0 1 2
+obj gameobject 4 0 750 100200 0 0 0 1 2 
+obj optionbox 9 0 250 100000 850 0 19 1 8 start
+obj optionbox 9 0 750 100000 850 0 21 1 8 quit
 
 #restart scene
-obj gameobject 0 0 0 200000 0 0 8 1 7
-obj gameobject 0 0 0 200000 500 0 8 1 7
-obj gameobject 0 0 500 200000 0 0 8 1 7
-obj gameobject 0 0 500 200000 500 0 8 1 7
-obj gameobject 1 0 0 200200 250 0 8 1 1
-obj gameobject 1 0 0 200200 750 0 8 1 1
-obj gameobject 2 0 1000 200200 250 0 8 1 1
-obj gameobject 2 0 1000 200200 750 0 8 1 1
-obj gameobject 3 0 250 200200 1000 0 8 1 2
-obj gameobject 3 0 750 200200 1000 0 8 1 2 
-obj gameobject 4 0 250 200200 0 0 8 1 2
-obj gameobject 4 0 750 200200 0 0 8 1 2 
-obj optionbox 9 0 250 200000 850 0 6 6 8 restart
-obj optionbox 9 0 750 200000 850 0 7 7 8 quit
+obj gameobject 0 0 0 200000 0 0 0 1 7
+obj gameobject 0 0 0 200000 500 0 0 1 7
+obj gameobject 0 0 500 200000 0 0 0 1 7
+obj gameobject 0 0 500 200000 500 0 0 1 7
+obj gameobject 1 0 0 200200 250 0 0 1 1
+obj gameobject 1 0 0 200200 750 0 0 1 1
+obj gameobject 2 0 1000 200200 250 0 0 1 1
+obj gameobject 2 0 1000 200200 750 0 0 1 1
+obj gameobject 3 0 250 200200 1000 0 0 1 2
+obj gameobject 3 0 750 200200 1000 0 0 1 2 
+obj gameobject 4 0 250 200200 0 0 0 1 2
+obj gameobject 4 0 750 200200 0 0 0 1 2 
+obj optionbox 9 0 250 200000 850 0 20 1 8 restart
+obj optionbox 9 0 750 200000 850 0 21 1 8 quit
 
 #functional portal
 #gameobj_param, iDstPortal, dst_look_direction(0->+x, 1->-x, 2->+y, 3->-y, 4->+z, 5->-z), dstPos(portal coord) src_look_dir
-#obj funportal 6 0 250 1 400 1 0 -1 4 3 4 250 200 200 4
-#obj funportal 6 0 250 1 400 1 -1 -1 4 5 0 250 250 250 3
+#obj funportal 6 0 250 1 400 1 0 1 4 3 4 250 200 200 4
+#obj funportal 6 0 250 1 400 1 1 1 4 5 0 250 250 250 3
 
 #hole
 obj hole 8 0 250 1 800 0 0 1 4
 
 #portal 1
-obj gameobject 1 1 0 250 250 0 0 1 1
-obj gameobject 3 1 250 250 500 0 0 1 2
-#obj funportal 7 2 250 50 499 1 -1 -1 6 5 5 250 250 250 4
+#obj gameobject 1 1 0 250 250 0 0 1 1
+#obj gameobject 3 1 250 250 500 0 0 1 2
+obj wall 1 1 0 250 250 3 8 11 1 9 10
+#obj wall 3 1 250 250 500 3 8 11 2 9 10
+obj funportal 3 1 250 250 500 1 0 1 2 0 5 250 250 750 4 1 10
+#obj funportal 7 2 250 50 499 1 1 1 6 0 5 250 250 750 4 1 10
 
 #obj gameobject 10 1 100 100 100 0 0 1 6
 
 #portal 2
-obj gameobject 0 2 500 0 0 0 0 1 0
-obj gameobject 3 2 250 250 500 0 0 1 2
-obj gameobject 3 2 750 250 500 0 0 1 2
-obj gameobject 4 2 250 250 0 0 0 1 2
-obj gameobject 4 2 750 250 0 0 0 1 2
+#obj gameobject 0 2 500 0 0 0 0 1 0
+obj wall 0 2 500 0 0 3 16 1 0 17 1
+#obj gameobject 3 2 250 250 500 0 0 1 2
+#obj gameobject 3 2 750 250 500 0 0 1 2
+obj wall 3 2 250 250 500 3 8 11 2 9 10
+obj wall 3 2 750 250 500 3 16 1 2 17 1
+#obj gameobject 4 2 250 250 0 0 0 1 2
+#obj gameobject 4 2 750 250 0 0 0 1 2
+obj wall 4 2 250 250 0 3 8 11 2 9 10
+obj wall 4 2 750 250 0 3 16 1 2 17 1
+
 
 #portal 3
-obj gameobject 2 3 500 250 250 0 0 1 1
-obj gameobject 4 3 250 250 0 0 0 1 2
+#obj gameobject 2 3 500 250 250 0 0 1 1
+#obj gameobject 4 3 250 250 0 0 0 1 2
+obj gameobject 2 3 500 250 250 3 16 1 1 17 1
+obj gameobject 4 3 250 250 0 3 16 1 1 17 1
 
 #portal 4
-obj gameobject 0 4 0 0 500 0 0 1 0
-obj gameobject 0 4 0 0 1000 0 0 1 0
-obj gameobject 1 4 0 250 250 0 0 1 1
-obj gameobject 1 4 0 250 750 0 0 1 1
-obj gameobject 1 4 0 250 1250 0 0 1 1
-obj gameobject 2 4 500 250 250 0 0 1 1
-obj gameobject 2 4 500 250 750 0 0 1 1
-obj gameobject 2 4 500 250 1250 0 0 1 1
+#obj gameobject 0 4 0 0 500 0 0 1 0
+#obj gameobject 0 4 0 0 1000 0 0 1 0
+obj wall 1 4 0 250 250 3 16 1 1 17 1
+#obj gameobject 1 4 0 250 750 0 0 1 1
+#obj gameobject 1 4 0 250 1250 0 0 1 1
+obj wall 2 4 500 250 250 3 16 1 1 17 1
+#obj gameobject 2 4 500 250 750 0 0 1 1
+#obj gameobject 2 4 500 250 1250 0 0 1 1
 
 #portal 5
-obj gameobject 3 5 250 250 500 0 2 3 2
+#obj gameobject 3 5 250 250 500 0 2 3 2
+obj wall 3 5 250 250 500 3 12 15 2 13 14
 
 #portal 6
-obj gameobject 4 6 250 250 0 0 2 3 2
+obj wall 4 6 250 250 0 3 16 1 2 17 1
 
 #portal 7
-obj gameobject 1 7 0 250 250 0 2 -1 1
-obj gameobject 2 7 500 250 250 0 2 -1 1
-obj gameobject 3 7 250 250 500 0 2 -1 2
+obj gameobject 1 7 0 250 250 0 26 1 1
+obj gameobject 2 7 500 250 250 0 26 1 1
+obj gameobject 3 7 250 250 500 0 26 1 2
 
 #portal 8
-obj gameobject 0 8 500 0 0 0 0 -1 0
-obj gameobject 1 8 0 250 250 0 0 -1 1
-obj gameobject 3 8 250 250 500 0 0 -1 2 
-obj gameobject 3 8 750 250 500 0 0 -1 2
-obj gameobject 4 8 250 250 0 0 0 -1 2
-obj gameobject 4 8 750 250 0 0 0 -1 2
-
+obj gameobject 0 8 500 0 0 0 27 1 0
+obj gameobject 1 8 0 250 250 0 27 1 1
+obj gameobject 3 8 250 250 500 0 27 1 2 
+obj gameobject 3 8 750 250 500 0 27 1 2
+obj gameobject 4 8 250 250 0 0 27 1 2
+obj gameobject 4 8 750 250 0 0 27 1 2
 
 #portal 9
-obj gameobject 3 9 250 250 500 0 2 -1 2 
-obj gameobject 4 9 250 250 0 0 2 -1 2
+obj gameobject 3 9 250 250 500 0 28 1 2 
+obj gameobject 4 9 250 250 0 0 28 1 2
+obj funportal 6 9 250 1 250 1 1 1 6 7 4 250 250 250 3 1 2
 
 #portal 10
 
 #portal 11
-obj gameobject 1 11 0 250 250 0 2 -1 1
-obj gameobject 2 11 500 250 250 0 2 -1 1
+obj gameobject 1 11 0 250 250 0 23 1 1
+obj gameobject 2 11 500 250 250 0 23 1 1
 
 #portal 12
-obj gameobject 1 12 0 250 250 0 2 -1 1  
-obj gameobject 4 12 250 250 0 0 2 -1 2
+obj gameobject 1 12 0 250 250 0 24 1 1  
+obj gameobject 4 12 250 250 0 0 24 1 2
 
 #portal 13
-obj gameobject 3 13 250 250 500 0 2 -1 2
-obj gameobject 4 13 250 250 0 0 2 -1 2
+obj gameobject 3 13 250 250 500 0 24 1 2
+obj gameobject 4 13 250 250 0 0 24 1 2
 
 #portal 14
-obj gameobject 2 14 500 250 250 0 2 -1 1 
-obj gameobject 4 14 250 250 0 0 2 -1 2
+obj gameobject 2 14 500 250 250 0 24 1 1
+obj gameobject 4 14 250 250 0 0 24 1 2
 
 #portal 15
-obj gameobject 1 15 0 250 250 0 2 -1 1
-obj gameobject 2 15 500 250 250 0 2 -1 1
-obj gameobject 3 15 250 250 500 0 0 1 2
+obj gameobject 1 15 0 250 250 0 25 1 1
+obj gameobject 2 15 500 250 250 0 25 1 1
 
 #portal 16
-obj gameobject 3 16 250 250 500 0 2 -1 2
-obj gameobject 4 16 250 250 0 0 2 -1 2
-obj gameobject 2 16 500 250 250 0 0 1 1
+obj gameobject 3 16 250 250 500 0 25 1 2
+obj gameobject 2 16 500 250 250 0 25 1 1
 
 #portal 17
-obj gameobject 0 17 0 0 500 0 0 1 0
-obj gameobject 1 17 0 250 250 0 0 1 1
-obj gameobject 1 17 0 250 750 0 0 1 1
-obj gameobject 2 17 500 250 250 0 0 1 1
-obj gameobject 2 17 500 250 750 0 0 1 1
-obj gameobject 3 17 250 250 1000 0 0 1 2
+obj gameobject 3 17 250 250 500 0 23 1 2
+obj gameobject 4 17 250 250 0 0 23 1 2
+
+#portal 18
+obj gameobject 0 18 0 0 500 0 23 1 0
+obj gameobject 1 18 0 250 250 0 23 1 1
+obj gameobject 1 18 0 250 750 0 23 1 1
+obj gameobject 2 18 500 250 250 0 23 1 1
+obj gameobject 2 18 500 250 750 0 23 1 1
+obj gameobject 3 18 250 250 1000 0 23 1 2
+
+obj funportal 6 18 250 1 400 1 1 1 4 0 4 250 100010 250 3 1 2
+obj funportal 6 18 250 1 800 1 1 1 4 14 0 250 250 250 3 2 1 2

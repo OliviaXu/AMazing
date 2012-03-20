@@ -87,7 +87,7 @@ void MapLoader::readModel(){
 	for(int k=0; k<numMeshes; k++){
 		if(model->mMeshes[k]->mPrimitiveTypes != aiPrimitiveType_TRIANGLE)
 			continue;*/
-	cout<<"pt " <<model->mMeshes[k]->mPrimitiveTypes<<endl;
+	//cout<<"pt " <<model->mMeshes[k]->mPrimitiveTypes<<endl;
 	aiMesh *mes = model->mMeshes[k];
 		int numFaces = model->mMeshes[k]->mNumFaces;
 		vector<unsigned int> *buff = new vector<unsigned int>();
@@ -243,7 +243,7 @@ void MapLoader::readTexture(){
 void MapLoader::load(string map_file, PhysicsEngine *engine){
 	ifstream in(map_file.c_str(), ifstream::in);
 	if(!in){
-		cout << "Failed to load map file" << endl;
+		//cout << "Failed to load map file" << endl;
 		while(1);
 		exit(1);
 	}
