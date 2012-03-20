@@ -17,7 +17,7 @@
 using namespace std;
 
 #define FRICTION 1.2
-#define DAMPING 0.08
+#define DAMPING 0.1
 
 struct BallCollisionCallback : public btCollisionWorld::ContactResultCallback{
 	BallCollisionCallback(Ball *b, vector<GameObject *> *objs, queue<MAZEevent> *evtq){

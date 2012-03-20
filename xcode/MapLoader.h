@@ -39,6 +39,8 @@ public:
 	
 	std::vector<PhysicsInfo *> phyinfos;
 	Ball *getBall();
+    
+    void setAlpha(float alpha);
 
 private:
 	void readModel();

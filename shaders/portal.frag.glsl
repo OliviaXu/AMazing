@@ -21,6 +21,8 @@ varying vec3 normal;
 varying vec3 eyePosition;
 varying vec3 worldPos;
 
+varying float alpha_blend;
+
 void main() {
 	vec3 cubemapRay = normalize(worldPos - lookPosIn);
 		// Normalize the normal, and calculate light vector and view vector
@@ -58,4 +60,6 @@ gl_FragColor = vec4(diffuse + specular + ambient, 1);
 
 	// This actually writes to the frame buffer
 	//gl_FragColor = vec4(normal, 1);
+    
+    gl_FragColor = (1-alpha_blend) * gl_FragColor + alpha_blend*vec4(1,1,1,1);
 }

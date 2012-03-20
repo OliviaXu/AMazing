@@ -17,6 +17,8 @@ varying vec2 texcoord;
 varying vec3 normal;
 varying vec3 eyePosition;
 
+varying float alpha_blend;
+
 void main() {
 	// Normalize the normal, and calculate light vector and view vector
 	// Note: this is doing a directional light, which is a little different
@@ -50,4 +52,6 @@ void main() {
 	
 	// This actually writes to the frame buffer
 	gl_FragColor = vec4(diffuse + specular + ambient, 1);
+    
+    gl_FragColor = (1-alpha_blend) * gl_FragColor + alpha_blend*vec4(1,1,1,1);
 }
