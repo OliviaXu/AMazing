@@ -33,7 +33,7 @@ const struct Vec3 *Camera::getPos(){
 	return &pos;
 }
 
-void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float AngleNS,float AngleEW, float N, float S, float W, float E) 
+void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float AngleNS,float AngleEW, float N, float S, float W, float E, int *neighbors) 
 {
     GLfloat aspectRatio = (GLfloat)800.f/600;
     GLfloat nearClip = 0.1f;
@@ -100,28 +100,28 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
     switch(keyd)
     {
         case UP:
-            if(bpos.z - cam_back <= S + EPS)
+            if(neighbors[1] < 0 && bpos.z - cam_back <= S + EPS)
             {
                 outside = true;
                 factor = (bpos.z - S - EPS) / cam_back;
             }
             break;
         case DOWN:
-            if(bpos.z + cam_back >= N - EPS)
+            if(neighbors[0] < 0 && bpos.z + cam_back >= N - EPS)
             {
                 outside = true;
                 factor = (N - EPS - bpos.z) / cam_back;
             }
             break;
         case LEFT:
-            if(-bpos.x + cam_back >= -E - EPS)
+            if(neighbors[3] < 0 && -bpos.x + cam_back >= -E - EPS)
             {
                 outside = true;
                 factor = (-E - EPS + bpos.x) / cam_back;
             }
             break;
         case RIGHT:
-            if(-bpos.x - cam_back <= -W + EPS)
+            if(neighbors[2] < 0 && -bpos.x - cam_back <= -W + EPS)
             {
                 outside = true;
                 factor = (-bpos.x + W - EPS) / cam_back;
