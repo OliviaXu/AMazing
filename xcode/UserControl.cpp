@@ -56,7 +56,7 @@ void UserControl::handleInput(){
 			}
 			else if(evt.Key.Code==sf::Key::Down){
 				angNS-=angSpeed*window->GetFrameTime(); 
-                if(angNS < CAM_ANG_LIMIT)
+                if(angNS < -CAM_ANG_LIMIT)
                     angNS = CAM_ANG_LIMIT;
 			}else if(evt.Key.Code=='a' || evt.Key.Code=='A' ){
 				camdir=LEFT;
