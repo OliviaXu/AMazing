@@ -53,7 +53,7 @@ void GameObjectMaker::setParam(GameObject *obj, struct GameObjectParam &param, M
 
 	obj->phyinfo = mld->phyinfos[param.iPhyInfo]->clone();
 
-	pos = obj->getPos();
+	pos = *(obj->getPos());
 	obj->phyinfo->pos_x = pos.x - obj->phyinfo->pos_x;
 	obj->phyinfo->pos_y = pos.y + obj->phyinfo->pos_y;
 	obj->phyinfo->pos_z = pos.z + obj->phyinfo->pos_z;
@@ -158,7 +158,8 @@ GameObject *FunctionalPortalMaker::make(char *args, MapLoader *mld){
 
 	setParam(fp, param, mld);
 
-	fp->setPosDir(&(struct Vec3(dest_x, dest_y, dest_z)), dir, iDestPortal, src_lookDir);
+    Vec3 tmp = Vec3(dest_x, dest_y, dest_z);
+	fp->setPosDir(&tmp, dir, iDestPortal, src_lookDir);
 	return fp;
 }
 

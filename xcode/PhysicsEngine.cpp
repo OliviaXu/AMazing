@@ -130,8 +130,9 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info, GameObject
 			Ball *is_it_ball = dynamic_cast<Ball *>(obj);
 			if(is_it_ball){
 				sphereRigidBody->setActivationState(DISABLE_DEACTIVATION);
+                BallCollisionCallback bcb = BallCollisionCallback(is_it_ball, &objs, &evtq);
 				dynamicsWorld->contactTest(sphereRigidBody, 
-					struct BallCollisionCallback(is_it_ball, &objs, &evtq));
+                    bcb);
 			}
             break;
         }
@@ -206,8 +207,9 @@ void PhysicsEngine::updateObjects() {
 		Ball *is_it_ball = dynamic_cast<Ball *>(obj);
 			if(is_it_ball){
 				//rigidBodies[i]->setActivationState(DISABLE_DEACTIVATION);
+                BallCollisionCallback bcb = BallCollisionCallback(is_it_ball, &objs, &evtq);
 				dynamicsWorld->contactTest(rigidBodies[i], 
-					struct BallCollisionCallback(is_it_ball, &objs, &evtq));
+                    bcb);
 			}
 
 		//Modified by sylvon. Only set the ball to be always active.

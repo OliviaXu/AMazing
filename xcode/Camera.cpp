@@ -36,23 +36,38 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(fieldOfView, aspectRatio, nearClip, farClip);
-	Vec3 bpos=ball->getPos();
+	Vec3 bpos=*(ball->getPos());
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
     
     //gluLookAt(bpos.x, bpos.y + LEN * sin((ALPHA + AngleNS)/180*PI), bpos.z - LEN * cos((ALPHA + AngleNS)/180*PI), bpos.x, bpos.y, bpos.z, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
     //gluLookAt(bpos.x, bpos.y + LEN * sin((ALPHA + AngleNS)/180*PI), bpos.z - LEN * cos((ALPHA + AngleNS)/180*PI), bpos.x, bpos.y + LEN * sin((ALPHA + AngleNS)/180*PI) - sin(AngleNS/180*PI), bpos.z - LEN * cos((ALPHA + AngleNS)/180*PI) + cos(AngleNS/180*PI), -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
+    //float eye_y = bpos.y + HDIS;
+    //float eye_z = bpos.z - VDIS;
+    
     float cost = cos(AngleNS/180*PI);
     float sint = sin(AngleNS/180*PI);
     float eye_y = bpos.y + VDIS * cost;
-    float eye_z = bpos.z - HDIS / cost + VDIS * sint;
-    //float eye_y = bpos.y + HDIS;
-    //float eye_z = bpos.z - VDIS;
-    gluLookAt(bpos.x, eye_y, eye_z, bpos.x, eye_y - sint, eye_z + cost, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
-	pos.x = bpos.x;
-	pos.y = eye_y;
-	pos.z = eye_z;
+    float eye_dif = HDIS / cost + VDIS * sint;
+    switch (keyd) {
+        case UP:
+            gluLookAt(bpos.x, eye_y, bpos.z - eye_dif, bpos.x, eye_y - sint, bpos.z - eye_dif + cost, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
+            break;
+        case DOWN:
+            gluLookAt(bpos.x, eye_y, bpos.z + eye_dif, bpos.x, eye_y - sint, bpos.z + eye_dif + cost, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
+            break;
+        case LEFT:
+            gluLookAt(bpos.x - eye_dif, eye_y, bpos.z, bpos.x - eye_dif + cost, eye_y - sint, bpos.z, 0., cos((AngleEW)/180*PI), -sin((AngleEW)/180*PI));
+            break;
+        case RIGHT:
+            gluLookAt(bpos.x + eye_dif, eye_y, bpos.z, bpos.x + eye_dif + cost, eye_y - sint, bpos.z, 0., cos((AngleEW)/180*PI), sin((AngleEW)/180*PI));
+            break;
+    }
+    
+	//pos.x = bpos.x;
+	//pos.y = eye_y;
+	//pos.z = eye_z;
 
 	if(DEBUG_OUTPUT)
         printf("cam pos %f %f %f\n",pos.x,pos.y,pos.z);

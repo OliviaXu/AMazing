@@ -11,14 +11,14 @@ m models/hole_floor.3ds #8
 m models/option_box2.3ds #9
 
 # List of Textures
-t textures/tiles_d.jpg  #0
-t textures/tiles_s.jpg  #1
-t textures/stone_d.jpg  #2
-t textures/stone_s.jpg  #3
-t textures/BARK5.jpg    #4
-t textures/start.jpg    #5
-t textures/restart.jpg  #6
-t textures/quit.jpg     #7
+t models/tiles_d.jpg  #0
+t models/tiles_s.jpg  #1
+t models/stone_d.jpg  #2
+t models/stone_s.jpg  #3
+t models/BARK5.jpg    #4
+t models/start.jpg    #5
+t models/restart.jpg  #6
+t models/quit.jpg     #7
 
 # List of Shaders
 s shaders/phong		# 0

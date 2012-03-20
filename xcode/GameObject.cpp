@@ -40,8 +40,8 @@ void GameObject::setPos(struct Vec3 posIn){
 	transformation.mat[14] = pos.z;
 }
 
-struct Vec3 GameObject::getPos(){
-	return pos;
+struct Vec3* GameObject::getPos(){
+	return &pos;
 }
 
 struct Vec3 &GameObject::getVelocity(){

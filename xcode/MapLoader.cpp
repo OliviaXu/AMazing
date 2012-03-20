@@ -400,7 +400,7 @@ Ball *MapLoader::getBall(){
 }
 
 void MapLoader::updateObjPortal(GameObject *obj){
-	struct Vec3 pos = obj->getPos();
+	struct Vec3 pos = *(obj->getPos());
 	DetectPortalBundle bundle = {&pos, 0};
 	int objCurrentPortal = obj->getPortal();
 	iteratePortals(objCurrentPortal, detectCurrentPortal, &bundle);

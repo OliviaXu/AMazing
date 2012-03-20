@@ -1,3 +1,4 @@
+#version 120
 attribute float alphaIn;
 attribute float sizeIn;
 
