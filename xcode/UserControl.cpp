@@ -174,7 +174,7 @@ CamMorientation UserControl::getCamM(){
 	return camM;
 }
 
-void UserControl::flipCam()
+void UserControl::flipWorld()
 {
     if(camdir == UP)
         camdir = DOWN;
@@ -184,4 +184,6 @@ void UserControl::flipCam()
         camdir = RIGHT;
     else if(camdir == RIGHT)
         camdir = LEFT;
+    angNS = -angNS;
+    angEW = -angEW;
 }

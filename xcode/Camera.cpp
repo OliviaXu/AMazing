@@ -140,23 +140,23 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
             //gluLookAt(bpos.x, eye_y, bpos.z - eye_dif, bpos.x, eye_y - sint, bpos.z - eye_dif + cost, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
             pos.x = bpos.x;
             pos.y = bpos.y;
-            pos.z = bpos.z - cam_back;
+            pos.z = bpos.z;
             gluLookAt(bpos.x, bpos.y + cam_lift, bpos.z - cam_back, bpos.x, bpos.y + cam_lift + look_y_dif, bpos.z - cam_back + look_z_dif, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
             break;
         case DOWN:
             pos.x = bpos.x;
             pos.y = bpos.y;
-            pos.z = bpos.z + cam_back;
+            pos.z = bpos.z;
             gluLookAt(bpos.x, bpos.y + cam_lift, bpos.z + cam_back, bpos.x, bpos.y + cam_lift + look_y_dif, bpos.z + cam_back - look_z_dif, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
             break;
         case LEFT:
-            pos.x = bpos.x - cam_back;
+            pos.x = bpos.x;
             pos.y = bpos.y;
             pos.z = bpos.z;
             gluLookAt(bpos.x - cam_back, bpos.y + cam_lift, bpos.z, bpos.x - cam_back + look_z_dif, bpos.y + cam_lift + look_y_dif, bpos.z, 0., cos((AngleEW)/180*PI), -sin((AngleEW)/180*PI));
             break;
         case RIGHT:
-            pos.x = bpos.x + cam_back;
+            pos.x = bpos.x;
             pos.y = bpos.y;
             pos.z = bpos.z;
             gluLookAt(bpos.x + cam_back, bpos.y + cam_lift, bpos.z, bpos.x + cam_back - look_z_dif, bpos.y + cam_lift + look_y_dif, bpos.z, 0., cos((AngleEW)/180*PI), -sin((AngleEW)/180*PI));

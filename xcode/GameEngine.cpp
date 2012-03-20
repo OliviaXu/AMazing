@@ -97,12 +97,12 @@ void GameEngine::run()
         }
         if(dis2 < 0.6 && upspeed == 0)
         {
-            btRigidBody* brb = ball->rigidBody;
-            brb->setLinearVelocity(2 * brb->getLinearVelocity());
-            
             //btRigidBody* brb = ball->rigidBody;
-            //brb->setLinearVelocity(-1 * brb->getLinearVelocity());
-            //userControl->flipCam();
+            //brb->setLinearVelocity(2 * brb->getLinearVelocity());
+            
+            btRigidBody* brb = ball->rigidBody;
+            brb->setLinearVelocity(-1 * brb->getLinearVelocity());
+            userControl->flipWorld();
             
             upspeed = EFFECT_TIME;
         }
