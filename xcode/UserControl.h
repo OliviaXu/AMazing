@@ -21,6 +21,7 @@ public:
 	void handleInput();//this handle general input???
 	CamMorientation getCamM();//get camera movement
 	struct Vec3 UserControl::lightPos();
+    void flipWorld();
 private:
     sf::Window* window;
     bool buttonPressed;//? no need?

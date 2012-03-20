@@ -33,7 +33,7 @@ const struct Vec3 *Camera::getPos(){
 	return &pos;
 }
 
-void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float AngleNS,float AngleEW, float N, float S, float W, float E) 
+void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float AngleNS,float AngleEW, float N, float S, float W, float E, int *neighbors) 
 {
     GLfloat aspectRatio = (GLfloat)800.f/600;
     GLfloat nearClip = 0.1f;
@@ -96,32 +96,32 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
     bool outside = false;
     float factor = 0;
     printf("NSWE: %f,%f,%f,%f\n",N,S,W,E);
-    printf("bpos.x: %f\n", bpos.x);
+    printf("bpos.x, bpos.z: %f, %f\n", bpos.x, bpos.z);
     switch(keyd)
     {
         case UP:
-            if(bpos.z - cam_back <= S + EPS)
+            if(neighbors[1] < 0 && bpos.z - cam_back <= S + EPS)
             {
                 outside = true;
                 factor = (bpos.z - S - EPS) / cam_back;
             }
             break;
         case DOWN:
-            if(bpos.z + cam_back >= N - EPS)
+            if(neighbors[0] < 0 && bpos.z + cam_back >= N - EPS)
             {
                 outside = true;
                 factor = (N - EPS - bpos.z) / cam_back;
             }
             break;
         case LEFT:
-            if(-bpos.x + cam_back >= -E - EPS)
+            if(neighbors[3] < 0 && -bpos.x + cam_back >= -E - EPS)
             {
                 outside = true;
                 factor = (-E - EPS + bpos.x) / cam_back;
             }
             break;
         case RIGHT:
-            if(-bpos.x - cam_back <= -W + EPS)
+            if(neighbors[2] < 0 && -bpos.x - cam_back <= -W + EPS)
             {
                 outside = true;
                 factor = (-bpos.x + W - EPS) / cam_back;
@@ -140,23 +140,23 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
             //gluLookAt(bpos.x, eye_y, bpos.z - eye_dif, bpos.x, eye_y - sint, bpos.z - eye_dif + cost, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
             pos.x = bpos.x;
             pos.y = bpos.y;
-            pos.z = bpos.z - cam_back;
+            pos.z = bpos.z;
             gluLookAt(bpos.x, bpos.y + cam_lift, bpos.z - cam_back, bpos.x, bpos.y + cam_lift + look_y_dif, bpos.z - cam_back + look_z_dif, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
             break;
         case DOWN:
             pos.x = bpos.x;
             pos.y = bpos.y;
-            pos.z = bpos.z + cam_back;
+            pos.z = bpos.z;
             gluLookAt(bpos.x, bpos.y + cam_lift, bpos.z + cam_back, bpos.x, bpos.y + cam_lift + look_y_dif, bpos.z + cam_back - look_z_dif, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
             break;
         case LEFT:
-            pos.x = bpos.x - cam_back;
+            pos.x = bpos.x;
             pos.y = bpos.y;
             pos.z = bpos.z;
             gluLookAt(bpos.x - cam_back, bpos.y + cam_lift, bpos.z, bpos.x - cam_back + look_z_dif, bpos.y + cam_lift + look_y_dif, bpos.z, 0., cos((AngleEW)/180*PI), -sin((AngleEW)/180*PI));
             break;
         case RIGHT:
-            pos.x = bpos.x + cam_back;
+            pos.x = bpos.x;
             pos.y = bpos.y;
             pos.z = bpos.z;
             gluLookAt(bpos.x + cam_back, bpos.y + cam_lift, bpos.z, bpos.x + cam_back - look_z_dif, bpos.y + cam_lift + look_y_dif, bpos.z, 0., cos((AngleEW)/180*PI), -sin((AngleEW)/180*PI));

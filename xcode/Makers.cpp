@@ -3,6 +3,10 @@
 #include "Ball.h"
 #include "Wall.h"
 #include "FunctionalPortal.h"
+<<<<<<< HEAD
+=======
+//#include "WallFunctionalPortal.h"
+>>>>>>> upstream/master
 #include "Hole.h"
 #include "OptionBox.h"
 
@@ -174,8 +178,8 @@ GameObject *FunctionalPortalMaker::make(char *args, MapLoader *mld){
 /*------------------------------------------------------------------------------
  *				WallFunctionalPortalMaker
  *------------------------------------------------------------------------------*/
-/*
-WallFunctionalPortalMaker::WallFunctionalPortalMaker(){
+
+/*WallFunctionalPortalMaker::WallFunctionalPortalMaker(){
 
 }
 
@@ -213,12 +217,12 @@ GameObject *WallFunctionalPortalMaker::make(char *args, MapLoader *mld){
 	float look_len = atoi(str);
 
 	std::cout << "look_len " << look_len << std::endl;
-	/*assert(str = strtok(args, " \t"));
-	float look_x = atoi(str);
-	assert(str = strtok(args, " \t"));
-	float look_y = atoi(str);
-	assert(str = strtok(args, " \t"));
-	float look_z = atoi(str);*/
+	//assert(str = strtok(args, " \t"));
+	//float look_x = atoi(str);
+	//assert(str = strtok(args, " \t"));
+	//float look_y = atoi(str);
+	//assert(str = strtok(args, " \t"));
+	//float look_z = atoi(str);
 
 /*
 	setParam(fp, param, mld);
@@ -226,8 +230,9 @@ GameObject *WallFunctionalPortalMaker::make(char *args, MapLoader *mld){
     Vec3 tmp = Vec3(dest_x, dest_y, dest_z);
 	fp->setPosDir(&tmp, dir, iDestPortal, src_lookDir, transport, look_len);
 	return fp;
-}
-*/
+}*/
+
+>>>>>>> upstream/master
 /*------------------------------------------------------------------------------
  *				WallMaker
  *------------------------------------------------------------------------------*/

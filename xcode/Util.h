@@ -2,7 +2,7 @@
 #define CS248_UTIL_H
 
 enum Morientation{NORTH,EAST,SOUTH,WEST};
-enum Keyorientation{UP,RIGHT,DOWN,LEFT};
+enum Keyorientation{UP,DOWN,LEFT,RIGHT};
 enum CamMorientation{NO,U,D,L,R,F,B};
 
 

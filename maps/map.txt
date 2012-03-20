@@ -13,22 +13,22 @@ m models/option_box2.3ds #9
 m models/box_box.3DS #10
 
 # List of Textures
-t textures/grid.jpg  #0
-t textures/x.jpg #1
-t textures/stone.jpg #2
-t textures/little_stone.jpg #3
-t textures/tiles_d.jpg #4
-t textures/start.jpg    #5
-t textures/restart.jpg  #6
-t textures/quit.jpg     #7
-t textures/dry_land.jpg #8
-t textures/beautiful.jpg #9
-t textures/sea.jpg #10
-t textures/sea2.jpg #11
-t textures/metal_grid.jpg #12
-t textures/bean.jpg #13
-t textures/flower.jpg #14
-t textures/number.jpg #15
+t models/grid.jpg  #0
+t models/x.jpg #1
+t models/stone.jpg #2
+t models/little_stone.jpg #3
+t models/tiles_d.jpg #4
+t models/start.jpg    #5
+t models/restart.jpg  #6
+t models/quit.jpg     #7
+t models/dry_land.jpg #8
+t models/beautiful.jpg #9
+t models/sea.jpg #10
+t models/sea2.jpg #11
+t models/metal_grid.jpg #12
+t models/bean.jpg #13
+t models/flower.jpg #14
+t models/number.jpg #15
 
 # List of Shaders
 s shaders/phong		# 0
@@ -46,7 +46,7 @@ p NULL 0 NULL 2 500 500	# 1
 p NULL NULL 1 3 1000 500 	# 2
 p 4 NULL 2 NULL 500 500 # 3
 p 5 3 NULL NULL 500 1500	# 4
-p NULL 4 6 9 500 500 #5
+p NULL 4 6 NULL 500 500 #5
 p 7 NULL 8 5 500 500 #6
 p NULL 6 NULL NULL 500 500 #7
 p NULL NULL NULL 6 1000 500 #8
