@@ -30,7 +30,8 @@ public:
 	const std::vector<Portal *> *getPortals();
 	const aiScene *getModel(int iModel);
 	const std::vector<unsigned int> *getIndexBuff(int iBuff);
-	const sf::Image *getTexture(int iTex);
+	//const sf::Image *getTexture(int iTex);
+	const GLuint getTexture(int iTex);
 	const Portal *getPortal(int iPortal);
 	const Shader *getShader(int iShader);
     void updateObjPortal(GameObject *obj);
@@ -52,7 +53,8 @@ private:
     std::vector<Assimp::Importer*> importers;
 	std::vector<const aiScene *> models;
 	std::vector<std::vector<unsigned int> *> indexBuff;
-	std::vector<sf::Image *> textures;
+	//std::vector<sf::Image *> textures;
+	std::vector<GLuint> textures;
 	std::vector<Portal *> portals;
 	std::vector<GameObject *> objs;
 	std::vector<Shader *> shaders;

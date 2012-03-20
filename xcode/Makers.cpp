@@ -43,8 +43,10 @@ void GameObjectMaker::setParam(GameObject *obj, struct GameObjectParam &param, M
 											//one mesh
 	//std::vector<sf::Image *> hey = textures;
 	//assert((int)(textures.size()) > prop->iDTex && (int)(textures.size()) > prop->iSTex);
-	const sf::Image *dtex = NULL;
-	const sf::Image *stex = NULL;
+	//const sf::Image *dtex = NULL;
+	//const sf::Image *stex = NULL;
+	GLuint dtex=0;
+	GLuint stex=0;
 	if(param.iDTex >= 0)
 		dtex = mld->getTexture(param.iDTex);
 	if(param.iSTex >= 0)
@@ -188,7 +190,7 @@ GameObject *WallMaker::make(char *args, MapLoader *mld){
 	Wall *wall = new Wall();
 	wall->setNormalTex(mld->getTexture(iNormalTex));
 	wall->setDepthTex(mld->getTexture(iDepthTex));
-
+	
 	setParam(wall, param, mld);
 	
 	return wall;

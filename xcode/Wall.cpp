@@ -20,19 +20,18 @@ void Wall::passShaderParam(const aiMesh *mesh){
 
 void Wall::setTan(const aiMesh *mesh) {
 	GLuint shaderID = shader->programID();
-	GLint tan = glGetAttribLocation(shaderID, "tangent");
+	GLuint tan = glGetAttribLocation(shaderID, "tangent");
 	glEnableVertexAttribArray(tan);
 	glVertexAttribPointer(tan, 3, GL_FLOAT, 0, sizeof(aiVector3D), mesh->mTangents);
-	GLint bitan = glGetAttribLocation(shaderID, "binormal");
+	GLuint bitan = glGetAttribLocation(shaderID, "binormal");
 	glEnableVertexAttribArray(bitan);
 	glVertexAttribPointer(bitan, 3, GL_FLOAT, 0, sizeof(aiVector3D), mesh->mBitangents);
 }
-
-void Wall::setNormalTex(const sf::Image *normalTex){
-	this->normalTex = normalTex;
-	
-	GL_CHECK(glActiveTexture(GL_TEXTURE2));
-	GLuint ntexture;
+void setNormalTex(GLuint normalTex);
+void Wall::setNormalTex(GLuint normalTex){
+	ntexture = normalTex;
+	/*
+	//GL_CHECK(glActiveTexture(GL_TEXTURE2));
 	glGenTextures( 1, &ntexture );
 	glBindTexture( GL_TEXTURE_2D,ntexture );
 	//} //always pass in texture even if it is purely blank or black
@@ -44,13 +43,13 @@ void Wall::setNormalTex(const sf::Image *normalTex){
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA,normalTex->GetWidth(),normalTex->GetHeight(),GL_RGBA,GL_UNSIGNED_BYTE,this->normalTex->GetPixelsPtr());
-	
+	*/
 	}
 
-void Wall::setDepthTex(const sf::Image *depthTex){
-	this->depthTex = depthTex;
+void Wall::setDepthTex(GLuint depthTex){
+	dtexture = depthTex;
+	/*
 	GL_CHECK(glActiveTexture(GL_TEXTURE3));
-	GLuint dtexture;
 	glGenTextures( 1, &dtexture );
 	glBindTexture( GL_TEXTURE_2D,dtexture);
 	//if(stex)
@@ -64,11 +63,14 @@ void Wall::setDepthTex(const sf::Image *depthTex){
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	gluBuild2DMipmaps(GL_TEXTURE_2D,GL_RGBA,depthTex->GetWidth(),depthTex->GetHeight(),GL_RGBA,GL_UNSIGNED_BYTE,this->depthTex->GetPixelsPtr());
+	*/
 }
 
 void Wall::setNDTex(){
 	GLuint shaderID = shader->programID();
-	GLint nMap = GL_CHECK(glGetUniformLocation(shaderID, "normalMap"));
+	GLuint nMap = GL_CHECK(glGetUniformLocation(shaderID, "normalMap"));
+	GL_CHECK(glActiveTexture(GL_TEXTURE2));
+	glBindTexture( GL_TEXTURE_2D,ntexture);
 
 	/*
 	GL_CHECK(glActiveTexture(GL_TEXTURE2));
@@ -92,8 +94,9 @@ void Wall::setNDTex(){
 	*/
 	GL_CHECK(glUniform1i(nMap, 2)); // The diffuse map will be GL_TEXTURE0
 
-	GLint dMap = GL_CHECK(glGetUniformLocation(shaderID, "depthMap"));
-	
+	GLuint dMap = GL_CHECK(glGetUniformLocation(shaderID, "depthMap"));
+	GL_CHECK(glActiveTexture(GL_TEXTURE3));
+	glBindTexture( GL_TEXTURE_2D,dtexture);
 	/*
 	GL_CHECK(glActiveTexture(GL_TEXTURE3));
 	GLuint dtexture;
