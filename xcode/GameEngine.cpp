@@ -72,7 +72,7 @@ void GameEngine::init(sf::Window* _window)
 
 	emt = new ParticleEmitter(ParticleEmitter::PARTICLE_FIRE, "models/Electricity.png", 800);
     emt->mPosition.Set(-200/25.4, 5/25.4, 600.0/25.4);
-    emt2 = new ParticleEmitter(ParticleEmitter::PARTICLE_FIRE, "models/BurstGold.png", 800);
+    emt2 = new ParticleEmitter(ParticleEmitter::PARTICLE_FIRE, "models/IncandescentRed.png", 800);
     emt2->mPosition.Set(-180/25.4, 5/25.4, 650/25.4);
 }
 
@@ -87,6 +87,8 @@ void GameEngine::run()
 
         userControl->handleInput();    // constant * window.GetFrameTime() 
         
+        emt->mPosition.Set(-200/25.4, 5/25.4+window->GetFrameTime()*100, 600.0/25.4);
+        
         double dis2 = ball->calcDis(-200/25.4, 5/25.4, 600.0/25.4);
         double dis1 = ball->calcDis(-180/25.4, 5/25.4, 650.0/25.4);
         dis1 = log(dis1+1);
@@ -95,14 +97,14 @@ void GameEngine::run()
         {
             slowdown = EFFECT_TIME;
         }
-        if(dis2 < 0.6 && upspeed == 0)
+        if(dis2 < 0.5 && upspeed == 0)
         {
             //btRigidBody* brb = ball->rigidBody;
             //brb->setLinearVelocity(2 * brb->getLinearVelocity());
             
             btRigidBody* brb = ball->rigidBody;
-            brb->setLinearVelocity(-1 * brb->getLinearVelocity());
-            userControl->flipWorld();
+            //brb->setLinearVelocity(-1 * brb->getLinearVelocity());
+            //userControl->flipWorld();
             
             upspeed = EFFECT_TIME;
         }
@@ -159,6 +161,10 @@ void GameEngine::run()
             count = 500*(slowdown/10);
             clock_t goal = count + clock();
             while (goal > clock());
+            
+            glClearColor(0.6*slowdown/EFFECT_TIME,0.6*slowdown/EFFECT_TIME,0.6*slowdown/EFFECT_TIME,1);
+            mapLoader->setAlpha(0.6*slowdown/EFFECT_TIME);
+            
             printf("slowdown: %d\n",slowdown);
             slowdown -= 1;
         }
