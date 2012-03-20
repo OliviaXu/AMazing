@@ -3,7 +3,7 @@
 
 #include "Framework.h"
 #include "Ball.h"
-#define VOFFSET 4//vetrtical offset of camera to ball
+#define VOFFSET 2//vetrtical offset of camera to ball
 #define HOFFSET 4//horizontal offset of camera to ball
 
 #define PI 3.1415926
