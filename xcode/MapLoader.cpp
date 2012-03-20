@@ -419,3 +419,14 @@ void MapLoader::updateObjPortal(GameObject *obj){
 	portals[bundle.currentPortal]->addObject(obj);
 	obj->setPortal(bundle.currentPortal);
 }
+
+void MapLoader::setAlpha(float alpha)
+{
+    //for(int i = 0;i < shaders.size();++i)
+    {
+        int i = 0;
+        GLuint shaderId = shaders[i]->programID();
+        GLuint	alphaId = glGetAttribLocation(shaderId, "alphaIn");
+        glVertexAttrib1f(alphaId, alpha);
+    }
+}

@@ -72,35 +72,42 @@ void GameEngine::init(sf::Window* _window)
 
 	emt = new ParticleEmitter(ParticleEmitter::PARTICLE_FIRE, "models/Electricity.png", 800);
     emt->mPosition.Set(-200/25.4, 5/25.4, 600.0/25.4);
-    emt2 = new ParticleEmitter(ParticleEmitter::PARTICLE_FIRE, "models/BurstGold.png", 800);
-    emt2->mPosition.Set(-400/25.4, 5/25.4, 900.0/25.4);
+    emt2 = new ParticleEmitter(ParticleEmitter::PARTICLE_FIRE, "models/IncandescentRed.png", 800);
+    emt2->mPosition.Set(-180/25.4, 5/25.4, 650/25.4);
 }
 
 void GameEngine::run()
 {
     while(1){
-        double dis2 = ball->calcDis(-200/25.4, 5/25.4, 600.0/25.4);
-        double dis1 = ball->calcDis(-400/25.4, 5/25.4, 900.0/25.4);
-        dis1 = log(dis1+1);
-        dis2 = log(dis2+1);
-        if(dis1 < 0.6 && slowdown == 0)
-        {
-            slowdown = EFFECT_TIME;
-        }
-        if(dis2 < 0.6 && upspeed == 0)
-        {
-            btRigidBody* brb = ball->rigidBody;
-            brb->setLinearVelocity(2 * brb->getLinearVelocity());
-            upspeed = EFFECT_TIME;
-        }
-        
-		static float t1 = 0;
+        static float t1 = 0;
 		static float t2 = t1;
 		t2 = t1;
 		t1 = window->GetFrameTime();
 		//cout << "delta time " << t1 << endl;
 
         userControl->handleInput();    // constant * window.GetFrameTime() 
+        
+        emt->mPosition.Set(-200/25.4, 5/25.4+window->GetFrameTime()*100, 600.0/25.4);
+        
+        double dis2 = ball->calcDis(-200/25.4, 5/25.4, 600.0/25.4);
+        double dis1 = ball->calcDis(-180/25.4, 5/25.4, 650.0/25.4);
+        dis1 = log(dis1+1);
+        dis2 = log(dis2+1);
+        if(dis1 < 0.6 && slowdown == 0)
+        {
+            slowdown = EFFECT_TIME;
+        }
+        if(dis2 < 0.5 && upspeed == 0)
+        {
+            //btRigidBody* brb = ball->rigidBody;
+            //brb->setLinearVelocity(2 * brb->getLinearVelocity());
+            
+            btRigidBody* brb = ball->rigidBody;
+            //brb->setLinearVelocity(-1 * brb->getLinearVelocity());
+            //userControl->flipWorld();
+            
+            upspeed = EFFECT_TIME;
+        }
 
 		//what's the reason for this??? 
        
@@ -113,7 +120,7 @@ void GameEngine::run()
         //plane->update(dAngleNS, dAngleEW);    // no use anymore
         
         //I think updating current portal according to camera is more appropriate.
-		camera->updatePos(userControl->getCamM(),userControl->getCamDirUpdate(),ball,dAngleNS, dAngleEW, ((Portal*)(mapLoader->getCurrentPortal()))->getN(), ((Portal*)(mapLoader->getCurrentPortal()))->getS(), ((Portal*)(mapLoader->getCurrentPortal()))->getW(), ((Portal*)(mapLoader->getCurrentPortal()))->getE());//input camera movement ball direction and ball to determin camera position and direction
+		camera->updatePos(userControl->getCamM(),userControl->getCamDirUpdate(),ball,dAngleNS, dAngleEW, ((Portal*)(mapLoader->getCurrentPortal()))->getN(), ((Portal*)(mapLoader->getCurrentPortal()))->getS(), ((Portal*)(mapLoader->getCurrentPortal()))->getW(), ((Portal*)(mapLoader->getCurrentPortal()))->getE(), ((Portal*)(mapLoader->getCurrentPortal()))->getNeighbors());//input camera movement ball direction and ball to determin camera position and direction
 		/*if(mapLoader->updateCurrentPortal(&(ball->getPos()))){
 			//updateObjects();
 			ball->setPortal(mapLoader->getCurrentPortalIdx());
@@ -155,6 +162,10 @@ void GameEngine::run()
             count = 500*(slowdown/10);
             clock_t goal = count + clock();
             while (goal > clock());
+            
+            glClearColor(0.6*slowdown/EFFECT_TIME,0.6*slowdown/EFFECT_TIME,0.6*slowdown/EFFECT_TIME,1);
+            mapLoader->setAlpha(0.6*slowdown/EFFECT_TIME);
+            
             printf("slowdown: %d\n",slowdown);
             slowdown -= 1;
         }

@@ -15,6 +15,9 @@ varying vec3 tan;
 varying vec3 bin;
 varying vec3 eyePosition;
 
+attribute float alphaIn;
+varying float alpha_blend;
+
 void main() {
 	// Transform the vertex to get the eye-space position of the vertex
 	vec4 eyeTemp = gl_ModelViewMatrix * vec4(positionIn, 1);
@@ -32,4 +35,6 @@ void main() {
     
 	// Just copy the texture coordinates
 	texcoord = texcoordIn;
+    
+    alpha_blend = alphaIn;
 }

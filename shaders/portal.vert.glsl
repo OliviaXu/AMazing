@@ -17,6 +17,9 @@ varying vec3 normal;
 varying vec3 eyePosition;
 varying vec3 worldPos;
 
+attribute float alphaIn;
+varying float alpha_blend;
+
 void main() {
 	// Transform the normal, just like in Assignment 2.
 	//normal = normalize(gl_NormalMatrix * normalIn);
@@ -58,4 +61,6 @@ void main() {
 
 	// Just copy the texture coordinates
 	texcoord = texcoordIn;
+    
+    alpha_blend = alphaIn;
 }
