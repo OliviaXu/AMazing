@@ -73,14 +73,22 @@ void GameEngine::init(sf::Window* _window)
 	emt = new ParticleEmitter(ParticleEmitter::PARTICLE_FIRE, "models/Electricity.png", 800);
     emt->mPosition.Set(-200/25.4, 5/25.4, 600.0/25.4);
     emt2 = new ParticleEmitter(ParticleEmitter::PARTICLE_FIRE, "models/BurstGold.png", 800);
-    emt2->mPosition.Set(-400/25.4, 5/25.4, 900.0/25.4);
+    emt2->mPosition.Set(-180/25.4, 5/25.4, 650/25.4);
 }
 
 void GameEngine::run()
 {
     while(1){
+        static float t1 = 0;
+		static float t2 = t1;
+		t2 = t1;
+		t1 = window->GetFrameTime();
+		//cout << "delta time " << t1 << endl;
+
+        userControl->handleInput();    // constant * window.GetFrameTime() 
+        
         double dis2 = ball->calcDis(-200/25.4, 5/25.4, 600.0/25.4);
-        double dis1 = ball->calcDis(-400/25.4, 5/25.4, 900.0/25.4);
+        double dis1 = ball->calcDis(-180/25.4, 5/25.4, 650.0/25.4);
         dis1 = log(dis1+1);
         dis2 = log(dis2+1);
         if(dis1 < 0.6 && slowdown == 0)
@@ -91,16 +99,13 @@ void GameEngine::run()
         {
             btRigidBody* brb = ball->rigidBody;
             brb->setLinearVelocity(2 * brb->getLinearVelocity());
+            
+            //btRigidBody* brb = ball->rigidBody;
+            //brb->setLinearVelocity(-1 * brb->getLinearVelocity());
+            //userControl->flipCam();
+            
             upspeed = EFFECT_TIME;
         }
-        
-		static float t1 = 0;
-		static float t2 = t1;
-		t2 = t1;
-		t1 = window->GetFrameTime();
-		//cout << "delta time " << t1 << endl;
-
-        userControl->handleInput();    // constant * window.GetFrameTime() 
 
 		//what's the reason for this??? 
        

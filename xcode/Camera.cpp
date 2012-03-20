@@ -96,7 +96,7 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
     bool outside = false;
     float factor = 0;
     printf("NSWE: %f,%f,%f,%f\n",N,S,W,E);
-    printf("bpos.x: %f\n", bpos.x);
+    printf("bpos.x, bpos.z: %f, %f\n", bpos.x, bpos.z);
     switch(keyd)
     {
         case UP:

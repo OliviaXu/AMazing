@@ -173,3 +173,15 @@ Keyorientation UserControl::getCamDirUpdate(){
 CamMorientation UserControl::getCamM(){
 	return camM;
 }
+
+void UserControl::flipCam()
+{
+    if(camdir == UP)
+        camdir = DOWN;
+    else if(camdir == DOWN)
+        camdir = UP;
+    else if(camdir == LEFT)
+        camdir = RIGHT;
+    else if(camdir == RIGHT)
+        camdir = LEFT;
+}
