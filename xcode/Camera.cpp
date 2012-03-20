@@ -55,13 +55,13 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
             gluLookAt(bpos.x, eye_y, bpos.z - eye_dif, bpos.x, eye_y - sint, bpos.z - eye_dif + cost, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
             break;
         case DOWN:
-            gluLookAt(bpos.x, eye_y, bpos.z + eye_dif, bpos.x, eye_y - sint, bpos.z + eye_dif + cost, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
+            gluLookAt(bpos.x, eye_y, bpos.z + eye_dif, bpos.x, eye_y - sint, bpos.z + eye_dif - cost, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
             break;
         case LEFT:
             gluLookAt(bpos.x - eye_dif, eye_y, bpos.z, bpos.x - eye_dif + cost, eye_y - sint, bpos.z, 0., cos((AngleEW)/180*PI), -sin((AngleEW)/180*PI));
             break;
         case RIGHT:
-            gluLookAt(bpos.x + eye_dif, eye_y, bpos.z, bpos.x + eye_dif + cost, eye_y - sint, bpos.z, 0., cos((AngleEW)/180*PI), sin((AngleEW)/180*PI));
+            gluLookAt(bpos.x + eye_dif, eye_y, bpos.z, bpos.x + eye_dif - cost, eye_y - sint, bpos.z, 0., cos((AngleEW)/180*PI), sin((AngleEW)/180*PI));
             break;
     }
     

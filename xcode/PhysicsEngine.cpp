@@ -16,6 +16,9 @@
 #include <iostream>
 using namespace std;
 
+#define FRICTION 1.2
+#define DAMPING 0.08
+
 struct BallCollisionCallback : public btCollisionWorld::ContactResultCallback{
 	BallCollisionCallback(Ball *b, vector<GameObject *> *objs, queue<MAZEevent> *evtq){
 		ball = b;
@@ -108,7 +111,8 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info, GameObject
             {
                 btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(0, sphereMotionState,sphereShape,btVector3(0,0,0));
                 sphereRigidBody = new btRigidBody(sphereRigidBodyCI);
-				sphereRigidBody->setFriction(1);
+				sphereRigidBody->setFriction(FRICTION);
+                sphereRigidBody->setDamping(DAMPING, DAMPING);
             }
             else
             {
@@ -116,7 +120,8 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info, GameObject
                 sphereShape->calculateLocalInertia(cur_info->mass,sphereInertia);
                 btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(cur_info->mass, sphereMotionState, sphereShape, sphereInertia);
                 sphereRigidBody = new btRigidBody(sphereRigidBodyCI);
-				sphereRigidBody->setFriction(1);
+				sphereRigidBody->setFriction(FRICTION);
+                sphereRigidBody->setDamping(DAMPING, DAMPING);
             }
             //sphereRigidBody->forceActivationState(info->forceActivation);
 			//sphereRigidBody->forceActivationState(1);
@@ -147,7 +152,8 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info, GameObject
             {
 				btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI(cur_info->mass, planeMotionState,planeShape,btVector3(0,0,0));
                 planeRigidBody = new btRigidBody(planeRigidBodyCI);
-				planeRigidBody->setFriction(1);	
+				planeRigidBody->setFriction(FRICTION);
+                planeRigidBody->setDamping(DAMPING, DAMPING);
             }
             else
                 ;//TODO
@@ -179,7 +185,8 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info, GameObject
             {
 				btRigidBody::btRigidBodyConstructionInfo boxRigidBodyCI(cur_info->mass, boxMotionState,boxShape,btVector3(0,0,0));
                 boxRigidBody = new btRigidBody(boxRigidBodyCI);
-				boxRigidBody->setFriction(1);	
+				boxRigidBody->setFriction(FRICTION);
+                boxRigidBody->setDamping(DAMPING, DAMPING);
             }
             else
                 ;//TODO

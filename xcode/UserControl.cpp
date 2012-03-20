@@ -1,6 +1,8 @@
 #include "UserControl.h"
 using namespace std;
 
+#define CAM_ANG_LIMIT 30
+
 UserControl::UserControl() : angSpeed(200){
 	angNS=0.;
 	angEW=0.;
@@ -38,16 +40,24 @@ void UserControl::handleInput(){
                 cout << window->GetFrameTime() << endl;
 			if(evt.Key.Code==sf::Key::Left){
 				angEW-=angSpeed*window->GetFrameTime(); 
+                if(angEW < -CAM_ANG_LIMIT)
+                    angEW = CAM_ANG_LIMIT;
 				//TODO: this is problematic should be changed according to the direction of ball movcement
 			}
 			else if(evt.Key.Code==sf::Key::Right){
 				angEW+=angSpeed*window->GetFrameTime(); 
+                if(angEW > CAM_ANG_LIMIT)
+                    angEW = CAM_ANG_LIMIT;
 			}
 			else if(evt.Key.Code==sf::Key::Up){
 				angNS+=angSpeed*window->GetFrameTime(); 
+                if(angNS > CAM_ANG_LIMIT)
+                    angNS = CAM_ANG_LIMIT;
 			}
 			else if(evt.Key.Code==sf::Key::Down){
 				angNS-=angSpeed*window->GetFrameTime(); 
+                if(angNS < CAM_ANG_LIMIT)
+                    angNS = CAM_ANG_LIMIT;
 			}else if(evt.Key.Code=='a' || evt.Key.Code=='A' ){
 				camdir=LEFT;
 			}
