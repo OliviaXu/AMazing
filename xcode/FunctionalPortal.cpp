@@ -284,7 +284,7 @@ void FunctionalPortal::createEnvironmentMap(const std::vector<Portal *> *portals
 	setHide(oldHide);
 }
 
-void FunctionalPortal::setPosDir(struct Vec3 *destPos, int dir, int idstPortal, int srcLookDir){
+void FunctionalPortal::setPosDir(struct Vec3 *destPos, int dir, int idstPortal, int srcLookDir, float look_len, int transport){
 	destPos_pcoord.x = destPos->x;
 	destPos_pcoord.y = destPos->y;
 	destPos_pcoord.z = destPos->z;
@@ -307,14 +307,21 @@ void FunctionalPortal::setPosDir(struct Vec3 *destPos, int dir, int idstPortal, 
 	eye_pos = pos;
 	src_lookDirection = srcLookDir;
 	iDestPortal = idstPortal;
+	this->transport = transport;
+	this->look_length = look_len;
 	vecAdd(&eye_pos, 
-			EYE_TO_PORTAL_DIST * eye_offset[srcLookDir*3], 
-			EYE_TO_PORTAL_DIST * eye_offset[srcLookDir*3+1], 
-			EYE_TO_PORTAL_DIST * eye_offset[srcLookDir*3+2]);
+			getEyeToPortalDist() * eye_offset[srcLookDir*3], 
+			getEyeToPortalDist() * eye_offset[srcLookDir*3+1], 
+			getEyeToPortalDist() * eye_offset[srcLookDir*3+2]);
 	/*vecAdd(&eye_pos, 
 			EYE_TO_PORTAL_DIST * eye_offset[dir*3], 
 			EYE_TO_PORTAL_DIST * eye_offset[dir*3+1], 
 			EYE_TO_PORTAL_DIST * eye_offset[dir*3+2]);*/
+}
+
+float FunctionalPortal::getEyeToPortalDist(){
+	//return 2;
+	return look_length;
 }
 
 struct Vec3 FunctionalPortal::getDestPortalPos(){

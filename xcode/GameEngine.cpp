@@ -127,6 +127,8 @@ void GameEngine::updateObjects()
 }
 
 void GameEngine::onBallIntoPortal(FunctionalPortal *fp){
+	if(!fp->transport)
+		return;
 	struct Vec3 dst_pcoord = fp->getDestPortalPos();
 	int idstportal = fp->getDestPortalIdx();
 	Portal *port = (Portal *)(mapLoader->getPortal(idstportal));

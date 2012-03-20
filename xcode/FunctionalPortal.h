@@ -6,8 +6,6 @@
 #include "GameObject.h"
 #include "DepthRenderTarget.h"
 
-#define EYE_TO_PORTAL_DIST 2
-
 class FunctionalPortal : public GameObject{
 public:
 
@@ -16,13 +14,16 @@ public:
 	virtual void draw(const std::vector<Portal *> *portals);
 	virtual void passShaderParam(const aiMesh *mesh);
 	
-	void setPosDir(struct Vec3 *destPos, int dir, int idstPortal, int srcLookDir);
+	void setPosDir(struct Vec3 *destPos, int dir, int idstPortal, int srcLookDir, float look_len, int transport);
 	struct Vec3 getDestPortalPos();
 	int getDestPortalIdx();
-
+	virtual float getEyeToPortalDist();
+	
+	
+	float look_length;
+	int transport;
 protected:
 	void bindTexture();
-
 private:
 	void createEnvironmentMap(const std::vector<Portal *> *portals);
 
