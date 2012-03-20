@@ -94,7 +94,7 @@ void GameEngine::run()
 			//updateObjects();
 			ball->setPortal(mapLoader->getCurrentPortalIdx());
 		}*/
-		mapLoader->updateCurrentPortal(camera->getPos());
+		mapLoader->updateCurrentPortal(camera->getPos(), &(ball->getPos()));
         
         //printf("%f, %f, %f\n", GRAVITY * sin(dAngleEW/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * cos(dAngleNS/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * sin(dAngleNS/180*PI));
         physicsEngine->setGravity(GRAVITY * sin(dAngleEW/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * cos(dAngleNS/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * sin(dAngleNS/180*PI));
@@ -122,6 +122,16 @@ void GameEngine::updateObjects()
     mapLoader->fillObjects(objects);
 }
 
+void GameEngine::onBallIntoPortal(FunctionalPortal *fp){
+	struct Vec3 dst_pcoord = fp->getDestPortalPos();
+	int idstportal = fp->getDestPortalIdx();
+	Portal *port = (Portal *)(mapLoader->getPortal(idstportal));
+	struct Vec3 dstcoord;
+	struct Vec3 portalPos = port->getPos();
+	vecAdd(&dst_pcoord, &portalPos, &dstcoord);
+	ball->moveTo(dstcoord.x, dstcoord.y, dstcoord.z);
+}
+
 void GameEngine::handleEvents()
 {
 	queue<MAZEevent> *eq = physicsEngine->getEventQ();
@@ -130,14 +140,21 @@ void GameEngine::handleEvents()
 		eq->pop();
 		switch(e.ty){
 		case MAZEevent_type::BALL_INTO_PORTAL:
-			FunctionalPortal *fp = (FunctionalPortal *)e.info;
-			struct Vec3 dst_pcoord = fp->getDestPortalPos();
-			int idstportal = fp->getDestPortalIdx();
-			Portal *port = (Portal *)(mapLoader->getPortal(idstportal));
-			struct Vec3 dstcoord;
-			struct Vec3 portalPos = port->getPos();
-			vecAdd(&dst_pcoord, &portalPos, &dstcoord);
-			ball->moveTo(dstcoord.x, dstcoord.y, dstcoord.z);
+			onBallIntoPortal((FunctionalPortal *)e.info);
+			break;
+		case MAZEevent_type::BALL_INTO_HOLE:
+			ball->moveTo(-250/25.4, 20010/25.4,0);
+			//ball->rigidBody->setDamping(0.5, 0.5);
+			ball->rigidBody->setLinearVelocity(btVector3(0, 0, 0));
+			break;
+		case MAZEevent_type::START_GAME:
+		case MAZEevent_type::RESTART_GAME:
+			ball->moveTo(-250/25.4, 200/25.4,0);
+			ball->rigidBody->setLinearVelocity(btVector3(0, 0, 0));
+			//ball->rigidBody->setDamping(0.5, 0.5);
+			break;
+		case MAZEevent_type::QUIT_GAME:
+			exit(0);
 			break;
 		/*default:
 			break;*/

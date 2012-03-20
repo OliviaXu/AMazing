@@ -28,7 +28,7 @@ public:
     void setGravity(float x, float y, float z);
     btVector3 getGravity();
 	std::queue<MAZEevent> *getEventQ();
-private:
+private:	
     btBroadphaseInterface* broadphase;
     btDefaultCollisionConfiguration* collisionConfiguration;
     btCollisionDispatcher* dispatcher;

@@ -18,6 +18,7 @@
 #include "Plane.h"
 #include "Ball.h"
 #include "ParticleEmitter.h"
+#include "FunctionalPortal.h"
 
 class GameEngine {
 public:
@@ -29,7 +30,8 @@ private:
     void updateObjects();   // update objects if the current portal has changed
     void handleEvents();
     void drawScene();
-    
+    void onBallIntoPortal(FunctionalPortal *fp);
+
     MapLoader *mapLoader;
     PhysicsEngine *physicsEngine;
     EventMgr *eventMgr;

@@ -9,6 +9,8 @@ GameObjectFactory::GameObjectFactory(){
 	makers["ball"] = new BallMaker();
 	makers["funportal"] = new FunctionalPortalMaker();
 	makers["wall"] = new WallMaker();
+	makers["optionbox"] = new OptionBoxMaker();
+	makers["hole"] = new HoleMaker();
 }
 
 GameObjectFactory::~GameObjectFactory(){

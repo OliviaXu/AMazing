@@ -8,6 +8,8 @@
 
 #include "Ball.h"
 #include "FunctionalPortal.h"
+#include "Hole.h"
+#include "OptionBox.h"
 
 Ball::Ball() {
     pos=Vec3(-2.4,0.,4.);
@@ -24,5 +26,26 @@ void Ball::respondToCollision(GameObject *obj, std::queue<MAZEevent> *eq){
 	if(portal){
 		eq->push(struct MAZEevent(MAZEevent_type::BALL_INTO_PORTAL, portal));
 		return;
+	}
+
+	Hole *hole = dynamic_cast<Hole *>(obj);
+	if(hole){
+		eq->push(struct MAZEevent(MAZEevent_type::BALL_INTO_HOLE, portal));
+		return;
+	}
+
+	OptionBox *ob = dynamic_cast<OptionBox *>(obj);
+	if(ob){
+		switch(ob->ty){
+		case OptionBox::START:
+			eq->push(struct MAZEevent(MAZEevent_type::START_GAME, portal));
+			return;
+		case OptionBox::RESTART:
+			eq->push(struct MAZEevent(MAZEevent_type::RESTART_GAME, portal));
+			return;
+		case OptionBox::QUIT:
+			eq->push(struct MAZEevent(MAZEevent_type::QUIT_GAME, portal));
+			return;
+		}
 	}
 }

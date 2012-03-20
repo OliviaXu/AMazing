@@ -34,6 +34,8 @@ public:
 	void setRigidBody(btRigidBody *rb);
 
 	void moveTo(float x, float y, float z);
+	
+	btRigidBody *rigidBody;
 protected:
 	void setMaterial(const aiMesh *mesh);
 	void bindTexture();
@@ -53,7 +55,6 @@ protected:
     struct Vec3 velocity;
     float acceleration;
 	bool hide;
-	btRigidBody *rigidBody;
     // TODO: add status field
 };
 

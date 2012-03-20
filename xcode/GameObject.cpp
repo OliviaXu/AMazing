@@ -184,7 +184,7 @@ void GameObject::draw(const std::vector<Portal *> *portals){
 	};
 	glMultMatrixf(mat);
 
-	aiMesh *mesh = model->mMeshes[child->mMeshes[0]];
+	aiMesh *mesh = model->mMeshes[child->mMeshes[child->mNumMeshes-1]];
 	passShaderParam(mesh);
 	GL_CHECK(glDrawElements(GL_TRIANGLES, 3*mesh->mNumFaces, 
 					GL_UNSIGNED_INT, &(*indexBuff)[0]));
@@ -242,13 +242,13 @@ void GameObject::moveTo(float x, float y, float z){
 
 	rigidBody->translate(btVector3(deltaX, deltaY, deltaZ));
 	//rigidBody->translate(btVector3(x, y, z));
-	btTransform trans;
-	btScalar m[16];
-	rigidBody->getMotionState()->getWorldTransform(trans);
-	trans.getOpenGLMatrix(m);
-	setTrans(m);
+	//btTransform trans;
+	//btScalar m[16];
+	//rigidBody->getMotionState()->getWorldTransform(trans);
+	//trans.getOpenGLMatrix(m);
+	//setTrans(m);
 
-	btVector3 o = trans.getOrigin();
-	setPos(o.getX(), o.getY(), o.getZ());
-	cout << x << "," << y << "," << z << "----" << pos.x <<"," << pos.y << "," << pos.z << endl;
+	//btVector3 o = trans.getOrigin();
+	//setPos(o.getX(), o.getY(), o.getZ());
+	//cout << x << "," << y << "," << z << "----" << pos.x <<"," << pos.y << "," << pos.z << endl;
 }

@@ -203,7 +203,6 @@ void PhysicsEngine::updateObjects() {
     for(int i = 0;i < rigidBodies.size();++i)
     {
 		GameObject *obj = objs[i];
-		
 		Ball *is_it_ball = dynamic_cast<Ball *>(obj);
 			if(is_it_ball){
 				//rigidBodies[i]->setActivationState(DISABLE_DEACTIVATION);

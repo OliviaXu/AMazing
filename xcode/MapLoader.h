@@ -20,7 +20,7 @@ public:
 	MapLoader();
 	~MapLoader();
 	void load(std::string map_file, PhysicsEngine *engine);
-    bool updateCurrentPortal(const struct Vec3 *pos);     // update current portal according to the position of the ball
+    bool updateCurrentPortal(const struct Vec3 *pos, const struct Vec3 *ballPos);     // update current portal according to the position of the ball
     void fillObjects(std::vector<GameObject*> &objects);   // fill objects with current portal and its neighboring portals' objects
 	int getCurrentPortalIdx();
 	void iteratePortals(int rootIdx, PortalIterateFun fun, void *auxData);

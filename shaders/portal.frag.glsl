@@ -34,7 +34,7 @@ void main() {
 	
 	// Calculate the diffuse color coefficient, and sample the diffuse texture
 	float Rd = max(0.0, dot(L, N));
-	vec3 Td = texture2D(diffuseMap, texcoord).rgb;
+	//vec3 Td = texture2D(diffuseMap, texcoord).rgb;
 	vec3 Te = textureCube(environmentMap, cubemapRay).rgb;
 	vec3 diffuse = Rd * Kd * Te * gl_LightSource[0].diffuse.rgb;
 	

@@ -3,6 +3,8 @@
 #include "Ball.h"
 #include "Wall.h"
 #include "FunctionalPortal.h"
+#include "Hole.h"
+#include "OptionBox.h"
 
 /*------------------------------------------------------------------------------
  *				GameObjectMaker
@@ -189,4 +191,55 @@ GameObject *WallMaker::make(char *args, MapLoader *mld){
 	setParam(wall, param, mld);
 	
 	return wall;
+}
+
+/*------------------------------------------------------------------------------
+ *				HoleMaker
+ *------------------------------------------------------------------------------*/
+HoleMaker::HoleMaker(){
+
+}
+
+HoleMaker::~HoleMaker(){
+
+}
+
+GameObject *HoleMaker::make(char *args, MapLoader *mld){
+	struct GameObjectParam param;
+	args = parseParam(args, &param);
+
+	Hole *hole = new Hole();
+
+	setParam(hole, param, mld);
+	
+	return hole;
+}
+
+/*------------------------------------------------------------------------------
+ *				OptionBoxMaker
+ *------------------------------------------------------------------------------*/
+OptionBoxMaker::OptionBoxMaker(){
+
+}
+
+OptionBoxMaker::~OptionBoxMaker(){
+
+}
+
+GameObject *OptionBoxMaker::make(char *args, MapLoader *mld){
+	struct GameObjectParam param;
+	args = parseParam(args, &param);
+
+	char *str;
+	assert(str = strtok(args, " \t"));
+	OptionBox *ob = new OptionBox();
+	if(strcmp(str, "start") == 0)
+		ob->ty = OptionBox::START;
+	else if(strcmp(str, "quit") == 0)
+		ob->ty = OptionBox::QUIT;
+	else
+		ob->ty = OptionBox::RESTART;
+	setParam(ob, param, mld);
+	
+	return ob;
 }

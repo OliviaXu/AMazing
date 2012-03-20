@@ -79,7 +79,8 @@ struct MAZEmat{
 	float mat[16];
 };
 
-enum MAZEevent_type{BALL_INTO_PORTAL, BALL_INTO_HOLE};
+enum MAZEevent_type{BALL_INTO_PORTAL, BALL_INTO_HOLE, 
+					START_GAME, QUIT_GAME, RESTART_GAME};
 struct MAZEevent{
 	MAZEevent(MAZEevent_type type, void *data){
 		ty = type;
