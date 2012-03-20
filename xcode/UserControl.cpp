@@ -3,7 +3,7 @@ using namespace std;
 
 #define CAM_ANG_LIMIT 20
 
-UserControl::UserControl() : angSpeed(500){
+UserControl::UserControl() : angSpeed(200){
 	angNS=0.;
 	angEW=0.;
 	camdir=(Keyorientation)0;//or UP
@@ -79,14 +79,36 @@ void UserControl::handleInput(){
                 else if(camdir == RIGHT)
                     angEW -= angSpeed*window->GetFrameTime();
 			}else if(evt.Key.Code=='a' || evt.Key.Code=='A' ){
-				camdir=LEFT;
+				if(camdir == UP)
+                    camdir = LEFT;
+                else if(camdir == LEFT)
+                    camdir = DOWN;
+                else if(camdir == DOWN)
+                    camdir = RIGHT;
+                else if(camdir == RIGHT)
+                    camdir = UP;
 			}
 			else if(evt.Key.Code=='w' || evt.Key.Code=='W' ){
-				camdir=UP;
+				//camdir=UP;
+                ;
 			}else if(evt.Key.Code=='D' || evt.Key.Code=='d' ){
-				camdir=RIGHT;
+				if(camdir == UP)
+                    camdir = RIGHT;
+                else if(camdir == RIGHT)
+                    camdir = DOWN;
+                else if(camdir == DOWN)
+                    camdir = LEFT;
+                else if(camdir == LEFT)
+                    camdir = UP;
 			}else if(evt.Key.Code=='s' || evt.Key.Code=='S' ){
-				camdir=DOWN;
+				if(camdir == UP)
+                    camdir = DOWN;
+                else if(camdir == DOWN)
+                    camdir = UP;
+                else if(camdir == LEFT)
+                    camdir = RIGHT;
+                else if(camdir == RIGHT)
+                    camdir = LEFT;
 			}else if(evt.Key.Code=='1'){
 				camM=U;
 			}else if(evt.Key.Code=='2'){

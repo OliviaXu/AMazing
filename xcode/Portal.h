@@ -32,6 +32,10 @@ public:
 	struct Vec3 getSE();
 	struct Vec3 getNW();
 	struct Vec3 getNE();
+    float getN();
+    float getS();
+    float getE();
+    float getW();
 	struct Vec2 getSize();
 	MAZEorientation getOrientation();
 	//int doorStatus[4];
