@@ -7,25 +7,16 @@
 using namespace std;
 
 FunctionalPortal::FunctionalPortal(){
-	width = 400;
-	height = 400;
+	width = 300;
+	height = 300;
 	iDestPortal = 3;
-	destPos_pcoord.x = -2;
-	destPos_pcoord.y = 3;
-	destPos_pcoord.z = 1;
-	lookPos.x = -4.3;
-	lookPos.y = 1.6;
-	lookPos.z = 1.6;
 
-	motionNormal.x = 1;
-	motionNormal.y = 0;
-	motionNormal.z = 0;
 	/*destLook.x = 0;
 	destLook.y = 0;
 	destLook.z = -10;*/
-
-	renderTgr = new DepthRenderTarget(width, height);
+	tgr = new DepthRenderTarget(width, height);
 	glEnable(GL_TEXTURE_CUBE_MAP);
+	glEnable(GL_TEXTURE_2D);
 	GL_CHECK(glGenTextures(1, &dstCubemap));
 	GL_CHECK(glBindTexture(GL_TEXTURE_CUBE_MAP, dstCubemap));
 	GL_CHECK(glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
@@ -37,41 +28,56 @@ FunctionalPortal::FunctionalPortal(){
 		GL_CHECK(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X+i, 0, GL_RGB8, 
 			width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0));
 	}
+
+	/*glGenTextures(1, &dstDepthmap);
+    glBindTexture(GL_TEXTURE_2D, dstDepthmap);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexImage2D(
+        GL_TEXTURE_2D, 
+        0, 
+        GL_DEPTH_COMPONENT, 
+        width, 
+        height, 
+        0, 
+        GL_DEPTH_COMPONENT, 
+        GL_UNSIGNED_BYTE, 
+        0);
+	tgr = new DepthRenderTarget();
+	tgr->init();
+	tgr->bind();
+	GL_CHECK(glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,
+	GL_TEXTURE_2D, dstDepthmap, 0));
+	tgr->unbind();*/
 }
 
 FunctionalPortal::~FunctionalPortal(){
-	delete renderTgr;
 }
 
 void FunctionalPortal::draw(const std::vector<Portal *> *portals){
 	GLuint shaderID = shader->programID();
 	glUseProgram(shaderID);
-	struct MAZEmat inverseViewMat;
-	GL_CHECK(glGetFloatv(GL_MODELVIEW_MATRIX, inverseViewMat.mat));
-	inverse(&inverseViewMat, &inverseViewMat);
-	glMatrixMode(GL_TEXTURE);
-	glActiveTexture(GL_TEXTURE0);
-	GL_CHECK(glLoadMatrixf(inverseViewMat.mat));
 
 	struct MAZEmat viewMat;
+	struct MAZEmat inverseViewMat;
 	GL_CHECK(glGetFloatv(GL_MODELVIEW_MATRIX, viewMat.mat));
 	glMatrixMode(GL_TEXTURE);
 	glActiveTexture(GL_TEXTURE1);
 	GL_CHECK(glLoadMatrixf(viewMat.mat));
 	
-	Portal *portal = (*portals)[iPortal];
-	GLuint lpos = GL_CHECK(glGetUniformLocation(shaderID, "lookPosIn"));
-	GLuint mnormal = GL_CHECK(glGetUniformLocation(shaderID, "motionNormalIn"));
-	GLuint timeIn = GL_CHECK(glGetUniformLocation(shaderID, "timeIn"));
-	GLuint centerPos = GL_CHECK(glGetUniformLocation(shaderID, "centerPos"));
+	inverse(&viewMat, &inverseViewMat);
+	glActiveTexture(GL_TEXTURE0);
+	GL_CHECK(glLoadMatrixf(inverseViewMat.mat));
 
-	struct Vec3 portalPos = portal->getPos();
-	time_t t;
-	time(&t);
-	GL_CHECK(glUniform3f(lpos, lookPos.x+portalPos.x, lookPos.y+portalPos.y, lookPos.z+portalPos.z));
-	GL_CHECK(glUniform3f(mnormal, motionNormal.x, motionNormal.y, motionNormal.z));
+	//Portal *portal = (*portals)[iPortal];
+	GLuint lpos = GL_CHECK(glGetUniformLocation(shaderID, "lookPosIn"));
+	GLuint timeIn = GL_CHECK(glGetUniformLocation(shaderID, "timeIn"));
+
+	//struct Vec3 portalPos = portal->getPos();
+	GL_CHECK(glUniform3f(lpos, eye_pos.x, eye_pos.y, eye_pos.z));
 	GL_CHECK(glUniform1f(timeIn, (float)(clock()/CLOCKS_PER_SEC)));
-	GL_CHECK(glUniform3f(centerPos, pos.x, pos.y, pos.z));
 
 	createEnvironmentMap(portals);
 
@@ -124,7 +130,8 @@ void FunctionalPortal::passShaderParam(const aiMesh *mesh){
 	setMaterial(mesh);
 	bindTexture();
 	setMeshData(mesh);
-	  
+	
+
 	GLuint shaderID = shader->programID();
 	GLint tangent = GL_CHECK(glGetAttribLocation(shaderID, "tangentIn"));
     GL_CHECK(glEnableVertexAttribArray(tangent)); 
@@ -143,17 +150,18 @@ void FunctionalPortal::createEnvironmentMap(const std::vector<Portal *> *portals
 
 	bool oldHide = isHidden();
 	setHide(true);
-	GL_CHECK(glPushAttrib(GL_VIEWPORT_BIT));
-	GL_CHECK(glViewport(0, 0, width, height));
 
 	GL_CHECK(glMatrixMode(GL_MODELVIEW));
 	GL_CHECK(glPushMatrix());
 	GL_CHECK(glMatrixMode(GL_PROJECTION));
 	GL_CHECK(glPushMatrix());
+	GL_CHECK(glPushAttrib(GL_VIEWPORT_BIT));
 
-	GL_CHECK(glBindTexture(GL_TEXTURE_2D, 0));
-	renderTgr->bind();//Save viewport there
-
+	//GL_CHECK(glBindTexture(GL_TEXTURE_2D, 0));
+	tgr->bind();
+	//GL_CHECK(glBindTexture(GL_TEXTURE_2D, dstDepthmap));
+	//GL_CHECK(glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,
+	//GL_TEXTURE_2D, dstDepthmap, 0));
 	/*GLuint id = renderTgr->genColorTexutre();
 	glFramebufferTexture2DEXT(
         GL_FRAMEBUFFER_EXT,
@@ -202,10 +210,8 @@ void FunctionalPortal::createEnvironmentMap(const std::vector<Portal *> *portals
 
     glLoadIdentity();
     gluPerspective(fieldOfView, aspectRatio, nearClip, farClip);
-	//glViewport(0, 0, width, height);
+	glViewport(0, 0, width, height);
 
-	
-	
 	float lookVectors[24] = {
 		1, 0, 0, 1,
 		-1, 0, 0, 1,
@@ -230,54 +236,91 @@ void FunctionalPortal::createEnvironmentMap(const std::vector<Portal *> *portals
 	viewport.width = width;
 	viewport.height = height;
 	GL_CHECK(glBindTexture(GL_TEXTURE_CUBE_MAP, dstCubemap));
-	for(int i=0; i<6; i++){
-		//cout<<"i " << i <<endl;
-		struct Vec3 centerPos = vec2vecAdd(&eyePos, lookVectors[i*4], 
-								lookVectors[i*4+1], lookVectors[i*4+2]);
-		//struct Vec3 centerPos = vec2vecAdd(&eyePos, 0, 0, -10);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		gluLookAt(eyePos.x, eyePos.y, eyePos.z, 
+	struct Vec3 centerPos = vec2vecAdd(&eyePos, 
+										lookVectors[direction*4], 
+										lookVectors[direction*4+1], 
+										lookVectors[direction*4+2]);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	GL_CHECK(gluLookAt(eyePos.x, eyePos.y, eyePos.z, 
 				centerPos.x, centerPos.y, centerPos.z,
-				up[i*4], up[i*4+1], up[i*4+2]);
-
-		//GL_CHECK(glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo));
-		glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,
-		GL_TEXTURE_CUBE_MAP_POSITIVE_X+i, dstCubemap, 0);
-		if(GL_FRAMEBUFFER_COMPLETE_EXT != glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT)){
+				up[direction*4], up[direction*4+1], up[direction*4+2]));
+	GL_CHECK(glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,
+	GL_TEXTURE_CUBE_MAP_POSITIVE_X+src_lookDirection, dstCubemap, 0));
+	/*if(GL_FRAMEBUFFER_COMPLETE_EXT != glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT)){
 		cerr << "Invalid framebuffer configuration: ERROR CODE " 
 			<< glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
 		exit(-1);
-		}
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		struct MAZEmat projviewMat;
-		struct MAZEmat viewportMat;
+	}*/
+	GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+	struct MAZEmat projviewMat;
+	struct MAZEmat viewportMat;
 
-		getWindowProjMat(viewport, projviewMat, viewportMat);
+	getWindowProjMat(viewport, projviewMat, viewportMat);
 
-		set<int *> visitedEdgeSet;
-		destPortal->cullDraw(&projviewMat, &viewportMat, viewport, 
-							portals, visitedEdgeSet);
+	set<int *> visitedEdgeSet;
+	destPortal->cullDraw(&projviewMat, &viewportMat, viewport, 
+						portals, visitedEdgeSet);
 		
-		glBindTexture(GL_TEXTURE_CUBE_MAP, dstCubemap);
+	//GL_CHECK(glBindTexture(GL_TEXTURE_CUBE_MAP, dstCubemap));
 	/*	//debug
 	sf::Uint8 *pixelArray = new sf::Uint8[width*height*4];
-	glGetTexImage(GL_TEXTURE_CUBE_MAP_POSITIVE_X+i, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelArray); // to read from texture instead
+	glGetTexImage(GL_TEXTURE_CUBE_MAP_POSITIVE_X+src_lookDirection, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelArray); // to read from texture instead
 	sf::Image temp(width, height, pixelArray);
 	std::string filename = "envmap";
-	char a[2] = {'a'+i, '\0'};
+	char a[2] = {'a'+src_lookDirection, '\0'};
 	filename.append(a);
 	filename.append(".jpg");
 	temp.SaveToFile(filename);
 	delete pixelArray;*/
-	}
+
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
 	glPopAttrib();
-
-	renderTgr->unbind();
+	tgr->unbind();
 
 	setHide(oldHide);
+}
+
+void FunctionalPortal::setPosDir(struct Vec3 *destPos, int dir, int idstPortal, int srcLookDir){
+	destPos_pcoord.x = destPos->x;
+	destPos_pcoord.y = destPos->y;
+	destPos_pcoord.z = destPos->z;
+	direction = dir;
+
+	/*
+	 * Dir
+	 * 0->left, 1->right, 2->top, 3->bottom, 4->front, 5->back
+	 * This shall remind you of the cube map order
+	 */
+	float eye_offset[18] = {
+		-1, 0, 0,
+		1, 0, 0,
+		0, -1, 0,
+		0, 1, 0,
+		0, 0, -1,
+		0, 0, 1
+	};
+
+	eye_pos = pos;
+	src_lookDirection = srcLookDir;
+	iDestPortal = idstPortal;
+	vecAdd(&eye_pos, 
+			EYE_TO_PORTAL_DIST * eye_offset[srcLookDir*3], 
+			EYE_TO_PORTAL_DIST * eye_offset[srcLookDir*3+1], 
+			EYE_TO_PORTAL_DIST * eye_offset[srcLookDir*3+2]);
+	/*vecAdd(&eye_pos, 
+			EYE_TO_PORTAL_DIST * eye_offset[dir*3], 
+			EYE_TO_PORTAL_DIST * eye_offset[dir*3+1], 
+			EYE_TO_PORTAL_DIST * eye_offset[dir*3+2]);*/
+}
+
+struct Vec3 FunctionalPortal::getDestPortalPos(){
+	return destPos_pcoord;
+}
+
+int FunctionalPortal::getDestPortalIdx(){
+	return iDestPortal;
 }

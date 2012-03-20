@@ -9,10 +9,10 @@
 #include "Camera.h"
 #define VTH 15.0//assuming the threshold of changing the orientation of camera is 15.0 by now
 
-#define LEN 50/25.4
-#define ALPHA 30
-#define HDIS 1.5
-#define VDIS 0.8
+#define LEN 150/25.4
+#define ALPHA 90
+#define HDIS 5
+#define VDIS 3
 
 Camera::Camera() {
 	control_m=false;
@@ -50,6 +50,9 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
     //float eye_y = bpos.y + HDIS;
     //float eye_z = bpos.z - VDIS;
     gluLookAt(bpos.x, eye_y, eye_z, bpos.x, eye_y - sint, eye_z + cost, -sin((AngleEW)/180*PI), cos((AngleEW)/180*PI), 0.);
+	pos.x = bpos.x;
+	pos.y = eye_y;
+	pos.z = eye_z;
 
 	if(DEBUG_OUTPUT)
         printf("cam pos %f %f %f\n",pos.x,pos.y,pos.z);

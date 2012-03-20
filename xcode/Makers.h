@@ -47,4 +47,18 @@ public:
 	virtual GameObject *make(char *args, MapLoader *mld);
 };
 
+class HoleMaker : public GameObjectMaker{
+public:
+	HoleMaker();
+	~HoleMaker();
+	virtual GameObject *make(char *args, MapLoader *mld);
+};
+
+class OptionBoxMaker : public GameObjectMaker{
+public:
+	OptionBoxMaker();
+	~OptionBoxMaker();
+	virtual GameObject *make(char *args, MapLoader *mld);
+};
+
 #endif

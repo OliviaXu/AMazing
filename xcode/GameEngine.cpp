@@ -7,12 +7,15 @@
 //
 
 #include "GameEngine.h"
+#include "DepthRenderTarget.h"
+#include "FunctionalPortal.h"
+
 using namespace std;
 
 GameEngine::GameEngine(string map_file, string config_file)
 {
     mapLoader = new MapLoader();
-    physicsEngine = new PhysicsEngine();
+    physicsEngine = new PhysicsEngine(mapLoader);
     physicsEngine->init();
 	mapLoader->load(map_file, physicsEngine);
     eventMgr = new EventMgr();
@@ -20,6 +23,7 @@ GameEngine::GameEngine(string map_file, string config_file)
     camera = new Camera();
     plane = new Plane();
 	ball = mapLoader->getBall();
+	//DepthRenderTarget::init();
 }
 
 GameEngine::~GameEngine()
@@ -31,6 +35,7 @@ GameEngine::~GameEngine()
 	delete camera;
 	delete plane;
 	delete ball;
+	//DepthRenderTarget::dispose();
 }
 
 void GameEngine::init(sf::Window* _window)
@@ -70,8 +75,9 @@ void GameEngine::run()
     while(1){
 		static float t1 = 0;
 		static float t2 = t1;
+		t2 = t1;
 		t1 = window->GetFrameTime();
-		cout << "delta time " << t2-t1 << endl;
+		cout << "delta time " << t1 << endl;
 
         userControl->handleInput();    // constant * window.GetFrameTime() 
 
@@ -84,15 +90,18 @@ void GameEngine::run()
         
         //I think updating current portal according to camera is more appropriate.
 		camera->updatePos(userControl->getCamM(),userControl->getCamDirUpdate(),ball,dAngleNS, dAngleEW);//input camera movement ball direction and ball to determin camera position and direction
-		if(mapLoader->updateCurrentPortal(camera->getPos()))
-			updateObjects();
+		/*if(mapLoader->updateCurrentPortal(&(ball->getPos()))){
+			//updateObjects();
+			ball->setPortal(mapLoader->getCurrentPortalIdx());
+		}*/
+		mapLoader->updateCurrentPortal(camera->getPos(), &(ball->getPos()));
         
         //printf("%f, %f, %f\n", GRAVITY * sin(dAngleEW/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * cos(dAngleNS/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * sin(dAngleNS/180*PI));
         physicsEngine->setGravity(GRAVITY * sin(dAngleEW/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * cos(dAngleNS/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * sin(dAngleNS/180*PI));
 
-        physicsEngine->updateObjects(mapLoader->getObject());
+        physicsEngine->updateObjects();
         
-        eventMgr->updateEvents(objects, mapLoader, events);
+        //eventMgr->updateEvents(objects, mapLoader, events);
         handleEvents();
         
 		struct Vec3 lP=userControl->lightPos();
@@ -113,9 +122,44 @@ void GameEngine::updateObjects()
     mapLoader->fillObjects(objects);
 }
 
+void GameEngine::onBallIntoPortal(FunctionalPortal *fp){
+	struct Vec3 dst_pcoord = fp->getDestPortalPos();
+	int idstportal = fp->getDestPortalIdx();
+	Portal *port = (Portal *)(mapLoader->getPortal(idstportal));
+	struct Vec3 dstcoord;
+	struct Vec3 portalPos = port->getPos();
+	vecAdd(&dst_pcoord, &portalPos, &dstcoord);
+	ball->moveTo(dstcoord.x, dstcoord.y, dstcoord.z);
+}
+
 void GameEngine::handleEvents()
 {
-    
+	queue<MAZEevent> *eq = physicsEngine->getEventQ();
+	while(!eq->empty()){
+		struct MAZEevent e = eq->front();
+		eq->pop();
+		switch(e.ty){
+		case MAZEevent_type::BALL_INTO_PORTAL:
+			onBallIntoPortal((FunctionalPortal *)e.info);
+			break;
+		case MAZEevent_type::BALL_INTO_HOLE:
+			ball->moveTo(-250/25.4, 20010/25.4,0);
+			//ball->rigidBody->setDamping(0.5, 0.5);
+			ball->rigidBody->setLinearVelocity(btVector3(0, 0, 0));
+			break;
+		case MAZEevent_type::START_GAME:
+		case MAZEevent_type::RESTART_GAME:
+			ball->moveTo(-250/25.4, 200/25.4,0);
+			ball->rigidBody->setLinearVelocity(btVector3(0, 0, 0));
+			//ball->rigidBody->setDamping(0.5, 0.5);
+			break;
+		case MAZEevent_type::QUIT_GAME:
+			exit(0);
+			break;
+		/*default:
+			break;*/
+		}
+	}
 }
 
 

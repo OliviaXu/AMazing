@@ -80,22 +80,26 @@ void MapLoader::readModel(){
 	importers.push_back(importer);
 
 	//Construct index buffer. We assume that each aiScene contains only one mesh
-	int numMeshes = 1;
+	aiNode *n = model->mRootNode->mChildren[0];
+	int k = n->mMeshes[n->mNumMeshes-1];
+	/*int numMeshes = 1;
 	for(int k=0; k<numMeshes; k++){
 		if(model->mMeshes[k]->mPrimitiveTypes != aiPrimitiveType_TRIANGLE)
-			continue;
-
+			continue;*/
+	cout<<"pt " <<model->mMeshes[k]->mPrimitiveTypes<<endl;
+	aiMesh *mes = model->mMeshes[k];
 		int numFaces = model->mMeshes[k]->mNumFaces;
 		vector<unsigned int> *buff = new vector<unsigned int>();
 		aiFace *faces = model->mMeshes[k]->mFaces;
 		for(int j=0; j<numFaces; j++){
+			assert(faces[j].mNumIndices ==3 );
 			for(int v=0; v<3; v++){
 				buff->push_back(faces[j].mIndices[v]);
 				//buff->push_back(0);
 			}
 		}
 		indexBuff.push_back(buff);
-	}
+	//}
 
 /*	aiVector3D *mesh = model->mMeshes[0]->mVertices;
 	int n = model->mMeshes[0]->mNumVertices;
@@ -213,7 +217,7 @@ void MapLoader::readObject(bool portalObject, PhysicsEngine *engine){
 	else
 		portals[obj->getPortal()]->addObject(obj);
     
-    engine->addObject(obj->phyinfo->shapeTy, obj->phyinfo);
+    engine->addObject(obj->phyinfo->shapeTy, obj->phyinfo, obj);
 }
 
 void MapLoader::readTexture(){
@@ -244,6 +248,7 @@ void MapLoader::load(string map_file, PhysicsEngine *engine){
 		if(line.empty() || line[0] == '#')
 			continue;
 
+		char *tmp = (char *)line.c_str();
 		char *l = strdup(line.c_str());
 		char *str;
 		assert(str = strtok(l, " \t"));
@@ -328,19 +333,19 @@ MAZEportal_cull detectCurrentPortal(Portal *portal, int iPortal, void *auxData){
 	return CULL_NONE;
 }
 
-bool MapLoader::updateCurrentPortal(const struct Vec3 *pos){
+bool MapLoader::updateCurrentPortal(const struct Vec3 *campos, const struct Vec3 *ballPos){
 	//Just to make the rendering work for now
 	//return false;
 
-	DetectPortalBundle bundle = {pos, -1};
+	DetectPortalBundle bundle = {campos, -1};
 	iteratePortals(currentPortal, detectCurrentPortal, &bundle);
-	if(DEBUG_OUTPUT)
-        cout << bundle.currentPortal << endl;
+
+	if(bundle.currentPortal < 0)
+		bundle.currentPortal = ball->getPortal();
+
 	if(bundle.currentPortal == currentPortal)
 		return false;
-
 	currentPortal = bundle.currentPortal;
-	currentPortal = currentPortal < 0 ? 0 : currentPortal;
 	currentOrient = portals[currentPortal]->getOrientation();
 	return true;
 }
@@ -370,7 +375,7 @@ const aiScene *MapLoader::getModel(int iModel){
 }
 
 const std::vector<unsigned int> *MapLoader::getIndexBuff(int iBuff){
-	return indexBuff[iBuff];
+return indexBuff[iBuff];
 }
 
 const sf::Image *MapLoader::getTexture(int iTex){
@@ -392,4 +397,18 @@ std::vector<GameObject *>* MapLoader::getObject()
 
 Ball *MapLoader::getBall(){
 	return ball;
+}
+
+void MapLoader::updateObjPortal(GameObject *obj){
+	struct Vec3 pos = obj->getPos();
+	DetectPortalBundle bundle = {&pos, 0};
+	int objCurrentPortal = obj->getPortal();
+	iteratePortals(objCurrentPortal, detectCurrentPortal, &bundle);
+	if(bundle.currentPortal == objCurrentPortal)
+		return;
+
+	//Portal changed
+	portals[objCurrentPortal]->removeObject(obj);
+	portals[bundle.currentPortal]->addObject(obj);
+	obj->setPortal(bundle.currentPortal);
 }

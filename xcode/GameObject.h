@@ -4,6 +4,7 @@
 #include "Framework.h"
 #include "Shader.h"
 #include "PhysicsInfo.h"
+#include "btBulletDynamicsCommon.h"
 
 class Portal;
 
@@ -29,7 +30,12 @@ public:
     void setTrans(float* mat);
     void setPos(float x, float y, float z);
 	PhysicsInfo *phyinfo;
+	virtual void respondToCollision(GameObject *obj, std::queue<MAZEevent> *eq);
+	void setRigidBody(btRigidBody *rb);
 
+	void moveTo(float x, float y, float z);
+	
+	btRigidBody *rigidBody;
 protected:
 	void setMaterial(const aiMesh *mesh);
 	void bindTexture();

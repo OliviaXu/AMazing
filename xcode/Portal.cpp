@@ -206,3 +206,14 @@ MAZEorientation Portal::getOrientation(){
 struct Vec3 Portal::getPos(){
 	return pos;
 }
+
+void Portal::removeObject(GameObject *obj){
+	int nobj = objs.size();
+	vector<GameObject *>::iterator iter = objs.begin();
+	for(; iter<objs.end(); iter++){
+		if(*iter == obj){
+			objs.erase(iter);
+			break;
+		}
+	}
+}

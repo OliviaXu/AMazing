@@ -79,6 +79,17 @@ struct MAZEmat{
 	float mat[16];
 };
 
+enum MAZEevent_type{BALL_INTO_PORTAL, BALL_INTO_HOLE, 
+					START_GAME, QUIT_GAME, RESTART_GAME};
+struct MAZEevent{
+	MAZEevent(MAZEevent_type type, void *data){
+		ty = type;
+		info = data;
+	}
+	MAZEevent_type ty;
+	void *info;
+};
+
 void vecAdd(struct Vec3 *vecIn, float dx, float dy, float dz);
 void matMultVec3_normalize(struct MAZEmat *matIn, struct Vec3 *vecIn, struct Vec3 *vecOut);
 
@@ -91,4 +102,5 @@ struct Vec3 vec2vecAdd(struct Vec3 *vecIn, float dx, float dy, float dz);
 void getWindowProjMat(struct MAZErectangle &viewport, struct MAZEmat &projviewMat, struct MAZEmat &viewportMat);
 void vecAdd(struct Vec3 *vec1, struct Vec3 *vec2, struct Vec3 *vecOut);
 void inverse(struct MAZEmat *matIn, struct MAZEmat *matOut);
+void normalize(struct Vec3 *v);
 #endif

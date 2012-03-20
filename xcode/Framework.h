@@ -45,4 +45,6 @@
 							printf("%s", gluErrorString(__MY_GL_ERROR));\
 						}}
 
+#pragma unmanaged
+
 #endif

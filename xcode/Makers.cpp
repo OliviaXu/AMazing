@@ -3,6 +3,8 @@
 #include "Ball.h"
 #include "Wall.h"
 #include "FunctionalPortal.h"
+#include "Hole.h"
+#include "OptionBox.h"
 
 /*------------------------------------------------------------------------------
  *				GameObjectMaker
@@ -55,6 +57,7 @@ void GameObjectMaker::setParam(GameObject *obj, struct GameObjectParam &param, M
 	obj->phyinfo->pos_x = pos.x - obj->phyinfo->pos_x;
 	obj->phyinfo->pos_y = pos.y + obj->phyinfo->pos_y;
 	obj->phyinfo->pos_z = pos.z + obj->phyinfo->pos_z;
+	obj->phyinfo->forceActivation = 0;
 }
 
 
@@ -108,6 +111,8 @@ GameObject *BallMaker::make(char *args, MapLoader *mld){
 	Ball *ball = new Ball();
 
 	setParam(ball, param, mld);
+
+	ball->phyinfo->forceActivation = 1;
 	return ball;
 }
 
@@ -124,10 +129,36 @@ FunctionalPortalMaker::~FunctionalPortalMaker(){
 
 GameObject *FunctionalPortalMaker::make(char *args, MapLoader *mld){
 	struct GameObjectParam param;
-	parseParam(args, &param);
+	args = parseParam(args, &param);
 	FunctionalPortal *fp = new FunctionalPortal();
+	char *str;
+	
+	assert(str = strtok(args, " \t"));
+	int iDestPortal = atoi(str);
+	assert(str = strtok(NULL, " \t"));
+	int dir = atoi(str);
+
+	assert(str = strtok(NULL, " \t"));
+	float dest_x = -atoi(str) / 25.4;
+	assert(str = strtok(NULL, " \t"));
+	float dest_y = atoi(str) / 25.4;
+	assert(str = strtok(NULL, " \t"));
+	float dest_z = atoi(str) / 25.4;
+
+	assert(str = strtok(NULL, " \t"));
+	int src_lookDir = atoi(str);
+
+		std::cout << iDestPortal << dir << src_lookDir << std::endl;
+	/*assert(str = strtok(args, " \t"));
+	float look_x = atoi(str);
+	assert(str = strtok(args, " \t"));
+	float look_y = atoi(str);
+	assert(str = strtok(args, " \t"));
+	float look_z = atoi(str);*/
 
 	setParam(fp, param, mld);
+
+	fp->setPosDir(&(struct Vec3(dest_x, dest_y, dest_z)), dir, iDestPortal, src_lookDir);
 	return fp;
 }
 
@@ -158,5 +189,57 @@ GameObject *WallMaker::make(char *args, MapLoader *mld){
 	wall->setDepthTex(mld->getTexture(iDepthTex));
 
 	setParam(wall, param, mld);
+	
 	return wall;
+}
+
+/*------------------------------------------------------------------------------
+ *				HoleMaker
+ *------------------------------------------------------------------------------*/
+HoleMaker::HoleMaker(){
+
+}
+
+HoleMaker::~HoleMaker(){
+
+}
+
+GameObject *HoleMaker::make(char *args, MapLoader *mld){
+	struct GameObjectParam param;
+	args = parseParam(args, &param);
+
+	Hole *hole = new Hole();
+
+	setParam(hole, param, mld);
+	
+	return hole;
+}
+
+/*------------------------------------------------------------------------------
+ *				OptionBoxMaker
+ *------------------------------------------------------------------------------*/
+OptionBoxMaker::OptionBoxMaker(){
+
+}
+
+OptionBoxMaker::~OptionBoxMaker(){
+
+}
+
+GameObject *OptionBoxMaker::make(char *args, MapLoader *mld){
+	struct GameObjectParam param;
+	args = parseParam(args, &param);
+
+	char *str;
+	assert(str = strtok(args, " \t"));
+	OptionBox *ob = new OptionBox();
+	if(strcmp(str, "start") == 0)
+		ob->ty = OptionBox::START;
+	else if(strcmp(str, "quit") == 0)
+		ob->ty = OptionBox::QUIT;
+	else
+		ob->ty = OptionBox::RESTART;
+	setParam(ob, param, mld);
+	
+	return ob;
 }

@@ -13,19 +13,22 @@
 #include "GameObject.h"
 #include "PhysicsInfo.h"
 #include "btBulletDynamicsCommon.h"
+#include "Framework.h"
+class MapLoader;
 
-#define GRAVITY 9.8/5
+#define GRAVITY 30
 
 class PhysicsEngine {
 public:
-    PhysicsEngine();
+    PhysicsEngine(MapLoader *mld);
     ~PhysicsEngine();
     void init();
-    void addObject(PhysicsShapeTy type, PhysicsInfo* info);
-    void updateObjects(std::vector<GameObject*> *objects);  // ???
+    void addObject(PhysicsShapeTy type, PhysicsInfo* info, GameObject *obj);
+    void updateObjects();  // ???
     void setGravity(float x, float y, float z);
     btVector3 getGravity();
-private:
+	std::queue<MAZEevent> *getEventQ();
+private:	
     btBroadphaseInterface* broadphase;
     btDefaultCollisionConfiguration* collisionConfiguration;
     btCollisionDispatcher* dispatcher;
@@ -34,6 +37,10 @@ private:
     std::vector<btCollisionShape*> collisionShapes;
     std::vector<btDefaultMotionState*> motionsStates;
     std::vector<btRigidBody*> rigidBodies;
+	std::vector<GameObject *> objs;
+	std::queue<MAZEevent> evtq;
+
+	MapLoader *mld;
 };
 
 #endif
