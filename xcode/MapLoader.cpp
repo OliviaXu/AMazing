@@ -54,14 +54,15 @@ MapLoader::~MapLoader(){
 	for(int i=0; i<objs.size(); i++){
 		delete objs[i];
 	}
-
+	/*
 	for(int i=0; i<textures.size(); i++){
 		delete textures[i];
 	}
-
+	*/
+	/*
 	for(int i=0; i<phyinfos.size(); i++){
 		delete phyinfos[i];
-	}
+	}*/
 }
 
 void MapLoader::readModel(){
@@ -224,14 +225,19 @@ void MapLoader::readTexture(){
 	char *texPath;
 	assert(texPath = strtok(NULL, " \t"));
 	sf::Image *tex = new sf::Image();
-	tex->Bind();
-	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE));
+	//tex->Bind();
+	GLuint texturen;
+	glGenTextures( 1, &texturen );
+	glBindTexture( GL_TEXTURE_2D,texturen );
+	//GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE));
 	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
-	//GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
 	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
 	assert(tex->LoadFromFile(texPath));
-	textures.push_back(tex);
+	gluBuild2DMipmaps(GL_TEXTURE_2D,GL_RGBA,tex->GetWidth(),tex->GetHeight(),GL_RGBA,GL_UNSIGNED_BYTE,tex->GetPixelsPtr());
+	//textures.push_back(tex);
+	textures.push_back(texturen);
 }
 
 void MapLoader::load(string map_file, PhysicsEngine *engine){
@@ -378,7 +384,8 @@ const std::vector<unsigned int> *MapLoader::getIndexBuff(int iBuff){
 return indexBuff[iBuff];
 }
 
-const sf::Image *MapLoader::getTexture(int iTex){
+//const sf::Image *MapLoader::getTexture(int iTex){
+const GLuint MapLoader::getTexture(int iTex){
 	return textures[iTex];
 }
 

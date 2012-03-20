@@ -21,7 +21,8 @@ public:
     void setPos(struct Vec3 pos);
     void setClass(char *className);
 	void setModel(const aiScene *model, const std::vector<unsigned int> *indexBuff);
-	void setTexture(const sf::Image *dtex, const sf::Image *stex);
+	//void setTexture(const sf::Image *dtex, const sf::Image *stex);
+    void setTexture(const GLuint dtex, const GLuint stex);
 	struct Vec3* getPos();
     struct Vec3 &getVelocity();
 	int getPortal();
@@ -48,13 +49,17 @@ protected:
 	const std::vector<unsigned int> *indexBuff;
 
     char *className;
-    const sf::Image *dtex;
-	const sf::Image *stex;
+    //const sf::Image *dtex;
+	//const sf::Image *stex;
+	GLuint dtex;
+	GLuint stex;
     int iPortal;     // the portal this object is in
     float mass;
     struct Vec3 velocity;
     float acceleration;
 	bool hide;
+	//GLuint diftexture;
+	//GLuint spectexture;
     // TODO: add status field
 };
 

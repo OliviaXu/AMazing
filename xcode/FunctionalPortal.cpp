@@ -100,29 +100,35 @@ void FunctionalPortal::bindTexture(){
 	GLuint shaderID = shader->programID();
 
 	//Bind diffuse map
-	GLint diffuseMap = GL_CHECK(glGetUniformLocation(shaderID, "diffuseMap"));
+	GLuint diffuseMap = GL_CHECK(glGetUniformLocation(shaderID, "diffuseMap"));
 	GL_CHECK(glActiveTexture(GL_TEXTURE0));
+	glBindTexture( GL_TEXTURE_2D,dtex );
+	/*
 	if(dtex){
 		dtex->Bind();
 	}
 	else{
 		default_tex.Bind();
 	}
+	*/
 	GL_CHECK(glUniform1i(diffuseMap, 0)); // The diffuse map will be GL_TEXTURE0
 
 	//Bind environment map
-	GLint dstEnvMap = GL_CHECK(glGetUniformLocation(shaderID, "environmentMap"));
+	GLuint dstEnvMap = GL_CHECK(glGetUniformLocation(shaderID, "environmentMap"));
 	GL_CHECK(glActiveTexture(GL_TEXTURE2));
 	GL_CHECK(glBindTexture(GL_TEXTURE_CUBE_MAP, dstCubemap));
 	GL_CHECK(glUniform1i(dstEnvMap, 2));
 
 	//Bind specular map
-	GLint specularMap = GL_CHECK(glGetUniformLocation(shaderID, "specularMap"));
+	GLuint specularMap = GL_CHECK(glGetUniformLocation(shaderID, "specularMap"));
 	GL_CHECK(glActiveTexture(GL_TEXTURE1));
+	glBindTexture( GL_TEXTURE_2D,stex );
+	/*
 	if(stex)
 		stex->Bind();
 	else
 		default_tex.Bind();
+		*/
 	GL_CHECK(glUniform1i(specularMap, 1));	
 }
 
@@ -133,11 +139,11 @@ void FunctionalPortal::passShaderParam(const aiMesh *mesh){
 	
 
 	GLuint shaderID = shader->programID();
-	GLint tangent = GL_CHECK(glGetAttribLocation(shaderID, "tangentIn"));
+	GLuint tangent = GL_CHECK(glGetAttribLocation(shaderID, "tangentIn"));
     GL_CHECK(glEnableVertexAttribArray(tangent)); 
 	GL_CHECK(glVertexAttribPointer(tangent, 3, GL_FLOAT, 0, sizeof(aiVector3D), mesh->mTangents));
 
-	GLint bitangent = GL_CHECK(glGetAttribLocation(shaderID, "bitangentIn"));
+	GLuint bitangent = GL_CHECK(glGetAttribLocation(shaderID, "bitangentIn"));
     GL_CHECK(glEnableVertexAttribArray(bitangent)); 
 	GL_CHECK(glVertexAttribPointer(bitangent, 3, GL_FLOAT, 0, sizeof(aiVector3D), mesh->mBitangents));
 }
@@ -284,7 +290,7 @@ void FunctionalPortal::createEnvironmentMap(const std::vector<Portal *> *portals
 	setHide(oldHide);
 }
 
-void FunctionalPortal::setPosDir(struct Vec3 *destPos, int dir, int idstPortal, int srcLookDir){
+void FunctionalPortal::setPosDir(struct Vec3 *destPos, int dir, int idstPortal, int srcLookDir, float look_len, int transport){
 	destPos_pcoord.x = destPos->x;
 	destPos_pcoord.y = destPos->y;
 	destPos_pcoord.z = destPos->z;
@@ -307,14 +313,21 @@ void FunctionalPortal::setPosDir(struct Vec3 *destPos, int dir, int idstPortal, 
 	eye_pos = pos;
 	src_lookDirection = srcLookDir;
 	iDestPortal = idstPortal;
+	this->transport = transport;
+	this->look_length = look_len;
 	vecAdd(&eye_pos, 
-			EYE_TO_PORTAL_DIST * eye_offset[srcLookDir*3], 
-			EYE_TO_PORTAL_DIST * eye_offset[srcLookDir*3+1], 
-			EYE_TO_PORTAL_DIST * eye_offset[srcLookDir*3+2]);
+			getEyeToPortalDist() * eye_offset[srcLookDir*3], 
+			getEyeToPortalDist() * eye_offset[srcLookDir*3+1], 
+			getEyeToPortalDist() * eye_offset[srcLookDir*3+2]);
 	/*vecAdd(&eye_pos, 
 			EYE_TO_PORTAL_DIST * eye_offset[dir*3], 
 			EYE_TO_PORTAL_DIST * eye_offset[dir*3+1], 
 			EYE_TO_PORTAL_DIST * eye_offset[dir*3+2]);*/
+}
+
+float FunctionalPortal::getEyeToPortalDist(){
+	//return 2;
+	return look_length;
 }
 
 struct Vec3 FunctionalPortal::getDestPortalPos(){

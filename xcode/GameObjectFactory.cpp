@@ -11,6 +11,7 @@ GameObjectFactory::GameObjectFactory(){
 	makers["wall"] = new WallMaker();
 	makers["optionbox"] = new OptionBoxMaker();
 	makers["hole"] = new HoleMaker();
+	makers["wallfunportal"] = new WallFunctionalPortalMaker();
 }
 
 GameObjectFactory::~GameObjectFactory(){

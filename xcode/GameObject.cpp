@@ -3,9 +3,9 @@
 
 using namespace std;
 
-GameObject::GameObject(){
-	dtex = NULL;
-	stex = NULL;
+GameObject::GameObject():dtex(0),stex(0){
+	//dtex = NULL;
+	//stex = NULL;
 	velocity=Vec3(0.,0.,0.);
 	hide = false;
 	//transformation.mat[0] = -1;
@@ -52,10 +52,43 @@ void GameObject::setModel(const aiScene *model, const vector<unsigned int> *inde
 	this->model = model;
 	this->indexBuff = indexBuff;
 }
-
-void GameObject::setTexture(const sf::Image *dtex, const sf::Image *stex){
+static sf::Image default_tex(1,1,sf::Color(255, 255, 255));
+//void GameObject::setTexture(const sf::Image *dtex, const sf::Image *stex){
+void GameObject::setTexture(const GLuint dtex, const GLuint stex){
 	this->dtex = dtex;
 	this->stex = stex;
+	/*
+	glGenTextures( 1, &diftexture );
+	glBindTexture( GL_TEXTURE_2D,diftexture );
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	
+	//if(dtex){
+		gluBuild2DMipmaps(GL_TEXTURE_2D,GL_RGBA,dtex->GetWidth(),dtex->GetHeight(),GL_RGBA,GL_UNSIGNED_BYTE,dtex->GetPixelsPtr());
+	//}else{
+		
+		//gluBuild2DMipmaps(GL_TEXTURE_2D,GL_RGBA,default_tex.GetWidth(),default_tex.GetHeight(),GL_RGBA,GL_UNSIGNED_BYTE,default_tex.GetPixelsPtr());
+	//}
+
+	glGenTextures( 1, &spectexture );
+	glBindTexture( GL_TEXTURE_2D,spectexture );
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	//if(stex){
+		gluBuild2DMipmaps(GL_TEXTURE_2D,GL_RGBA,stex->GetWidth(),stex->GetHeight(),GL_RGBA,GL_UNSIGNED_BYTE,stex->GetPixelsPtr());
+	//}else{
+		//gluBuild2DMipmaps(GL_TEXTURE_2D,GL_RGBA,default_tex.GetWidth(),default_tex.GetHeight(),GL_RGBA,GL_UNSIGNED_BYTE,default_tex.GetPixelsPtr());
+	//}
+	*/
 }
 
 void GameObject::setMaterial(const aiMesh *mesh) {
@@ -65,74 +98,54 @@ void GameObject::setMaterial(const aiMesh *mesh) {
     // Get a handle to the diffuse, specular, and ambient variables
     // inside the shader.  Then set them with the diffuse, specular, and
     // ambient color.
-	GLint diffuse = GL_CHECK(glGetUniformLocation(shaderID, "Kd"));
+	GLuint diffuse = GL_CHECK(glGetUniformLocation(shaderID, "Kd"));
     material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
     GL_CHECK(glUniform3f(diffuse, color.r, color.g, color.b));
 
     // Specular material
-    GLint specular = GL_CHECK(glGetUniformLocation(shaderID, "Ks"));
+    GLuint specular = GL_CHECK(glGetUniformLocation(shaderID, "Ks"));
     material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
     GL_CHECK(glUniform3f(specular, color.r, color.g, color.b));
   
     // Ambient material
-    GLint ambient = GL_CHECK(glGetUniformLocation(shaderID, "Ka"));
+    GLuint ambient = GL_CHECK(glGetUniformLocation(shaderID, "Ka"));
     material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
     GL_CHECK(glUniform3f(ambient, color.r, color.g, color.b));
 
     // Specular power
-    GLint shininess = GL_CHECK(glGetUniformLocation(shaderID, "alpha"));
+    GLuint shininess = GL_CHECK(glGetUniformLocation(shaderID, "alpha"));
     float value = 4;
     GL_CHECK(glUniform1f(shininess, value));
 }
 
-static sf::Image default_tex(1,1,sf::Color(255, 255, 255));
+
 void GameObject::bindTexture(){
 	GLuint shaderID = shader->programID();
-	GLint diffuseMap = GL_CHECK(glGetUniformLocation(shaderID, "diffuseMap"));
+	GLuint diffuseMap = GL_CHECK(glGetUniformLocation(shaderID, "diffuseMap"));
 	GL_CHECK(glActiveTexture(GL_TEXTURE0));
-	if(dtex){
-		dtex->Bind();
-	}
-	else{
-		default_tex.Bind();
-	}
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glBindTexture( GL_TEXTURE_2D,dtex );
 	GL_CHECK(glUniform1i(diffuseMap, 0)); // The diffuse map will be GL_TEXTURE0
 
-	GLint specularMap = GL_CHECK(glGetUniformLocation(shaderID, "specularMap"));
+	GLuint specularMap = GL_CHECK(glGetUniformLocation(shaderID, "specularMap"));
 	GL_CHECK(glActiveTexture(GL_TEXTURE1));
-	if(stex)
-		stex->Bind();
-	else
-		default_tex.Bind();
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glBindTexture( GL_TEXTURE_2D,stex );
 	GL_CHECK(glUniform1i(specularMap, 1));
 }
 
 void GameObject::setMeshData(const aiMesh *mesh) {
 	GLuint shaderID = shader->programID();
     // Get a handle to the variables for the vertex data inside the shader.
-    GLint position = GL_CHECK(glGetAttribLocation(shaderID, "positionIn"));
+    GLuint position = GL_CHECK(glGetAttribLocation(shaderID, "positionIn"));
     GL_CHECK(glEnableVertexAttribArray(position)); 
     GL_CHECK(glVertexAttribPointer(position, 3, GL_FLOAT, 0, sizeof(aiVector3D), mesh->mVertices));
 	
     // Texture coords.  Note the [0] at the end, very important
-    GLint texcoord = GL_CHECK(glGetAttribLocation(shaderID, "texcoordIn"));
+    GLuint texcoord = GL_CHECK(glGetAttribLocation(shaderID, "texcoordIn"));
     GL_CHECK(glEnableVertexAttribArray(texcoord));
     GL_CHECK(glVertexAttribPointer(texcoord, 2, GL_FLOAT, 0, sizeof(aiVector3D), mesh->mTextureCoords[0]));
 
     // Normals
-    GLint normal = GL_CHECK(glGetAttribLocation(shaderID, "normalIn"));
+    GLuint normal = GL_CHECK(glGetAttribLocation(shaderID, "normalIn"));
     GL_CHECK(glEnableVertexAttribArray(normal));
     GL_CHECK(glVertexAttribPointer(normal, 3, GL_FLOAT, 0, sizeof(aiVector3D), mesh->mNormals));
 }

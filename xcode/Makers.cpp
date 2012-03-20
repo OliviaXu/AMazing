@@ -3,6 +3,7 @@
 #include "Ball.h"
 #include "Wall.h"
 #include "FunctionalPortal.h"
+#include "WallFunctionalPortal.h"
 #include "Hole.h"
 #include "OptionBox.h"
 
@@ -43,8 +44,10 @@ void GameObjectMaker::setParam(GameObject *obj, struct GameObjectParam &param, M
 											//one mesh
 	//std::vector<sf::Image *> hey = textures;
 	//assert((int)(textures.size()) > prop->iDTex && (int)(textures.size()) > prop->iSTex);
-	const sf::Image *dtex = NULL;
-	const sf::Image *stex = NULL;
+	//const sf::Image *dtex = NULL;
+	//const sf::Image *stex = NULL;
+	GLuint dtex=0;
+	GLuint stex=0;
 	if(param.iDTex >= 0)
 		dtex = mld->getTexture(param.iDTex);
 	if(param.iSTex >= 0)
@@ -148,7 +151,13 @@ GameObject *FunctionalPortalMaker::make(char *args, MapLoader *mld){
 	assert(str = strtok(NULL, " \t"));
 	int src_lookDir = atoi(str);
 
-		std::cout << iDestPortal << dir << src_lookDir << std::endl;
+	assert(str = strtok(NULL, " \t"));
+	int transport = atoi(str);
+
+	assert(str = strtok(NULL, " \t"));
+	float look_len = atoi(str);
+	std::cout << "look_len " << look_len << std::endl;
+		//std::cout << iDestPortal << dir << src_lookDir << std::endl;
 	/*assert(str = strtok(args, " \t"));
 	float look_x = atoi(str);
 	assert(str = strtok(args, " \t"));
@@ -159,7 +168,60 @@ GameObject *FunctionalPortalMaker::make(char *args, MapLoader *mld){
 	setParam(fp, param, mld);
 
     Vec3 tmp = Vec3(dest_x, dest_y, dest_z);
-	fp->setPosDir(&tmp, dir, iDestPortal, src_lookDir);
+	fp->setPosDir(&tmp, dir, iDestPortal, src_lookDir, look_len, transport);
+	return fp;
+}
+
+/*------------------------------------------------------------------------------
+ *				WallFunctionalPortalMaker
+ *------------------------------------------------------------------------------*/
+WallFunctionalPortalMaker::WallFunctionalPortalMaker(){
+
+}
+
+WallFunctionalPortalMaker::~WallFunctionalPortalMaker(){
+
+}
+
+GameObject *WallFunctionalPortalMaker::make(char *args, MapLoader *mld){
+	struct GameObjectParam param;
+	args = parseParam(args, &param);
+	WallFunctionalPortal *fp = new WallFunctionalPortal();
+	char *str;
+	
+	assert(str = strtok(args, " \t"));
+	int iDestPortal = atoi(str);
+	assert(str = strtok(NULL, " \t"));
+	int dir = atoi(str);
+
+	assert(str = strtok(NULL, " \t"));
+	float dest_x = -atoi(str) / 25.4;
+	assert(str = strtok(NULL, " \t"));
+	float dest_y = atoi(str) / 25.4;
+	assert(str = strtok(NULL, " \t"));
+	float dest_z = atoi(str) / 25.4;
+
+	assert(str = strtok(NULL, " \t"));
+	int src_lookDir = atoi(str);
+
+	assert(str = strtok(NULL, " \t"));
+	int transport = atoi(str);
+
+	assert(str = strtok(NULL, " \t"));
+	float look_len = atoi(str);
+
+	std::cout << "look_len " << look_len << std::endl;
+	/*assert(str = strtok(args, " \t"));
+	float look_x = atoi(str);
+	assert(str = strtok(args, " \t"));
+	float look_y = atoi(str);
+	assert(str = strtok(args, " \t"));
+	float look_z = atoi(str);*/
+
+	setParam(fp, param, mld);
+
+    Vec3 tmp = Vec3(dest_x, dest_y, dest_z);
+	fp->setPosDir(&tmp, dir, iDestPortal, src_lookDir, transport, look_len);
 	return fp;
 }
 
@@ -188,7 +250,7 @@ GameObject *WallMaker::make(char *args, MapLoader *mld){
 	Wall *wall = new Wall();
 	wall->setNormalTex(mld->getTexture(iNormalTex));
 	wall->setDepthTex(mld->getTexture(iDepthTex));
-
+	
 	setParam(wall, param, mld);
 	
 	return wall;

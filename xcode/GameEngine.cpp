@@ -124,7 +124,7 @@ void GameEngine::run()
 			ball->setPortal(mapLoader->getCurrentPortalIdx());
 		}*/
 		mapLoader->updateCurrentPortal(camera->getPos(), (ball->getPos()));
-        
+		cout << "current portal " << mapLoader->getCurrentPortalIdx() << endl;
         //printf("%f, %f, %f\n", GRAVITY * sin(dAngleEW/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * cos(dAngleNS/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * sin(dAngleNS/180*PI));
         //printf("NS: %f, EW: %f\n", dAngleNS, dAngleEW);
         physicsEngine->setGravity(GRAVITY * sin(dAngleEW/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * cos(dAngleNS/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * sin(dAngleNS/180*PI));
@@ -178,6 +178,8 @@ void GameEngine::updateObjects()
 }
 
 void GameEngine::onBallIntoPortal(FunctionalPortal *fp){
+	if(!fp->transport)
+		return;
 	struct Vec3 dst_pcoord = fp->getDestPortalPos();
 	int idstportal = fp->getDestPortalIdx();
 	Portal *port = (Portal *)(mapLoader->getPortal(idstportal));

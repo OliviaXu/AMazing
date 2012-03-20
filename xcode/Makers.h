@@ -40,6 +40,15 @@ public:
 private:
 };
 
+class WallFunctionalPortalMaker : public GameObjectMaker{
+public:
+	WallFunctionalPortalMaker();
+	~WallFunctionalPortalMaker();
+	virtual GameObject *make(char *args, MapLoader *mld);
+
+private:
+};
+
 class WallMaker : public GameObjectMaker{
 public:
 	WallMaker();

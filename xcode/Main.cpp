@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
 void initOpenGL() {
     // Initialize GLEW on Windows, to make sure that OpenGL 2.0 is loaded
 #ifdef FRAMEWORK_USE_GLEW
-    GLint error = glewInit();
+    GLuint error = glewInit();
     if (GLEW_OK != error) {
         std::cerr << glewGetErrorString(error) << std::endl;
         exit(-1);
