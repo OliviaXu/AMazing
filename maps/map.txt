@@ -9,6 +9,7 @@ m models/portal_plane_plain.3ds #6
 m models/portal_plane_f.3ds #7
 m models/hole_floor.3ds #8
 m models/option_box2.3ds #9
+#m models/sky_plane.3ds #10
 
 # List of Textures
 t models/tiles_d.jpg  #0
@@ -19,6 +20,7 @@ t models/BARK5.jpg    #4
 t models/start.jpg    #5
 t models/restart.jpg  #6
 t models/quit.jpg     #7
+t models/grid.jpg #8
 
 # List of Shaders
 s shaders/phong		# 0
@@ -44,12 +46,12 @@ p NULL NULL NULL 5 1500 500 #6
 # sphere radius mass is_static itran_x itran_y itran_z itran_w ipos_x ipos_y ipos_z ipos_w 
 phy plane 0 1 0 0 1 0 0 0 1 0 0 0 1 #0, the ground
 phy box 0 250 250 0 1 0 0 0 1 0 0 0 1 #1, left right plane
-phy box 250 250 0 1000 1 0 0 0 1 0 0 0 1 #2, front back plane
+phy box 250 250 0 0 1 0 0 0 1 0 0 0 1 #2, front back plane
 phy sphere 5 10 0 0 0 0 1 0 0 0 1 #3, ball
 phy box 50 1 50 0 1 0 0 0 1 0 0 0 1 #4, holes or portals on the floor
 phy box 1 50 50 0 1 0 0 0 1 0 0 0 1 #5, holes or portals on the side
 phy box 50 50 1 0 1 0 0 0 1 0 0 0 1 #6, holes or portals on the front or back
-phy box 10000 1 10000 0 1 0 0 0 1 0 0 0 1 #7, sky plane
+phy box 5000 1 5000 0 1 0 0 0 1 0 0 0 1 #7, sky plane
 phy box 100 50 75 0 1 0 0 0 1 0 0 0 1 #8 option box
 
 # List of Portal Object
@@ -72,16 +74,38 @@ obj gameobject 2 0 500 250 250 0 0 1 1
 obj gameobject 2 0 500 250 750 0 0 1 1
 obj gameobject 4 0 250 250 0 0 0 1 2
 
-obj ball 5 0 250 10010 0 0 2 3 3
+obj ball 5 0 250 100010 250 0 2 3 3
 #start scene #really just a hack...
-obj gameobject 0 0 0 10000 0 0 0 1 7
-obj optionbox 9 0 0 10000 400 0 5 5 8 start
-obj optionbox 9 0 500 10000 400 0 7 7 8 quit
+obj gameobject 0 0 0 100000 0 0 8 1 7
+obj gameobject 0 0 0 100000 500 0 8 1 7
+obj gameobject 0 0 500 100000 0 0 8 1 7
+obj gameobject 0 0 500 100000 500 0 8 1 7
+obj gameobject 1 0 0 100200 250 0 8 1 1
+obj gameobject 1 0 0 100200 750 0 8 1 1
+obj gameobject 2 0 1000 100200 250 0 8 1 1
+obj gameobject 2 0 1000 100200 750 0 8 1 1
+obj gameobject 3 0 250 100200 1000 0 8 1 2
+obj gameobject 3 0 750 100200 1000 0 8 1 2 
+obj gameobject 4 0 250 100200 0 0 8 1 2
+obj gameobject 4 0 750 100200 0 0 8 1 2 
+obj optionbox 9 0 250 100000 850 0 5 5 8 start
+obj optionbox 9 0 750 100000 850 0 7 7 8 quit
 
 #restart scene
-obj gameobject 0 0 0 20000 0 0 0 1 7
-obj optionbox 9 0 500 20000 400 0 7 7 8 quit
-obj optionbox 9 0 0 20000 400 0 6 6 8 restart
+obj gameobject 0 0 0 200000 0 0 8 1 7
+obj gameobject 0 0 0 200000 500 0 8 1 7
+obj gameobject 0 0 500 200000 0 0 8 1 7
+obj gameobject 0 0 500 200000 500 0 8 1 7
+obj gameobject 1 0 0 200200 250 0 8 1 1
+obj gameobject 1 0 0 200200 750 0 8 1 1
+obj gameobject 2 0 1000 200200 250 0 8 1 1
+obj gameobject 2 0 1000 200200 750 0 8 1 1
+obj gameobject 3 0 250 200200 1000 0 8 1 2
+obj gameobject 3 0 750 200200 1000 0 8 1 2 
+obj gameobject 4 0 250 200200 0 0 8 1 2
+obj gameobject 4 0 750 200200 0 0 8 1 2 
+obj optionbox 9 0 250 200000 850 0 6 6 8 restart
+obj optionbox 9 0 750 200000 850 0 7 7 8 quit
 
 #functional portal
 #gameobj_param, iDstPortal, dst_look_direction(0->+x, 1->-x, 2->+y, 3->-y, 4->+z, 5->-z), dstPos(portal coord) src_look_dir
