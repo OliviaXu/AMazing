@@ -3,10 +3,7 @@
 #include "Ball.h"
 #include "Wall.h"
 #include "FunctionalPortal.h"
-<<<<<<< HEAD
-=======
 //#include "WallFunctionalPortal.h"
->>>>>>> upstream/master
 #include "Hole.h"
 #include "OptionBox.h"
 
@@ -232,7 +229,6 @@ GameObject *WallFunctionalPortalMaker::make(char *args, MapLoader *mld){
 	return fp;
 }*/
 
->>>>>>> upstream/master
 /*------------------------------------------------------------------------------
  *				WallMaker
  *------------------------------------------------------------------------------*/
