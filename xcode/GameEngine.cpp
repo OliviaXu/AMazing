@@ -143,13 +143,13 @@ void GameEngine::handleEvents()
 			onBallIntoPortal((FunctionalPortal *)e.info);
 			break;
 		case MAZEevent_type::BALL_INTO_HOLE:
-			ball->moveTo(-250/25.4, 20010/25.4,0);
+			ball->moveTo(-250/25.4, 200010/25.4,0);
 			//ball->rigidBody->setDamping(0.5, 0.5);
 			ball->rigidBody->setLinearVelocity(btVector3(0, 0, 0));
 			break;
 		case MAZEevent_type::START_GAME:
 		case MAZEevent_type::RESTART_GAME:
-			ball->moveTo(-250/25.4, 200/25.4,0);
+			ball->moveTo(-250/25.4, 100/25.4,100/25.4);
 			ball->rigidBody->setLinearVelocity(btVector3(0, 0, 0));
 			//ball->rigidBody->setDamping(0.5, 0.5);
 			break;
