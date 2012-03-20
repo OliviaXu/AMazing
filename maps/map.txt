@@ -10,6 +10,7 @@ m models/portal_plane_f.3ds #7
 m models/hole_floor.3ds #8
 m models/option_box2.3ds #9
 #m models/sky_plane.3ds #10
+m models/box_box.3DS #10
 
 # List of Textures
 t models/tiles_d.jpg  #0
@@ -40,6 +41,19 @@ p 4 NULL 2 NULL 500 500 # 3
 p 5 3 NULL NULL 500 1500	# 4
 p NULL 4 6 NULL 500 500 #5
 p NULL NULL NULL 5 1500 500 #6
+
+#p NULL 6 NULL NULL 500 500 #7
+#p NULL NULL NULL 6 1000 500 #8
+#p NULL NULL 5 10 500 500 #9
+#p 18 11 9 17 500 500 #10
+#p 10 12 NULL NULL 500 500 #11
+#p 11 NULL NULL 13 500 500 #12
+#p NULL NULL 12 14 500 500 #13
+#p 15 NULL 13 NULL 500 500 #14
+#p 16 14 NULL NULL 500 500 #15
+#p NULL 15 17 NULL 500 500 #16
+#p NULL NULL 10 16 500 500 #17
+#p NULL 10 NULL NULL 500 1000 #18
 
 #List of Bullet Physics Properties
 # plane inormal_x inormal_y inormal_z mass is_static itran_x itran_y itran_z itran_w ipos_x ipos_y ipos_z ipos_w
@@ -120,6 +134,8 @@ obj gameobject 1 1 0 250 250 0 0 1 1
 obj gameobject 3 1 250 250 500 0 0 1 2
 #obj funportal 7 2 250 50 499 1 -1 -1 6 5 5 250 250 250 4
 
+obj gameobject 10 1 100 100 100 0 0 1 6
+
 #portal 2
 obj gameobject 0 2 500 0 0 0 0 1 0
 obj gameobject 3 2 250 250 500 0 0 1 2
@@ -154,3 +170,15 @@ obj gameobject 3 6 1250 250 500 0 2 3 2
 obj gameobject 4 6 250 250 0 0 2 3 2
 obj gameobject 4 6 750 250 0 0 2 3 2
 obj gameobject 4 6 1250 250 0 0 2 3 2
+
+#portal 15
+obj gameobject 1 15 0 250 250 0 0 1 1
+obj gameobject 2 15 500 250 250 0 0 1 1
+
+#portal 16
+obj gameobject 3 16 250 250 500 0 0 1 1
+obj gameobject 2 16 500 250 250 0 0 1 1
+
+#portal 17
+obj gameobject 3 17 250 250 500 0 0 1 1
+obj gameobject 4 17 250 250 0 0 0 1 1
