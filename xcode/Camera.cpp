@@ -95,8 +95,11 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
     
     bool outside = false;
     float factor = 0;
-    printf("NSWE: %f,%f,%f,%f\n",N,S,W,E);
-    printf("bpos.x, bpos.z: %f, %f\n", bpos.x, bpos.z);
+    if(DEBUG_OUTPUT)
+    {
+        printf("NSWE: %f,%f,%f,%f\n",N,S,W,E);
+        printf("bpos.x, bpos.z: %f, %f\n", bpos.x, bpos.z);
+    }
     switch(keyd)
     {
         case UP:
@@ -130,7 +133,8 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
     }
     if(outside)
     {
-        printf("factor: %f\n", factor);
+        if(DEBUG_OUTPUT)
+            printf("factor: %f\n", factor);
         cam_lift *= factor;
         cam_back *= factor;
     }

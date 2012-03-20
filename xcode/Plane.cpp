@@ -23,5 +23,6 @@ void Plane::update(float dAngleNS, float dAngleEW) {
 void Plane::getAngle(float &angleNS, float &angleEW) {
 	angleNS=this->angleNS;
 	angleEW=this->angleEW;
-	printf("test plan angle: %f %f",angleNS,angleEW);
+    if(DEBUG_OUTPUT)
+        printf("test plan angle: %f %f",angleNS,angleEW);
 }

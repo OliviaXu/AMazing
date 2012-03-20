@@ -71,25 +71,19 @@ void GameEngine::init(sf::Window* _window)
 	glLightfv(GL_LIGHT1, GL_SPECULAR, light1_specular);
 
 	emt = new ParticleEmitter(ParticleEmitter::PARTICLE_FIRE, "models/Electricity.png", 800);
-    emt->mPosition.Set(-200/25.4, 5/25.4, 600.0/25.4);
+    emt->mPosition.Set(-350/25.4, 5/25.4, 900.0/25.4);
     emt2 = new ParticleEmitter(ParticleEmitter::PARTICLE_FIRE, "models/IncandescentRed.png", 800);
     emt2->mPosition.Set(-180/25.4, 5/25.4, 650/25.4);
+    emt3 = new ParticleEmitter(ParticleEmitter::PARTICLE_FIRE, "models/FireGold.png", 800);
+    emt3->mPosition.Set(-300/25.4, 5/25.4, 450/25.4);
 }
 
 void GameEngine::run()
 {
     while(1){
-        static float t1 = 0;
-		static float t2 = t1;
-		t2 = t1;
-		t1 = window->GetFrameTime();
-		//cout << "delta time " << t1 << endl;
-
         userControl->handleInput();    // constant * window.GetFrameTime() 
         
-        emt->mPosition.Set(-200/25.4, 5/25.4+window->GetFrameTime()*100, 600.0/25.4);
-        
-        double dis2 = ball->calcDis(-200/25.4, 5/25.4, 600.0/25.4);
+        double dis2 = ball->calcDis(-350/25.4, 5/25.4, 900.0/25.4);
         double dis1 = ball->calcDis(-180/25.4, 5/25.4, 650.0/25.4);
         dis1 = log(dis1+1);
         dis2 = log(dis2+1);
@@ -103,7 +97,7 @@ void GameEngine::run()
             //brb->setLinearVelocity(2 * brb->getLinearVelocity());
             
             btRigidBody* brb = ball->rigidBody;
-            //brb->setLinearVelocity(-1 * brb->getLinearVelocity());
+            brb->setLinearVelocity(-1 * brb->getLinearVelocity());
             //userControl->flipWorld();
             
             upspeed = EFFECT_TIME;
@@ -165,7 +159,8 @@ void GameEngine::run()
             glClearColor(0.6*slowdown/EFFECT_TIME,0.6*slowdown/EFFECT_TIME,0.6*slowdown/EFFECT_TIME,1);
             mapLoader->setAlpha(0.6*slowdown/EFFECT_TIME);
             
-            printf("slowdown: %d\n",slowdown);
+            if(DEBUG_OUTPUT)
+                printf("slowdown: %d\n",slowdown);
             slowdown -= 1;
         }
         if(upspeed)
@@ -269,5 +264,6 @@ void GameEngine::drawScene()
 							mapLoader->getPortals(), visitedEdgeSet);
 
 	drawParticles(window, emt);
-    drawParticles(window, emt2);
+    //drawParticles(window, emt2);
+    //drawParticles(window, emt3);
 }

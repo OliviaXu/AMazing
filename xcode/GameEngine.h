@@ -47,6 +47,7 @@ private:
 
 	ParticleEmitter *emt;
     ParticleEmitter *emt2;
+    ParticleEmitter *emt3;
     
     int slowdown;
     int upspeed;
