@@ -39,7 +39,7 @@ public:
 
 private:
 };
-
+/*
 class WallFunctionalPortalMaker : public GameObjectMaker{
 public:
 	WallFunctionalPortalMaker();
@@ -48,6 +48,7 @@ public:
 
 private:
 };
+*/
 
 class WallMaker : public GameObjectMaker{
 public:

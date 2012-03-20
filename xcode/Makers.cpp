@@ -3,7 +3,6 @@
 #include "Ball.h"
 #include "Wall.h"
 #include "FunctionalPortal.h"
-#include "WallFunctionalPortal.h"
 #include "Hole.h"
 #include "OptionBox.h"
 
@@ -175,6 +174,7 @@ GameObject *FunctionalPortalMaker::make(char *args, MapLoader *mld){
 /*------------------------------------------------------------------------------
  *				WallFunctionalPortalMaker
  *------------------------------------------------------------------------------*/
+/*
 WallFunctionalPortalMaker::WallFunctionalPortalMaker(){
 
 }
@@ -182,11 +182,13 @@ WallFunctionalPortalMaker::WallFunctionalPortalMaker(){
 WallFunctionalPortalMaker::~WallFunctionalPortalMaker(){
 
 }
+*/
 
+/*
 GameObject *WallFunctionalPortalMaker::make(char *args, MapLoader *mld){
 	struct GameObjectParam param;
 	args = parseParam(args, &param);
-	WallFunctionalPortal *fp = new WallFunctionalPortal();
+	//WallFunctionalPortal *fp = new WallFunctionalPortal();
 	char *str;
 	
 	assert(str = strtok(args, " \t"));
@@ -218,13 +220,14 @@ GameObject *WallFunctionalPortalMaker::make(char *args, MapLoader *mld){
 	assert(str = strtok(args, " \t"));
 	float look_z = atoi(str);*/
 
+/*
 	setParam(fp, param, mld);
 
     Vec3 tmp = Vec3(dest_x, dest_y, dest_z);
 	fp->setPosDir(&tmp, dir, iDestPortal, src_lookDir, transport, look_len);
 	return fp;
 }
-
+*/
 /*------------------------------------------------------------------------------
  *				WallMaker
  *------------------------------------------------------------------------------*/
