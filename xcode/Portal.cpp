@@ -46,10 +46,17 @@ bool Portal::cullDraw(struct MAZEmat *projviewMat, struct MAZEmat *viewportMat,
 		//I know the following code seems a little hack
 		//but I can't find any better way...
 		Portal *port = (*portals)[neighbors[i]];
-		if(visitedEdgeSet.count(port->getNeighbors()+posMap[i]) > 0)
+		if(visitedEdgeSet.count(port->getNeighbors()+posMap[i]) > 0 || 
+			visitedEdgeSet.count(neighbors+i))
 			continue;
+		//int size1 = visitedEdgeSet.size();
 		visitedEdgeSet.insert(neighbors+i);
-
+		//int size2 = visitedEdgeSet.size();
+		/*if(size2 == size1){
+			cout << "not right" << endl;
+		}*/
+		//assert(visitedEdgeSet.size()<4*(*portals).size());
+		//cout<<"visitedEdge " << visitedEdgeSet.size() << endl;
 		struct Vec3 p[4];
 		float left = MY_FLT_MAX, right = MY_FLT_MIN, top = MY_FLT_MIN, bottom = MY_FLT_MAX;
 		float nearC = MY_FLT_MAX, farC = MY_FLT_MIN;

@@ -37,7 +37,7 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
 {
     GLfloat aspectRatio = (GLfloat)800.f/600;
     GLfloat nearClip = 0.1f;
-	GLfloat farClip = 4000.0f;
+	GLfloat farClip = 400.0f;
     GLfloat fieldOfView = 90.0f; // TODO Degrees
 
     glMatrixMode(GL_PROJECTION);
