@@ -16,7 +16,7 @@
 #include "Framework.h"
 class MapLoader;
 
-#define GRAVITY 1.5*9.8/25.4
+#define GRAVITY 9.8*1.5
 
 class PhysicsEngine {
 public:

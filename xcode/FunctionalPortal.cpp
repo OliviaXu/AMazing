@@ -265,6 +265,7 @@ void FunctionalPortal::createEnvironmentMap(const std::vector<Portal *> *portals
 	getWindowProjMat(viewport, projviewMat, viewportMat);
 
 	set<int *> visitedEdgeSet;
+	cout << "here1" <<endl;
 	destPortal->cullDraw(&projviewMat, &viewportMat, viewport, 
 						portals, visitedEdgeSet);
 		
