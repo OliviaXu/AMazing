@@ -41,6 +41,7 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(fieldOfView, aspectRatio, nearClip, farClip);
+    //gluOrtho(-200,200,-200,200,0.1,1000.0);
 	Vec3 bpos=*(ball->getPos());
 
 	glMatrixMode(GL_MODELVIEW);
@@ -58,13 +59,26 @@ void Camera::updatePos(CamMorientation mov,Keyorientation keyd,Ball *ball,float 
     
     switch(keyd)
     {
-        case UP: case DOWN:
+        case UP:
+            AngleNS = -AngleNS;
             break;
-        case LEFT: case RIGHT:
+        case DOWN:
+            AngleNS = AngleNS;
+            break;
+        case LEFT:
+        {
             float tmp = AngleEW;
             AngleEW = -AngleNS; // should be AngleNS, don't know why their is a minus sign
             AngleNS = tmp;
             break;
+        }
+        case RIGHT:
+        {
+            float tmp = AngleEW;
+            AngleEW = -AngleNS; // should be AngleNS, don't know why their is a minus sign
+            AngleNS = -tmp;
+            break;
+        }
     }
     
     float cam_lift = CAM_HEIGHT * cos(AngleNS/180*PI);

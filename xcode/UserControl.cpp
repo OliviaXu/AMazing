@@ -3,7 +3,7 @@ using namespace std;
 
 #define CAM_ANG_LIMIT 20
 
-UserControl::UserControl() : angSpeed(200){
+UserControl::UserControl() : angSpeed(500){
 	angNS=0.;
 	angEW=0.;
 	camdir=(Keyorientation)0;//or UP
