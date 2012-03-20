@@ -168,22 +168,22 @@ struct Vec3 Portal::getNE(){
 	return ret;
 }
 
-float Portal::getN()
+const float Portal::getN()
 {
     return pos.z + height;
 }
 
-float Portal::getS()
+const float Portal::getS()
 {
     return pos.z;
 }
 
-float Portal::getE()
+const float Portal::getE()
 {
     return pos.x - width;
 }
 
-float Portal::getW()
+const float Portal::getW()
 {
     return pos.x;
 }
