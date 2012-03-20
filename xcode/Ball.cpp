@@ -24,13 +24,13 @@ float Ball::getV(){
 void Ball::respondToCollision(GameObject *obj, std::queue<MAZEevent> *eq){
 	FunctionalPortal *portal = dynamic_cast<FunctionalPortal *>(obj);
 	if(portal){
-		eq->push(struct MAZEevent(MAZEevent_type::BALL_INTO_PORTAL, portal));
+		eq->push(MAZEevent(BALL_INTO_PORTAL, portal));
 		return;
 	}
 
 	Hole *hole = dynamic_cast<Hole *>(obj);
 	if(hole){
-		eq->push(struct MAZEevent(MAZEevent_type::BALL_INTO_HOLE, portal));
+		eq->push(MAZEevent(BALL_INTO_HOLE, portal));
 		return;
 	}
 
@@ -38,13 +38,13 @@ void Ball::respondToCollision(GameObject *obj, std::queue<MAZEevent> *eq){
 	if(ob){
 		switch(ob->ty){
 		case OptionBox::START:
-			eq->push(struct MAZEevent(MAZEevent_type::START_GAME, portal));
+			eq->push(MAZEevent(START_GAME, portal));
 			return;
 		case OptionBox::RESTART:
-			eq->push(struct MAZEevent(MAZEevent_type::RESTART_GAME, portal));
+			eq->push(MAZEevent(RESTART_GAME, portal));
 			return;
 		case OptionBox::QUIT:
-			eq->push(struct MAZEevent(MAZEevent_type::QUIT_GAME, portal));
+			eq->push(MAZEevent(QUIT_GAME, portal));
 			return;
 		}
 	}

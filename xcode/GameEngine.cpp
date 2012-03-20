@@ -86,6 +86,9 @@ void GameEngine::run()
         float dAngleNS, dAngleEW;
         userControl->getAngleUpdate(dAngleNS, dAngleEW);
         
+        dAngleNS = -dAngleNS;
+        dAngleEW = -dAngleEW;
+        
         //plane->update(dAngleNS, dAngleEW);    // no use anymore
         
         //I think updating current portal according to camera is more appropriate.
@@ -94,9 +97,10 @@ void GameEngine::run()
 			//updateObjects();
 			ball->setPortal(mapLoader->getCurrentPortalIdx());
 		}*/
-		mapLoader->updateCurrentPortal(camera->getPos(), &(ball->getPos()));
+		mapLoader->updateCurrentPortal(camera->getPos(), (ball->getPos()));
         
         //printf("%f, %f, %f\n", GRAVITY * sin(dAngleEW/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * cos(dAngleNS/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * sin(dAngleNS/180*PI));
+        printf("NS: %f, EW: %f\n", dAngleNS, dAngleEW);
         physicsEngine->setGravity(GRAVITY * sin(dAngleEW/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * cos(dAngleNS/180*PI), -GRAVITY * cos(dAngleEW/180*PI) * sin(dAngleNS/180*PI));
 
         physicsEngine->updateObjects();
@@ -139,7 +143,7 @@ void GameEngine::handleEvents()
 		struct MAZEevent e = eq->front();
 		eq->pop();
 		switch(e.ty){
-		case MAZEevent_type::BALL_INTO_PORTAL:
+		case BALL_INTO_PORTAL:
 			onBallIntoPortal((FunctionalPortal *)e.info);
 			break;
 		case MAZEevent_type::BALL_INTO_HOLE:
@@ -153,7 +157,7 @@ void GameEngine::handleEvents()
 			ball->rigidBody->setLinearVelocity(btVector3(0, 0, 0));
 			//ball->rigidBody->setDamping(0.5, 0.5);
 			break;
-		case MAZEevent_type::QUIT_GAME:
+		case QUIT_GAME:
 			exit(0);
 			break;
 		/*default:

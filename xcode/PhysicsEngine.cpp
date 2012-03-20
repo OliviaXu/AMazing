@@ -16,6 +16,9 @@
 #include <iostream>
 using namespace std;
 
+#define FRICTION 1.2
+#define DAMPING 0.08
+
 struct BallCollisionCallback : public btCollisionWorld::ContactResultCallback{
 	BallCollisionCallback(Ball *b, vector<GameObject *> *objs, queue<MAZEevent> *evtq){
 		ball = b;
@@ -108,7 +111,8 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info, GameObject
             {
                 btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(0, sphereMotionState,sphereShape,btVector3(0,0,0));
                 sphereRigidBody = new btRigidBody(sphereRigidBodyCI);
-				sphereRigidBody->setFriction(1);
+				sphereRigidBody->setFriction(FRICTION);
+                sphereRigidBody->setDamping(DAMPING, DAMPING);
             }
             else
             {
@@ -116,7 +120,8 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info, GameObject
                 sphereShape->calculateLocalInertia(cur_info->mass,sphereInertia);
                 btRigidBody::btRigidBodyConstructionInfo sphereRigidBodyCI(cur_info->mass, sphereMotionState, sphereShape, sphereInertia);
                 sphereRigidBody = new btRigidBody(sphereRigidBodyCI);
-				sphereRigidBody->setFriction(1);
+				sphereRigidBody->setFriction(FRICTION);
+                sphereRigidBody->setDamping(DAMPING, DAMPING);
             }
             //sphereRigidBody->forceActivationState(info->forceActivation);
 			//sphereRigidBody->forceActivationState(1);
@@ -130,8 +135,9 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info, GameObject
 			Ball *is_it_ball = dynamic_cast<Ball *>(obj);
 			if(is_it_ball){
 				sphereRigidBody->setActivationState(DISABLE_DEACTIVATION);
+                BallCollisionCallback bcb = BallCollisionCallback(is_it_ball, &objs, &evtq);
 				dynamicsWorld->contactTest(sphereRigidBody, 
-					struct BallCollisionCallback(is_it_ball, &objs, &evtq));
+                    bcb);
 			}
             break;
         }
@@ -146,7 +152,8 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info, GameObject
             {
 				btRigidBody::btRigidBodyConstructionInfo planeRigidBodyCI(cur_info->mass, planeMotionState,planeShape,btVector3(0,0,0));
                 planeRigidBody = new btRigidBody(planeRigidBodyCI);
-				planeRigidBody->setFriction(1);	
+				planeRigidBody->setFriction(FRICTION);
+                planeRigidBody->setDamping(DAMPING, DAMPING);
             }
             else
                 ;//TODO
@@ -178,7 +185,8 @@ void PhysicsEngine::addObject(PhysicsShapeTy type, PhysicsInfo* info, GameObject
             {
 				btRigidBody::btRigidBodyConstructionInfo boxRigidBodyCI(cur_info->mass, boxMotionState,boxShape,btVector3(0,0,0));
                 boxRigidBody = new btRigidBody(boxRigidBodyCI);
-				boxRigidBody->setFriction(1);	
+				boxRigidBody->setFriction(FRICTION);
+                boxRigidBody->setDamping(DAMPING, DAMPING);
             }
             else
                 ;//TODO
@@ -206,8 +214,9 @@ void PhysicsEngine::updateObjects() {
 		Ball *is_it_ball = dynamic_cast<Ball *>(obj);
 			if(is_it_ball){
 				//rigidBodies[i]->setActivationState(DISABLE_DEACTIVATION);
+                BallCollisionCallback bcb = BallCollisionCallback(is_it_ball, &objs, &evtq);
 				dynamicsWorld->contactTest(rigidBodies[i], 
-					struct BallCollisionCallback(is_it_ball, &objs, &evtq));
+                    bcb);
 			}
 
 		//Modified by sylvon. Only set the ball to be always active.

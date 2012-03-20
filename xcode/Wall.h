@@ -11,6 +11,7 @@ public:
 	virtual void setTan(const aiMesh *mesh);
 	void setNormalTex(const sf::Image *normalTex);
 	void setDepthTex(const sf::Image *depthTex);
+	void setNDTex();
 
 protected:
 

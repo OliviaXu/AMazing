@@ -22,7 +22,7 @@ public:
     void setClass(char *className);
 	void setModel(const aiScene *model, const std::vector<unsigned int> *indexBuff);
 	void setTexture(const sf::Image *dtex, const sf::Image *stex);
-	struct Vec3 getPos();
+	struct Vec3* getPos();
     struct Vec3 &getVelocity();
 	int getPortal();
 	void setHide(bool flag);
